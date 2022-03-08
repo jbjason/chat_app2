@@ -14,7 +14,11 @@ class _AuthScreenState extends State<AuthScreen> {
   bool _isLoading = false;
 
   void _submitAuthForm(String emaill, String passwordd, String username,
-      File image, bool isLogin, BuildContext ctx) async {}
+      File image, bool isLogin, BuildContext ctx) async {
+    print(emaill + '\n' + passwordd + '\n' + username);
+    print(image);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
