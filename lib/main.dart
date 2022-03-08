@@ -1,8 +1,11 @@
 import 'package:chat_app2/screens/auth_screen.dart';
 import 'package:chat_app2/constants/theme.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  FirebaseApp defaultApp = await Firebase.initializeApp();
   runApp(const MyApp());
 }
 

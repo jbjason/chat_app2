@@ -33,11 +33,9 @@ class _UserImagePickerState extends State<UserImagePicker> {
           backgroundColor: Colors.grey,
           child: _pickedImage == null
               ? Container()
-              : ClipOval(
-                  child: Image.file(
-                    _pickedImage!,
-                    fit: BoxFit.cover,
-                  ),
+              : Image.file(
+                  _pickedImage!,
+                  fit: BoxFit.cover,
                 ),
         ),
         TextButton.icon(

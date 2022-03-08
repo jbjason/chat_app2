@@ -1,3 +1,4 @@
+import 'package:chat_app2/constants/theme.dart';
 import 'package:chat_app2/widgets/common_widgets/user_image_picker.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
@@ -140,13 +141,11 @@ class _AuthFormState extends State<AuthForm> {
         if (!widget.isLoading)
           TextButton(
             onPressed: () {
-              setState(() {
-                _isLogin = !_isLogin;
-              });
+              setState(() => _isLogin = !_isLogin);
             },
             child: Text(
               _isLogin ? 'Create new account' : 'I already have an account',
-              style: TextStyle(color: Theme.of(context).primaryColor),
+              style: const TextStyle(color: AppColors.textLigth),
             ),
           )
       ],
