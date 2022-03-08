@@ -1,8 +1,8 @@
-import 'package:chat_app2/helpers.dart';
+import 'package:chat_app2/constants/helpers.dart';
 import 'package:chat_app2/models/message_data.dart';
 import 'package:chat_app2/models/story_data.dart';
 import 'package:chat_app2/screens/chat_screen.dart';
-import 'package:chat_app2/theme.dart';
+import 'package:chat_app2/constants/theme.dart';
 import 'package:chat_app2/widgets/common_widgets/avatar.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';

@@ -1,9 +1,9 @@
-import 'package:chat_app2/helpers.dart';
+import 'package:chat_app2/constants/helpers.dart';
 import 'package:chat_app2/pages/calls_page.dart';
 import 'package:chat_app2/pages/contacts_page.dart';
 import 'package:chat_app2/pages/messages_page.dart';
 import 'package:chat_app2/pages/notifications_page.dart';
-import 'package:chat_app2/theme.dart';
+import 'package:chat_app2/constants/theme.dart';
 import 'package:chat_app2/widgets/common_widgets/avatar.dart';
 import 'package:chat_app2/widgets/common_widgets/glowing_action_button.dart';
 import 'package:chat_app2/widgets/common_widgets/icon_background.dart';

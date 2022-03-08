@@ -1,5 +1,5 @@
 import 'package:chat_app2/models/message_data.dart';
-import 'package:chat_app2/theme.dart';
+import 'package:chat_app2/constants/theme.dart';
 import 'package:chat_app2/widgets/common_widgets/avatar.dart';
 import 'package:chat_app2/widgets/common_widgets/glowing_action_button.dart';
 import 'package:chat_app2/widgets/common_widgets/icon_background.dart';
