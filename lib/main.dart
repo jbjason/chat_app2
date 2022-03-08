@@ -1,4 +1,4 @@
-import 'package:chat_app2/screens/home_screen.dart';
+import 'package:chat_app2/screens/auth_screen.dart';
 import 'package:chat_app2/constants/theme.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: AppTheme.light(),
       darkTheme: AppTheme.dark(),
       themeMode: ThemeMode.dark,
-      home: HomeScreen(),
+      home: const AuthScreen(),
     );
   }
 }
