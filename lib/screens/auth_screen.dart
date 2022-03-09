@@ -8,7 +8,6 @@ import 'package:flutter/services.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({Key? key}) : super(key: key);
-
   @override
   State<AuthScreen> createState() => _AuthScreenState();
 }
@@ -16,6 +15,13 @@ class AuthScreen extends StatefulWidget {
 class _AuthScreenState extends State<AuthScreen> {
   bool _isLoading = false;
   final _auth = FirebaseAuth.instance;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: AuthForm(submitFn: _submitAuthForm, isLoading: _isLoading),
+    );
+  }
 
   void _submitAuthForm(String emaill, String passwordd, String username,
       File image, bool isLogin, BuildContext ctx) async {
@@ -38,9 +44,12 @@ class _AuthScreenState extends State<AuthScreen> {
             .collection('users')
             .doc(authResult.user!.uid)
             .set({
+          'userId': authResult.user!.uid,
           'userName': username,
           'email': emaill,
-          'image_url': url,
+          'imageUrl': url,
+          'lastMsgTime': DateTime.now().toIso8601String(),
+          'lastMsg': '',
         });
       }
     } on PlatformException catch (err) {
@@ -52,16 +61,11 @@ class _AuthScreenState extends State<AuthScreen> {
         SnackBar(
             content: Text(message), backgroundColor: Theme.of(ctx).errorColor),
       );
+      setState(() => _isLoading = false);
     } catch (e) {
       print(e);
+      setState(() => _isLoading = false);
     }
-    setState(() => _isLoading = false);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: AuthForm(submitFn: _submitAuthForm, isLoading: _isLoading),
-    );
+    
   }
 }
