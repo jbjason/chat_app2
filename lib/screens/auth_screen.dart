@@ -24,7 +24,7 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   void _submitAuthForm(String emaill, String passwordd, String username,
-      File image, bool isLogin, BuildContext ctx) async {
+      File? image, bool isLogin, BuildContext ctx) async {
     UserCredential authResult;
     try {
       setState(() => _isLoading = true);
@@ -38,7 +38,7 @@ class _AuthScreenState extends State<AuthScreen> {
             .ref()
             .child('chat_user_image')
             .child(authResult.user!.uid + '.jpg');
-        await ref.putFile(image);
+        await ref.putFile(image!);
         final url = await ref.getDownloadURL();
         await FirebaseFirestore.instance
             .collection('users')
@@ -66,6 +66,5 @@ class _AuthScreenState extends State<AuthScreen> {
       print(e);
       setState(() => _isLoading = false);
     }
-    
   }
 }

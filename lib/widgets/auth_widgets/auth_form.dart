@@ -62,8 +62,14 @@ class _AuthFormState extends State<AuthForm> {
     }
     if (isValid) {
       _formKey.currentState!.save();
-      widget.submitFn(_userEmail.trim(), _userPassword.trim(), _userName.trim(),
-          _userImageFile!, _isLogin, context);
+      widget.submitFn(
+        _userEmail.trim(),
+        _userPassword.trim(),
+        _userName.trim(),
+        _userImageFile != null ? _userImageFile! : File(''),
+        _isLogin,
+        context,
+      );
     }
   }
 
