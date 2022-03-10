@@ -1,14 +1,16 @@
 class MessageData {
   const MessageData({
     required this.senderName,
+    required this.senderId,
     required this.message,
     required this.messageDate,
-    required this.dateMessage,
+    required this.dateDifference,
     required this.profilePicture,
   });
   final String senderName;
+  final String senderId;
   final String message;
   final DateTime messageDate;
-  final String dateMessage;
+  final String dateDifference;
   final String profilePicture;
 }

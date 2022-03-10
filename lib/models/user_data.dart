@@ -1,5 +1,8 @@
 class UserData {
-  final String userId, userName, imageUrl, email;
+  final String userId;
+  final String userName;
+  final String imageUrl;
+  final String email;
   final DateTime lastMsgTime;
   final String lastMsg;
 

@@ -6,6 +6,7 @@ import 'package:chat_app2/constants/theme.dart';
 import 'package:chat_app2/widgets/common_widgets/avatar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:faker/faker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
@@ -15,6 +16,8 @@ class MessagesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final currentUser = FirebaseAuth.instance.currentUser!.uid;
     return StreamBuilder(
       stream: FirebaseFirestore.instance
           .collection('users')
@@ -30,23 +33,35 @@ class MessagesPage extends StatelessWidget {
             final userDocs = snapShot.data!.docs;
             return CustomScrollView(
               slivers: [
-                _Stories(userDocs: userDocs),
+                // Stories
+                _Stories(
+                    userDocs: userDocs, loggedInUser: currentUser, size: size),
+                // Messages List
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
-                      final Faker faker = Faker();
-                      final date = Helpers.randomDate();
-                      return _MessageTitle(
-                        messageData: MessageData(
-                          senderName: faker.person.name(),
-                          message: faker.lorem.sentence(),
-                          messageDate: date,
-                          dateMessage: Jiffy(date).fromNow(),
-                          profilePicture: Helpers.randomPictureUrl(),
-                        ),
-                      );
+                      String s = userDocs[index]['lastMsg'];
+                      s = s.isEmpty
+                          ? 'You are now Friends with ${userDocs[index]['userName']}. Say Hiii to!'
+                          : s;
+                      if (currentUser != userDocs[index]['userId']) {
+                        return _MessageTitle(
+                          messageData: MessageData(
+                            senderId: userDocs[index]['userId'],
+                            senderName: userDocs[index]['userName'],
+                            message: s,
+                            messageDate:
+                                DateTime.parse(userDocs[index]['lastMsgTime']),
+                            dateDifference:
+                                Jiffy(userDocs[index]['lastMsgTime']).fromNow(),
+                            profilePicture: userDocs[index]['imageUrl'],
+                          ),
+                        );
+                      } else {
+                        return Container();
+                      }
                     },
-                    childCount: 20,
+                    childCount: userDocs.length,
                   ),
                 ),
               ],
@@ -61,9 +76,12 @@ class MessagesPage extends StatelessWidget {
 class _Stories extends StatelessWidget {
   const _Stories({
     Key? key,
+    required this.size,
+    required this.loggedInUser,
     required this.userDocs,
   }) : super(key: key);
-
+  final Size size;
+  final String loggedInUser;
   final List<QueryDocumentSnapshot<Object?>> userDocs;
 
   @override
@@ -71,15 +89,18 @@ class _Stories extends StatelessWidget {
     return SliverToBoxAdapter(
       child: Card(
         elevation: 0,
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
         child: SizedBox(
-          height: 134,
+          height: 146,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Padding(
-                padding: EdgeInsets.only(left: 16.0, top: 8, bottom: 16),
+                padding: EdgeInsets.only(left: 20.0, top: 8, bottom: 12),
                 child: Text(
                   'Stories',
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                     fontWeight: FontWeight.w900,
                     fontSize: 15,
@@ -87,40 +108,52 @@ class _Stories extends StatelessWidget {
                   ),
                 ),
               ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  InkWell(
-                    child: Container(
-                      padding: const EdgeInsets.all(8.0),
-                      child: const CircleAvatar(
-                        radius: 24,
-                        child: Icon(CupertinoIcons.add),
+              Container(
+                height: 105,
+                width: size.width,
+                child: Row(
+                  children: [
+                    InkWell(
+                      child: const Padding(
+                        padding: EdgeInsets.only(
+                            top: 4, bottom: 24, left: 8, right: 8),
+                        child: SizedBox(
+                          width: 60,
+                          child: CircleAvatar(
+                            radius: 30,
+                            child: Icon(CupertinoIcons.add),
+                          ),
+                        ),
+                      ),
+                      onTap: () {},
+                    ),
+                    Expanded(
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: userDocs.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          if (loggedInUser != userDocs[index]['userId']) {
+                            return Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 8, left: 8, right: 8),
+                              child: SizedBox(
+                                width: 60,
+                                child: _StoryCard(
+                                  storyData: StoryData(
+                                    name: userDocs[index]['userName'],
+                                    url: userDocs[index]['imageUrl'],
+                                  ),
+                                ),
+                              ),
+                            );
+                          } else {
+                            return Container();
+                          }
+                        },
                       ),
                     ),
-                    onTap: () {},
-                  ),
-                  Expanded(
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: userDocs.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: SizedBox(
-                            width: 60,
-                            child: _StoryCard(
-                              storyData: StoryData(
-                                name: userDocs[index]['userName'],
-                                url: userDocs[index]['imageUrl'],
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ],
           ),
@@ -144,7 +177,6 @@ class _StoryCard extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        // Avatar.medium(url: storyData.url),
         CircleAvatar(
           radius: 30.0,
           backgroundImage: NetworkImage(storyData.url),
@@ -244,7 +276,7 @@ class _MessageTitle extends StatelessWidget {
                       height: 4,
                     ),
                     Text(
-                      messageData.dateMessage.toUpperCase(),
+                      messageData.dateDifference.toUpperCase(),
                       style: const TextStyle(
                         fontSize: 11,
                         letterSpacing: -0.2,
