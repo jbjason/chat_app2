@@ -11,7 +11,7 @@ import 'package:jiffy/jiffy.dart';
 
 class MessagesPage extends StatelessWidget {
   const MessagesPage({Key? key}) : super(key: key);
-
+  
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -194,9 +194,10 @@ class MessageList extends StatelessWidget {
               : s;
           if (currentUser != userDocs[index]['userId']) {
             return _MessageTitle(
+              currentUser: currentUser,
               messageData: MessageData(
-                senderId: userDocs[index]['userId'],
-                senderName: userDocs[index]['userName'],
+                userId: userDocs[index]['userId'],
+                userName: userDocs[index]['userName'],
                 message: s,
                 messageDate: DateTime.parse(userDocs[index]['lastMsgTime']),
                 dateDifference: Jiffy(userDocs[index]['lastMsgTime']).fromNow(),
@@ -216,9 +217,10 @@ class MessageList extends StatelessWidget {
 class _MessageTitle extends StatelessWidget {
   const _MessageTitle({
     Key? key,
+    required this.currentUser,
     required this.messageData,
   }) : super(key: key);
-
+  final String currentUser;
   final MessageData messageData;
 
   @override
@@ -226,7 +228,8 @@ class _MessageTitle extends StatelessWidget {
     return InkWell(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (_) => ChatScreen(messageData: messageData)));
+            builder: (_) => ChatScreen(
+                messageData: messageData, currentUser: currentUser)));
       },
       child: Container(
         height: 100,
@@ -255,7 +258,7 @@ class _MessageTitle extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: Text(
-                        messageData.senderName,
+                        messageData.userName,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           letterSpacing: 0.2,

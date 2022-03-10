@@ -3,12 +3,17 @@ import 'package:chat_app2/constants/theme.dart';
 import 'package:chat_app2/widgets/common_widgets/avatar.dart';
 import 'package:chat_app2/widgets/common_widgets/glowing_action_button.dart';
 import 'package:chat_app2/widgets/common_widgets/icon_background.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ChatScreen extends StatelessWidget {
-  const ChatScreen({Key? key, required this.messageData}) : super(key: key);
+  const ChatScreen(
+      {Key? key, required this.currentUser, required this.messageData})
+      : super(key: key);
   final MessageData messageData;
+  final String currentUser;
 
   @override
   Widget build(BuildContext context) {
@@ -18,9 +23,13 @@ class ChatScreen extends StatelessWidget {
         child: _appBar(context),
       ),
       body: Column(
-        children: const [
-          Expanded(child: _DemoMessageList()),
-          _ActionBar(),
+        children: [
+          Expanded(
+              child: _MessageList(
+            messageData: messageData,
+            currentUser: currentUser,
+          )),
+          const _ActionBar(),
         ],
       ),
     );
@@ -69,44 +78,102 @@ class ChatScreen extends StatelessWidget {
   }
 }
 
-class _DemoMessageList extends StatelessWidget {
-  const _DemoMessageList({Key? key}) : super(key: key);
-
+class _MessageList extends StatelessWidget {
+  const _MessageList(
+      {Key? key, required this.currentUser, required this.messageData})
+      : super(key: key);
+  final String currentUser;
+  final MessageData messageData;
   @override
   Widget build(BuildContext context) {
+    final uid = messageData.userId;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: ListView(
-        children: const [
-          _DateLable(lable: 'Yesterday'),
-          _MessageTile(
-            message: 'Hi, Lucy! How\'s your day going?',
-            messageDate: '12:01 PM',
-          ),
-          _MessageOwnTile(
-            message: 'You know how it goes...',
-            messageDate: '12:02 PM',
-          ),
-          _MessageTile(
-            message: 'Do you want Starbucks?',
-            messageDate: '12:02 PM',
-          ),
-          _MessageOwnTile(
-            message: 'Would be awesome!',
-            messageDate: '12:03 PM',
-          ),
-          _MessageTile(
-            message: 'Coming up!',
-            messageDate: '12:03 PM',
-          ),
-          _MessageOwnTile(
-            message: 'YAY!!!',
-            messageDate: '12:03 PM',
-          ),
-        ],
+      child: StreamBuilder(
+        stream: FirebaseFirestore.instance
+            .collection('chats/$uid/message')
+            .orderBy('messageDate', descending: true)
+            .snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapShot) {
+          if (snapShot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else {
+            if (snapShot.hasError) {
+              return const Center(child: Text('Error Occured!'));
+            } else {
+              final userDocs = snapShot.data!.docs;
+              if (userDocs.isEmpty) {
+                return Center(
+                  child: Container(
+                    height: 200,
+                    width: 200,
+                    decoration: const BoxDecoration(
+                      color: Colors.transparent,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Image.network(
+                      messageData.profilePicture,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                );
+              } else {
+                return ListView.builder(
+                  itemCount: userDocs.length,
+                  itemBuilder: (context, index) {
+                    if (userDocs[index]['userId'] == currentUser) {
+                      return _MessageOwnTile(
+                        message: userDocs[index]['message'],
+                        messageDate:
+                            DateTime.parse(userDocs[index]['messageDate']),
+                      );
+                    } else {
+                      return _MessageTile(
+                        message: userDocs[index]['message'],
+                        messageDate:
+                            DateTime.parse(userDocs[index]['messageDate']),
+                      );
+                    }
+                  },
+                );
+              }
+            }
+          }
+        },
       ),
     );
   }
+
+  // child: ListView(
+  //   children: const [
+  //     _DateLable(lable: 'Yesterday'),
+  //     _MessageTile(
+  //       message: 'Hi, Lucy! How\'s your day going?',
+  //       messageDate: '12:01 PM',
+  //     ),
+  //     _MessageOwnTile(
+  //       message: 'You know how it goes...',
+  //       messageDate: '12:02 PM',
+  //     ),
+  //     _MessageTile(
+  //       message: 'Do you want Starbucks?',
+  //       messageDate: '12:02 PM',
+  //     ),
+  //     _MessageOwnTile(
+  //       message: 'Would be awesome!',
+  //       messageDate: '12:03 PM',
+  //     ),
+  //     _MessageTile(
+  //       message: 'Coming up!',
+  //       messageDate: '12:03 PM',
+  //     ),
+  //     _MessageOwnTile(
+  //       message: 'YAY!!!',
+  //       messageDate: '12:03 PM',
+  //     ),
+  //   ],
+  // ),
+
 }
 
 class _MessageTile extends StatelessWidget {
@@ -117,7 +184,7 @@ class _MessageTile extends StatelessWidget {
   }) : super(key: key);
 
   final String message;
-  final String messageDate;
+  final DateTime messageDate;
 
   static const _borderRadius = 26.0;
 
@@ -149,7 +216,7 @@ class _MessageTile extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 8.0),
               child: Text(
-                messageDate,
+                DateFormat('h:mm a').format(messageDate),
                 style: const TextStyle(
                   color: AppColors.textFaded,
                   fontSize: 10,
@@ -172,7 +239,7 @@ class _MessageOwnTile extends StatelessWidget {
   }) : super(key: key);
 
   final String message;
-  final String messageDate;
+  final DateTime messageDate;
 
   static const _borderRadius = 26.0;
 
@@ -207,7 +274,7 @@ class _MessageOwnTile extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 8.0),
               child: Text(
-                messageDate,
+                DateFormat('h:mm a').format(messageDate),
                 style: const TextStyle(
                   color: AppColors.textFaded,
                   fontSize: 10,
@@ -281,7 +348,7 @@ class _AppBarTitle extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                messageData.senderName,
+                messageData.userName,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(fontSize: 14),
               ),
