@@ -107,13 +107,13 @@ class _MessageList extends StatelessWidget {
                   child: Container(
                     height: 200,
                     width: 200,
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       color: Colors.transparent,
                       shape: BoxShape.circle,
-                    ),
-                    child: Image.network(
-                      messageData.profilePicture,
-                      fit: BoxFit.cover,
+                      image: DecorationImage(
+                        image: NetworkImage(messageData.profilePicture),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 );
