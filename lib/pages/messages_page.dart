@@ -87,42 +87,84 @@ class _Stories extends StatelessWidget {
                   ),
                 ),
               ),
-              Expanded(
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: userDocs.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    if (index == 0) {
-                      return InkWell(
-                        child: Container(
-                          margin: const EdgeInsets.only(right: 12),
-                          child: const CircleAvatar(
-                            radius: 24,
-                            child: Icon(CupertinoIcons.add),
-                          ),
-                        ),
-                      );
-                    } else {
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: SizedBox(
-                          width: 60,
-                          child: _StoryCard(
-                            storyData: StoryData(
-                              name: userDocs[index]['userName'],
-                              url: userDocs[index]['imageUrl'],
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  InkWell(
+                    child: Container(
+                      padding: const EdgeInsets.all(8.0),
+                      child: const CircleAvatar(
+                        radius: 24,
+                        child: Icon(CupertinoIcons.add),
+                      ),
+                    ),
+                    onTap: () {},
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: userDocs.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SizedBox(
+                            width: 60,
+                            child: _StoryCard(
+                              storyData: StoryData(
+                                name: userDocs[index]['userName'],
+                                url: userDocs[index]['imageUrl'],
+                              ),
                             ),
                           ),
-                        ),
-                      );
-                    }
-                  },
-                ),
-              )
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class _StoryCard extends StatelessWidget {
+  const _StoryCard({
+    Key? key,
+    required this.storyData,
+  }) : super(key: key);
+
+  final StoryData storyData;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        // Avatar.medium(url: storyData.url),
+        CircleAvatar(
+          radius: 30.0,
+          backgroundImage: NetworkImage(storyData.url),
+          backgroundColor: Colors.transparent,
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 16.0),
+            child: Text(
+              storyData.name,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                fontSize: 11,
+                letterSpacing: 0.3,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -237,43 +279,6 @@ class _MessageTitle extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class _StoryCard extends StatelessWidget {
-  const _StoryCard({
-    Key? key,
-    required this.storyData,
-  }) : super(key: key);
-
-  final StoryData storyData;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        // Avatar.medium(url: storyData.url),
-        CircleAvatar(
-          child: Image.network(storyData.url, fit: BoxFit.cover),
-        ),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.only(top: 16.0),
-            child: Text(
-              storyData.name,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                fontSize: 11,
-                letterSpacing: 0.3,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ),
-      ],
     );
   }
 }

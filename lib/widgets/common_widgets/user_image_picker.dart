@@ -31,12 +31,13 @@ class _UserImagePickerState extends State<UserImagePicker> {
         CircleAvatar(
           radius: 45,
           backgroundColor: Colors.grey,
-          child: _pickedImage == null
-              ? Container()
-              : Image.file(
-                  _pickedImage!,
-                  fit: BoxFit.cover,
-                ),
+          backgroundImage: FileImage(_pickedImage!),
+          // child: _pickedImage == null
+          //     ? Container()
+          //     : Image.file(
+          //         _pickedImage!,
+          //         fit: BoxFit.cover,
+          //       ),
         ),
         TextButton.icon(
           onPressed: _pickImage,

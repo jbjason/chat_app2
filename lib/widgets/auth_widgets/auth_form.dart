@@ -134,15 +134,18 @@ class _AuthFormState extends State<AuthForm> {
                 padding: const EdgeInsets.symmetric(
                     horizontal: 30.0, vertical: 10.0),
                 child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.pink,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.pink,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
                     ),
-                    onPressed: _trySubmit,
-                    child: Text(_isLogin ? 'Login' : 'Signup',
-                        style: const TextStyle(color: Colors.white))),
+                  ),
+                  onPressed: _trySubmit,
+                  child: Text(
+                    _isLogin ? 'Login' : 'Signup',
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                ),
               ),
         if (!widget.isLoading)
           TextButton(
