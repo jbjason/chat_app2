@@ -1,11 +1,9 @@
-import 'package:chat_app2/constants/helpers.dart';
 import 'package:chat_app2/models/message_data.dart';
 import 'package:chat_app2/models/story_data.dart';
 import 'package:chat_app2/screens/chat_screen.dart';
 import 'package:chat_app2/constants/theme.dart';
 import 'package:chat_app2/widgets/common_widgets/avatar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:faker/faker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -37,33 +35,7 @@ class MessagesPage extends StatelessWidget {
                 _Stories(
                     userDocs: userDocs, loggedInUser: currentUser, size: size),
                 // Messages List
-                SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      String s = userDocs[index]['lastMsg'];
-                      s = s.isEmpty
-                          ? 'You are now Friends with ${userDocs[index]['userName']}. Say Hiii to!'
-                          : s;
-                      if (currentUser != userDocs[index]['userId']) {
-                        return _MessageTitle(
-                          messageData: MessageData(
-                            senderId: userDocs[index]['userId'],
-                            senderName: userDocs[index]['userName'],
-                            message: s,
-                            messageDate:
-                                DateTime.parse(userDocs[index]['lastMsgTime']),
-                            dateDifference:
-                                Jiffy(userDocs[index]['lastMsgTime']).fromNow(),
-                            profilePicture: userDocs[index]['imageUrl'],
-                          ),
-                        );
-                      } else {
-                        return Container();
-                      }
-                    },
-                    childCount: userDocs.length,
-                  ),
-                ),
+                MessageList(userDocs: userDocs, currentUser: currentUser),
               ],
             );
           }
@@ -197,6 +169,46 @@ class _StoryCard extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class MessageList extends StatelessWidget {
+  const MessageList({
+    Key? key,
+    required this.userDocs,
+    required this.currentUser,
+  }) : super(key: key);
+
+  final List<QueryDocumentSnapshot<Object?>> userDocs;
+  final String currentUser;
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (context, index) {
+          String s = userDocs[index]['lastMsg'];
+          s = s.isEmpty
+              ? 'You are now Friends with ${userDocs[index]['userName']}. Say Hiii to!'
+              : s;
+          if (currentUser != userDocs[index]['userId']) {
+            return _MessageTitle(
+              messageData: MessageData(
+                senderId: userDocs[index]['userId'],
+                senderName: userDocs[index]['userName'],
+                message: s,
+                messageDate: DateTime.parse(userDocs[index]['lastMsgTime']),
+                dateDifference: Jiffy(userDocs[index]['lastMsgTime']).fromNow(),
+                profilePicture: userDocs[index]['imageUrl'],
+              ),
+            );
+          } else {
+            return Container();
+          }
+        },
+        childCount: userDocs.length,
+      ),
     );
   }
 }
