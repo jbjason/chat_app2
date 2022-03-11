@@ -1,9 +1,11 @@
+import 'package:chat_app2/constants/helpers.dart';
 import 'package:chat_app2/screens/auth_screen.dart';
 import 'package:chat_app2/constants/theme.dart';
 import 'package:chat_app2/screens/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,7 +24,9 @@ class MyApp extends StatelessWidget {
       theme: AppTheme.light(),
       darkTheme: AppTheme.dark(),
       themeMode: ThemeMode.dark,
-      home: StreamBuilder(
+      home: ChangeNotifierProvider(
+        create: (context) => DataStore(),
+        child: StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (ctx, userSnapShot) {
             if (userSnapShot.hasData) {
@@ -30,7 +34,9 @@ class MyApp extends StatelessWidget {
             } else {
               return const AuthScreen();
             }
-          }),
+          },
+        ),
+      ),
     );
   }
 }

@@ -1,26 +1,27 @@
+import 'package:chat_app2/constants/helpers.dart';
 import 'package:chat_app2/models/message_data.dart';
 import 'package:chat_app2/models/story_data.dart';
+import 'package:chat_app2/models/user_data.dart';
 import 'package:chat_app2/screens/chat_screen.dart';
 import 'package:chat_app2/constants/theme.dart';
 import 'package:chat_app2/widgets/common_widgets/avatar.dart';
+import 'package:chat_app2/widgets/common_widgets/icon_background.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:provider/provider.dart';
 
 class MessagesPage extends StatelessWidget {
   const MessagesPage({Key? key}) : super(key: key);
-  
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final currentUser = FirebaseAuth.instance.currentUser!.uid;
+    final currentUserId = FirebaseAuth.instance.currentUser!.uid;
     return StreamBuilder(
-      stream: FirebaseFirestore.instance
-          .collection('users')
-          .orderBy('lastMsgTime', descending: true)
-          .snapshots(),
+      stream: Helpers.getUser(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapShot) {
         if (snapShot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
@@ -28,14 +29,59 @@ class MessagesPage extends StatelessWidget {
           if (snapShot.hasError) {
             return const Center(child: Text('Error Occured!'));
           } else {
+            // setting usersList & getting
             final userDocs = snapShot.data!.docs;
+            final dataStore = Provider.of<DataStore>(context, listen: false);
+            dataStore.setUsers(userDocs);
+            final List<UserData> usersList =
+                userDocs.isEmpty ? [] : dataStore.usersList;
             return CustomScrollView(
               slivers: [
+                //appBar
+                SliverAppBar(
+                  backgroundColor: Colors.transparent,
+                  expandedHeight: kToolbarHeight + 20,
+                  pinned: true,
+                  centerTitle: true,
+                  leadingWidth: 54,
+                  leading: Align(
+                    alignment: Alignment.centerRight,
+                    child: IconBackground(
+                      icon: Icons.search,
+                      onTap: () {
+                        FirebaseAuth.instance.signOut();
+                      },
+                    ),
+                  ),
+                  title: const Text(
+                    'Messages',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                  actions: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 24.0),
+                      child: Avatar.small(url: Helpers.randomPictureUrl()),
+                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.only(right: 24.0),
+                    //   child: CircleAvatar(
+                    //     radius: 30.0,
+                    //     backgroundImage: NetworkImage(''),
+                    //     backgroundColor: Colors.transparent,
+                    //   ),
+                    // ),
+                  ],
+                ),
                 // Stories
                 _Stories(
-                    userDocs: userDocs, loggedInUser: currentUser, size: size),
+                    userDocs: usersList,
+                    loggedInUser: currentUserId,
+                    size: size),
                 // Messages List
-                MessageList(userDocs: userDocs, currentUser: currentUser),
+                MessageList(userDocs: usersList, currentUserId: currentUserId),
               ],
             );
           }
@@ -54,7 +100,7 @@ class _Stories extends StatelessWidget {
   }) : super(key: key);
   final Size size;
   final String loggedInUser;
-  final List<QueryDocumentSnapshot<Object?>> userDocs;
+  final List<UserData> userDocs;
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +126,7 @@ class _Stories extends StatelessWidget {
                   ),
                 ),
               ),
-              Container(
+              SizedBox(
                 height: 105,
                 width: size.width,
                 child: Row(
@@ -104,7 +150,7 @@ class _Stories extends StatelessWidget {
                         scrollDirection: Axis.horizontal,
                         itemCount: userDocs.length,
                         itemBuilder: (BuildContext context, int index) {
-                          if (loggedInUser != userDocs[index]['userId']) {
+                          if (loggedInUser != userDocs[index].userId) {
                             return Padding(
                               padding: const EdgeInsets.only(
                                   top: 8, left: 8, right: 8),
@@ -112,8 +158,8 @@ class _Stories extends StatelessWidget {
                                 width: 60,
                                 child: _StoryCard(
                                   storyData: StoryData(
-                                    name: userDocs[index]['userName'],
-                                    url: userDocs[index]['imageUrl'],
+                                    name: userDocs[index].userName,
+                                    url: userDocs[index].imageUrl,
                                   ),
                                 ),
                               ),
@@ -177,31 +223,33 @@ class MessageList extends StatelessWidget {
   const MessageList({
     Key? key,
     required this.userDocs,
-    required this.currentUser,
+    required this.currentUserId,
   }) : super(key: key);
 
-  final List<QueryDocumentSnapshot<Object?>> userDocs;
-  final String currentUser;
+  final List<UserData> userDocs;
+  final String currentUserId;
 
   @override
   Widget build(BuildContext context) {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (context, index) {
-          String s = userDocs[index]['lastMsg'];
+          String s = userDocs[index].lastMsg;
           s = s.isEmpty
-              ? 'You are now Friends with ${userDocs[index]['userName']}. Say Hiii to!'
+              ? 'You are now Friends with ${userDocs[index].userName}. Say Hiii to!'
               : s;
-          if (currentUser != userDocs[index]['userId']) {
+          if (currentUserId != userDocs[index].userId) {
             return _MessageTitle(
-              currentUser: currentUser,
+              currentUserId: currentUserId,
               messageData: MessageData(
-                userId: userDocs[index]['userId'],
-                userName: userDocs[index]['userName'],
+                userId: userDocs[index].userId,
+                userName: userDocs[index].userName,
                 message: s,
-                messageDate: DateTime.parse(userDocs[index]['lastMsgTime']),
-                dateDifference: Jiffy(userDocs[index]['lastMsgTime']).fromNow(),
-                profilePicture: userDocs[index]['imageUrl'],
+                messageDate:
+                    DateTime.parse(userDocs[index].lastMsgTime.toString()),
+                dateDifference:
+                    Jiffy(userDocs[index].lastMsgTime.toString()).fromNow(),
+                img: userDocs[index].imageUrl,
               ),
             );
           } else {
@@ -217,10 +265,10 @@ class MessageList extends StatelessWidget {
 class _MessageTitle extends StatelessWidget {
   const _MessageTitle({
     Key? key,
-    required this.currentUser,
+    required this.currentUserId,
     required this.messageData,
   }) : super(key: key);
-  final String currentUser;
+  final String currentUserId;
   final MessageData messageData;
 
   @override
@@ -229,7 +277,7 @@ class _MessageTitle extends StatelessWidget {
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
             builder: (_) => ChatScreen(
-                messageData: messageData, currentUser: currentUser)));
+                messageData: messageData, currentUserId: currentUserId)));
       },
       child: Container(
         height: 100,
@@ -248,7 +296,7 @@ class _MessageTitle extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.all(10.0),
-                child: Avatar.medium(url: messageData.profilePicture),
+                child: Avatar.medium(url: messageData.img),
               ),
               Expanded(
                 child: Column(

@@ -1,19 +1,21 @@
+import 'package:chat_app2/constants/helpers.dart';
 import 'package:chat_app2/models/message_data.dart';
 import 'package:chat_app2/constants/theme.dart';
-import 'package:chat_app2/widgets/common_widgets/avatar.dart';
+import 'package:chat_app2/models/user_data.dart';
 import 'package:chat_app2/widgets/common_widgets/glowing_action_button.dart';
 import 'package:chat_app2/widgets/common_widgets/icon_background.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class ChatScreen extends StatelessWidget {
   const ChatScreen(
-      {Key? key, required this.currentUser, required this.messageData})
+      {Key? key, required this.currentUserId, required this.messageData})
       : super(key: key);
   final MessageData messageData;
-  final String currentUser;
+  final String currentUserId;
 
   @override
   Widget build(BuildContext context) {
@@ -27,9 +29,12 @@ class ChatScreen extends StatelessWidget {
           Expanded(
               child: _MessageList(
             messageData: messageData,
-            currentUser: currentUser,
+            currentUserId: currentUserId,
           )),
-          const _ActionBar(),
+          _ActionBar(
+            messageData: messageData,
+            currentUserId: currentUserId,
+          ),
         ],
       ),
     );
@@ -80,20 +85,17 @@ class ChatScreen extends StatelessWidget {
 
 class _MessageList extends StatelessWidget {
   const _MessageList(
-      {Key? key, required this.currentUser, required this.messageData})
+      {Key? key, required this.currentUserId, required this.messageData})
       : super(key: key);
-  final String currentUser;
+  final String currentUserId;
   final MessageData messageData;
+
   @override
   Widget build(BuildContext context) {
-    final uid = messageData.userId;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection('chats/$uid/message')
-            .orderBy('messageDate', descending: true)
-            .snapshots(),
+        stream: Helpers.getMessages(messageData.userId),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapShot) {
           if (snapShot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -111,7 +113,7 @@ class _MessageList extends StatelessWidget {
                       color: Colors.transparent,
                       shape: BoxShape.circle,
                       image: DecorationImage(
-                        image: NetworkImage(messageData.profilePicture),
+                        image: NetworkImage(messageData.img),
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -121,7 +123,7 @@ class _MessageList extends StatelessWidget {
                 return ListView.builder(
                   itemCount: userDocs.length,
                   itemBuilder: (context, index) {
-                    if (userDocs[index]['userId'] == currentUser) {
+                    if (userDocs[index]['userId'] == currentUserId) {
                       return _MessageOwnTile(
                         message: userDocs[index]['message'],
                         messageDate:
@@ -336,12 +338,9 @@ class _AppBarTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Avatar.small(
-          url: messageData.profilePicture,
-        ),
-        const SizedBox(
-          width: 16,
-        ),
+        CircleAvatar(
+            radius: 30, backgroundImage: NetworkImage(messageData.img)),
+        const SizedBox(width: 16),
         Expanded(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -370,8 +369,14 @@ class _AppBarTitle extends StatelessWidget {
 }
 
 class _ActionBar extends StatelessWidget {
-  const _ActionBar({Key? key}) : super(key: key);
-
+  _ActionBar({
+    Key? key,
+    required this.messageData,
+    required this.currentUserId,
+  }) : super(key: key);
+  final MessageData messageData;
+  final String currentUserId;
+  final textController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -395,18 +400,20 @@ class _ActionBar extends StatelessWidget {
               ),
             ),
           ),
-          const Expanded(
+          Expanded(
             child: Padding(
-              padding: EdgeInsets.only(left: 16.0),
+              padding: const EdgeInsets.only(left: 16.0),
               child: TextField(
-                style: TextStyle(fontSize: 14),
-                decoration: InputDecoration(
+                controller: textController,
+                style: const TextStyle(fontSize: 14),
+                decoration: const InputDecoration(
                   hintText: 'Type something...',
                   border: InputBorder.none,
                 ),
               ),
             ),
           ),
+          // add Button
           Padding(
             padding: const EdgeInsets.only(
               left: 12,
@@ -415,7 +422,22 @@ class _ActionBar extends StatelessWidget {
             child: GlowingActionButton(
               color: AppColors.accent,
               icon: Icons.send_rounded,
-              onPressed: () {},
+              onPressed: () {
+                if (textController.text.trim().isNotEmpty) {
+                  final UserData currentUser =
+                      Provider.of<DataStore>(context, listen: false)
+                          .findUserById(currentUserId);
+                  FirebaseFirestore.instance
+                      .collection('chats/${messageData.userId}/message')
+                      .add({
+                    'userId': currentUserId,
+                    'userName': currentUser.userName,
+                    'img': currentUser.imageUrl,
+                    'messageDate': DateTime.now().toIso8601String(),
+                    'message': textController.text.trim(),
+                  });
+                }
+              },
             ),
           ),
         ],
