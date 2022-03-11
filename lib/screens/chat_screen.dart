@@ -120,6 +120,7 @@ class _MessageList extends StatelessWidget {
                 );
               } else {
                 return ListView.builder(
+                  reverse: true,
                   itemCount: userDocs.length,
                   itemBuilder: (context, index) {
                     if (userDocs[index]['userId'] == currentUser.userId) {
@@ -432,6 +433,7 @@ class _ActionBar extends StatelessWidget {
                     'messageDate': DateTime.now().toIso8601String(),
                     'message': textController.text.trim(),
                   });
+                  textController.text = '';
                 }
               },
             ),
