@@ -8,14 +8,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 
 class ChatScreen extends StatelessWidget {
   const ChatScreen(
-      {Key? key, required this.currentUserId, required this.messageData})
+      {Key? key, required this.currentUser, required this.messageData})
       : super(key: key);
   final MessageData messageData;
-  final String currentUserId;
+  final UserData currentUser;
 
   @override
   Widget build(BuildContext context) {
@@ -29,11 +28,11 @@ class ChatScreen extends StatelessWidget {
           Expanded(
               child: _MessageList(
             messageData: messageData,
-            currentUserId: currentUserId,
+            currentUser: currentUser,
           )),
           _ActionBar(
             messageData: messageData,
-            currentUserId: currentUserId,
+            currentUser: currentUser,
           ),
         ],
       ),
@@ -85,9 +84,9 @@ class ChatScreen extends StatelessWidget {
 
 class _MessageList extends StatelessWidget {
   const _MessageList(
-      {Key? key, required this.currentUserId, required this.messageData})
+      {Key? key, required this.currentUser, required this.messageData})
       : super(key: key);
-  final String currentUserId;
+  final UserData currentUser;
   final MessageData messageData;
 
   @override
@@ -123,7 +122,7 @@ class _MessageList extends StatelessWidget {
                 return ListView.builder(
                   itemCount: userDocs.length,
                   itemBuilder: (context, index) {
-                    if (userDocs[index]['userId'] == currentUserId) {
+                    if (userDocs[index]['userId'] == currentUser.userId) {
                       return _MessageOwnTile(
                         message: userDocs[index]['message'],
                         messageDate:
@@ -372,10 +371,10 @@ class _ActionBar extends StatelessWidget {
   _ActionBar({
     Key? key,
     required this.messageData,
-    required this.currentUserId,
+    required this.currentUser,
   }) : super(key: key);
   final MessageData messageData;
-  final String currentUserId;
+  final UserData currentUser;
   final textController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -424,13 +423,10 @@ class _ActionBar extends StatelessWidget {
               icon: Icons.send_rounded,
               onPressed: () {
                 if (textController.text.trim().isNotEmpty) {
-                  final UserData currentUser =
-                      Provider.of<DataStore>(context, listen: false)
-                          .findUserById(currentUserId);
                   FirebaseFirestore.instance
                       .collection('chats/${messageData.userId}/message')
                       .add({
-                    'userId': currentUserId,
+                    'userId': currentUser.userId,
                     'userName': currentUser.userName,
                     'img': currentUser.imageUrl,
                     'messageDate': DateTime.now().toIso8601String(),

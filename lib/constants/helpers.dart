@@ -1,9 +1,7 @@
 import 'dart:math';
-import 'package:chat_app2/models/message_data.dart';
 import 'package:chat_app2/models/user_data.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:jiffy/jiffy.dart';
 
 abstract class Helpers {
   static final random = Random();
@@ -12,12 +10,6 @@ abstract class Helpers {
     final randomInt = random.nextInt(1000);
     return 'https://picsum.photos/seed/$randomInt/300/300';
   }
-
-  // static DateTime randomDate() {
-  //   final random = Random();
-  //   final currentDate = DateTime.now();
-  //   return currentDate.subtract(Duration(seconds: random.nextInt(200000)));
-  // }
 
   static Stream<QuerySnapshot<Map<String, dynamic>>> getMessages(String uid) =>
       FirebaseFirestore.instance

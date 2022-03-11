@@ -65,14 +65,6 @@ class MessagesPage extends StatelessWidget {
                       padding: const EdgeInsets.only(right: 24.0),
                       child: Avatar.small(url: Helpers.randomPictureUrl()),
                     ),
-                    // Padding(
-                    //   padding: const EdgeInsets.only(right: 24.0),
-                    //   child: CircleAvatar(
-                    //     radius: 30.0,
-                    //     backgroundImage: NetworkImage(''),
-                    //     backgroundColor: Colors.transparent,
-                    //   ),
-                    // ),
                   ],
                 ),
                 // Stories
@@ -275,9 +267,12 @@ class _MessageTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
+        final UserData currentUser =
+                      Provider.of<DataStore>(context, listen: false)
+                          .findUserById(currentUserId);
         Navigator.of(context).push(MaterialPageRoute(
             builder: (_) => ChatScreen(
-                messageData: messageData, currentUserId: currentUserId)));
+                messageData: messageData, currentUser: currentUser)));
       },
       child: Container(
         height: 100,
