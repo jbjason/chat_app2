@@ -15,7 +15,6 @@ class AuthScreen extends StatefulWidget {
 class _AuthScreenState extends State<AuthScreen> {
   bool _isLoading = false;
   final _auth = FirebaseAuth.instance;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,6 +24,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
   void _submitAuthForm(String emaill, String passwordd, String username,
       File? image, bool isLogin, BuildContext ctx) async {
+    
     UserCredential authResult;
     try {
       setState(() => _isLoading = true);

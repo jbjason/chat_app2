@@ -1,3 +1,4 @@
+import 'package:chat_app2/constants/data_store.dart';
 import 'package:chat_app2/constants/helpers.dart';
 import 'package:chat_app2/models/message_data.dart';
 import 'package:chat_app2/models/story_data.dart';
@@ -30,7 +31,6 @@ class MessagesPage extends StatelessWidget {
           if (snapShot.hasError) {
             return const Center(child: Text('Error Occured!'));
           } else {
-            // setting usersList & getting
             final userDocs = snapShot.data!.docs;
             dataStore.setUsers(userDocs);
             final List<UserData> usersList =
@@ -39,42 +39,13 @@ class MessagesPage extends StatelessWidget {
             return CustomScrollView(
               slivers: [
                 //appBar
-                SliverAppBar(
-                  backgroundColor: Colors.transparent,
-                  expandedHeight: kToolbarHeight +5,
-                  pinned: true,
-                  centerTitle: true,
-                  leadingWidth: 54,
-                  leading: Align(
-                    alignment: Alignment.centerRight,
-                    child: IconBackground(
-                      icon: Icons.search,
-                      onTap: () {
-                        FirebaseAuth.instance.signOut();
-                      },
-                    ),
-                  ),
-                  title: const Text(
-                    'Messages',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
-                  actions: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 24.0),
-                      child: CircleAvatar(
-                        backgroundImage: NetworkImage(currentUser.imageUrl),
-                      ),
-                    ),
-                  ],
-                ),
+                CustomAppBar(currentUser: currentUser),
                 // Stories
                 _Stories(
-                    userDocs: usersList,
-                    loggedInUser: currentUserId,
-                    size: size),
+                  userDocs: usersList,
+                  loggedInUser: currentUserId,
+                  size: size,
+                ),
                 // Messages List
                 MessageList(userDocs: usersList, currentUser: currentUser),
               ],
@@ -82,6 +53,50 @@ class MessagesPage extends StatelessWidget {
           }
         }
       },
+    );
+  }
+}
+
+class CustomAppBar extends StatelessWidget {
+  const CustomAppBar({
+    Key? key,
+    required this.currentUser,
+  }) : super(key: key);
+
+  final UserData currentUser;
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverAppBar(
+      backgroundColor: Colors.transparent,
+      expandedHeight: kToolbarHeight + 5,
+      pinned: true,
+      centerTitle: true,
+      leadingWidth: 54,
+      leading: Align(
+        alignment: Alignment.centerRight,
+        child: IconBackground(
+          icon: Icons.search,
+          onTap: () {
+            FirebaseAuth.instance.signOut();
+          },
+        ),
+      ),
+      title: const Text(
+        'Messages',
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 16,
+        ),
+      ),
+      actions: [
+        Padding(
+          padding: const EdgeInsets.only(right: 24.0),
+          child: CircleAvatar(
+            backgroundImage: NetworkImage(currentUser.imageUrl),
+          ),
+        ),
+      ],
     );
   }
 }

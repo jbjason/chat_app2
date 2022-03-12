@@ -28,17 +28,16 @@ class _UserImagePickerState extends State<UserImagePicker> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        CircleAvatar(
-          radius: 45,
-          backgroundColor: Colors.grey,
-          backgroundImage: FileImage(_pickedImage!),
-          // child: _pickedImage == null
-          //     ? Container()
-          //     : Image.file(
-          //         _pickedImage!,
-          //         fit: BoxFit.cover,
-          //       ),
-        ),
+        _pickedImage == null
+            ? const CircleAvatar(
+                radius: 45,
+                backgroundColor: Colors.grey,
+              )
+            : CircleAvatar(
+                radius: 45,
+                backgroundColor: Colors.grey,
+                backgroundImage: FileImage(_pickedImage!),
+              ),
         TextButton.icon(
           onPressed: _pickImage,
           icon: const Icon(Icons.image),

@@ -94,7 +94,7 @@ class _MessageList extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: StreamBuilder(
-        stream: Helpers.getMessages(messageData.userId),
+        stream: Helpers.getMessages(currentUser.userId, messageData.userId),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapShot) {
           if (snapShot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -424,8 +424,21 @@ class _ActionBar extends StatelessWidget {
               icon: Icons.send_rounded,
               onPressed: () {
                 if (textController.text.trim().isNotEmpty) {
+                  // saving msg to sender msg collection
                   FirebaseFirestore.instance
-                      .collection('chats/${messageData.userId}/message')
+                      .collection(
+                          'chats/${currentUser.userId}/chat/${messageData.userId}/message')
+                      .add({
+                    'userId': currentUser.userId,
+                    'userName': currentUser.userName,
+                    'img': currentUser.imageUrl,
+                    'messageDate': DateTime.now().toIso8601String(),
+                    'message': textController.text.trim(),
+                  });
+                  // saving msg to receriver msg collection
+                  FirebaseFirestore.instance
+                      .collection(
+                          'chats/${messageData.userId}/chat/${currentUser.userId}/message')
                       .add({
                     'userId': currentUser.userId,
                     'userName': currentUser.userName,

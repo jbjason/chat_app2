@@ -37,7 +37,7 @@ class _AuthFormState extends State<AuthForm> {
                   _emailTextField(),
                   if (!_isLogin) _userNameTextField(),
                   _passwordTextField(),
-                  _loginSignupButton(),
+                  _buttonloginSignup(),
                 ],
               ),
             ),
@@ -123,7 +123,7 @@ class _AuthFormState extends State<AuthForm> {
     );
   }
 
-  Widget _loginSignupButton() {
+  Widget _buttonloginSignup() {
     return Column(
       children: [
         widget.isLoading
