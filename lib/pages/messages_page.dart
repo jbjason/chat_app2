@@ -21,7 +21,6 @@ class MessagesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final dataStore = Provider.of<DataStore>(context, listen: false);
-    final currentUserId = FirebaseAuth.instance.currentUser!.uid;
     return StreamBuilder(
       stream: Helpers.getUser(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapShot) {
@@ -32,14 +31,15 @@ class MessagesPage extends StatelessWidget {
             return const Center(child: Text('Error Occured!'));
           } else {
             final userDocs = snapShot.data!.docs;
+            final currentUserId = FirebaseAuth.instance.currentUser!.uid;
             dataStore.setUsers(userDocs);
             final List<UserData> usersList =
                 userDocs.isEmpty ? [] : dataStore.usersList;
-            final UserData currentUser = dataStore.findUserById(currentUserId);
+            final UserData? currentUser = dataStore.findUserById(currentUserId);
             return CustomScrollView(
               slivers: [
                 //appBar
-                CustomAppBar(currentUser: currentUser),
+                CustomAppBar(currentUser: currentUser!),
                 // Stories
                 _Stories(
                   userDocs: usersList,
