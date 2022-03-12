@@ -35,11 +35,11 @@ class MessagesPage extends StatelessWidget {
             dataStore.setUsers(userDocs);
             final List<UserData> usersList =
                 userDocs.isEmpty ? [] : dataStore.usersList;
-            final UserData? currentUser = dataStore.findUserById(currentUserId);
+            final UserData currentUser = dataStore.findUserById(currentUserId);
             return CustomScrollView(
               slivers: [
                 //appBar
-                CustomAppBar(currentUser: currentUser!),
+                CustomAppBar(currentUser: currentUser),
                 // Stories
                 _Stories(
                   userDocs: usersList,
