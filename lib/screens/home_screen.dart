@@ -1,45 +1,25 @@
-import 'package:chat_app2/constants/helpers.dart';
 import 'package:chat_app2/pages/calls_page.dart';
 import 'package:chat_app2/pages/contacts_page.dart';
 import 'package:chat_app2/pages/messages_page.dart';
 import 'package:chat_app2/pages/notifications_page.dart';
 import 'package:chat_app2/constants/theme.dart';
-import 'package:chat_app2/widgets/common_widgets/avatar.dart';
 import 'package:chat_app2/widgets/common_widgets/glowing_action_button.dart';
-import 'package:chat_app2/widgets/common_widgets/icon_background.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
   final ValueNotifier<int> pageIndex = ValueNotifier(0);
-  final ValueNotifier<String> title = ValueNotifier('Messages');
   final pages = const [
     MessagesPage(),
     NotificationsPage(),
     CallsPage(),
     ContactsPage(),
   ];
-  final pageTitles = const [
-    'Messages',
-    'Notifications',
-    'Calls',
-    'Contacts',
-  ];
-
-  void _onNavigationItemSelected(index) {
-    title.value = pageTitles[index];
-    pageIndex.value = index;
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(kToolbarHeight),
-        child: _appBar(context),
-      ),
       body: ValueListenableBuilder(
         valueListenable: pageIndex,
         builder: (BuildContext context, int value, _) {
@@ -47,44 +27,8 @@ class HomeScreen extends StatelessWidget {
         },
       ),
       bottomNavigationBar: _BottomNavigationBar(
-        onItemSelected: _onNavigationItemSelected,
+        onItemSelected: (index) => pageIndex.value = index,
       ),
-    );
-  }
-
-  Widget _appBar(BuildContext context) {
-    return AppBar(
-      iconTheme: Theme.of(context).iconTheme,
-      backgroundColor: Colors.transparent,
-      elevation: 0,
-      title: ValueListenableBuilder(
-        valueListenable: title,
-        builder: (BuildContext context, String value, _) {
-          return Text(
-            value,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-            ),
-          );
-        },
-      ),
-      leadingWidth: 54,
-      leading: Align(
-        alignment: Alignment.centerRight,
-        child: IconBackground(
-          icon: Icons.search,
-          onTap: () {
-            FirebaseAuth.instance.signOut();
-          },
-        ),
-      ),
-      actions: [
-        Padding(
-          padding: const EdgeInsets.only(right: 24.0),
-          child: Avatar.small(url: Helpers.randomPictureUrl()),
-        ),
-      ],
     );
   }
 }

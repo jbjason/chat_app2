@@ -19,6 +19,7 @@ class MessagesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final dataStore = Provider.of<DataStore>(context, listen: false);
     final currentUserId = FirebaseAuth.instance.currentUser!.uid;
     return StreamBuilder(
       stream: Helpers.getUser(),
@@ -31,16 +32,16 @@ class MessagesPage extends StatelessWidget {
           } else {
             // setting usersList & getting
             final userDocs = snapShot.data!.docs;
-            final dataStore = Provider.of<DataStore>(context, listen: false);
             dataStore.setUsers(userDocs);
             final List<UserData> usersList =
                 userDocs.isEmpty ? [] : dataStore.usersList;
+            final UserData currentUser = dataStore.findUserById(currentUserId);
             return CustomScrollView(
               slivers: [
                 //appBar
                 SliverAppBar(
                   backgroundColor: Colors.transparent,
-                  expandedHeight: kToolbarHeight + 20,
+                  expandedHeight: kToolbarHeight +5,
                   pinned: true,
                   centerTitle: true,
                   leadingWidth: 54,
@@ -63,7 +64,9 @@ class MessagesPage extends StatelessWidget {
                   actions: [
                     Padding(
                       padding: const EdgeInsets.only(right: 24.0),
-                      child: Avatar.small(url: Helpers.randomPictureUrl()),
+                      child: CircleAvatar(
+                        backgroundImage: NetworkImage(currentUser.imageUrl),
+                      ),
                     ),
                   ],
                 ),
@@ -73,7 +76,7 @@ class MessagesPage extends StatelessWidget {
                     loggedInUser: currentUserId,
                     size: size),
                 // Messages List
-                MessageList(userDocs: usersList, currentUserId: currentUserId),
+                MessageList(userDocs: usersList, currentUser: currentUser),
               ],
             );
           }
@@ -215,11 +218,11 @@ class MessageList extends StatelessWidget {
   const MessageList({
     Key? key,
     required this.userDocs,
-    required this.currentUserId,
+    required this.currentUser,
   }) : super(key: key);
 
   final List<UserData> userDocs;
-  final String currentUserId;
+  final UserData currentUser;
 
   @override
   Widget build(BuildContext context) {
@@ -230,9 +233,9 @@ class MessageList extends StatelessWidget {
           s = s.isEmpty
               ? 'You are now Friends with ${userDocs[index].userName}. Say Hiii to!'
               : s;
-          if (currentUserId != userDocs[index].userId) {
+          if (currentUser.userId != userDocs[index].userId) {
             return _MessageTitle(
-              currentUserId: currentUserId,
+              currentUser: currentUser,
               messageData: MessageData(
                 userId: userDocs[index].userId,
                 userName: userDocs[index].userName,
@@ -257,19 +260,16 @@ class MessageList extends StatelessWidget {
 class _MessageTitle extends StatelessWidget {
   const _MessageTitle({
     Key? key,
-    required this.currentUserId,
+    required this.currentUser,
     required this.messageData,
   }) : super(key: key);
-  final String currentUserId;
+  final UserData currentUser;
   final MessageData messageData;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        final UserData currentUser =
-                      Provider.of<DataStore>(context, listen: false)
-                          .findUserById(currentUserId);
         Navigator.of(context).push(MaterialPageRoute(
             builder: (_) => ChatScreen(
                 messageData: messageData, currentUser: currentUser)));
