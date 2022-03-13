@@ -104,19 +104,32 @@ class _MessageList extends StatelessWidget {
             } else {
               final userDocs = snapShot.data!.docs;
               if (userDocs.isEmpty) {
-                return Center(
-                  child: Container(
-                    height: 200,
-                    width: 200,
-                    decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        image: NetworkImage(messageData.img),
-                        fit: BoxFit.cover,
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 200,
+                      width: 200,
+                      decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: NetworkImage(messageData.img),
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
-                  ),
+                    const SizedBox(height: 5),
+                    Text(
+                      messageData.userName,
+                      style: const TextStyle(
+                          fontSize: 22, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 7),
+                    const Text('Private Message'),
+                    const Text('You are now Friends on Messenger'),
+                  ],
                 );
               } else {
                 return ListView.builder(

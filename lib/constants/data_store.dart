@@ -5,7 +5,7 @@ import 'package:chat_app2/models/user_data.dart';
 class DataStore with ChangeNotifier {
   List<UserData> _usersList = [];
 
-  UserData setUsers(
+  int setUsersAndGetCurrentIndex(
       List<QueryDocumentSnapshot<Object?>> userObjectList, String id) {
     final List<UserData> f = [];
     userObjectList.forEach((element) {
@@ -19,14 +19,16 @@ class DataStore with ChangeNotifier {
       ));
     });
     _usersList = f;
-    return _usersList.firstWhere((element) => element.userId == id);
+    //Returns the first index in the list that satisfies the given conditions.
+    //If nothing found, returns -1.
+    return _usersList.indexWhere((element) => element.userId == id);
   }
 
   List<UserData> get usersList {
     return [..._usersList];
   }
 
-  UserData findUserById(String id) {
-    return _usersList.firstWhere((element) => element.userId == id);
+  UserData findUserByIndex(int index) {
+    return _usersList[index];
   }
 }

@@ -21,6 +21,8 @@ class MessagesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final dataStore = Provider.of<DataStore>(context, listen: false);
+    final _currentUserId = FirebaseAuth.instance.currentUser!.uid;
+    
     return StreamBuilder(
       stream: Helpers.getUser(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapShot) {
@@ -30,27 +32,32 @@ class MessagesPage extends StatelessWidget {
           if (snapShot.hasError) {
             return const Center(child: Text('Error Occured!'));
           } else {
-            final currentUserId = FirebaseAuth.instance.currentUser!.uid;
             final userDocs = snapShot.data!.docs;
-            final _currentUser = dataStore.setUsers(userDocs, currentUserId);
+            final _currentUserIndex =
+                dataStore.setUsersAndGetCurrentIndex(userDocs, _currentUserId);
             final List<UserData> _usersList = dataStore.usersList;
-            return CustomScrollView(
-              slivers: [
-                //appBar
-                CustomAppBar(currentUser: _currentUser),
-                // Stories
-                _Stories(
-                  userDocs: _usersList,
-                  loggedInUser: currentUserId,
-                  size: size,
-                ),
-                // Messages List
-                MessageList(userDocs: _usersList, currentUser: _currentUser),
-              ],
-            );
+            return _body(_currentUserIndex, _currentUserId, _usersList, size);
           }
         }
       },
+    );
+  }
+
+  Widget _body(int _currentUserIndex, String _currentUserId,
+      List<UserData> _usersList, Size size) {
+    return CustomScrollView(
+      slivers: [
+        //appBar
+        CustomAppBar(currentUserIndex: _currentUserIndex, users: _usersList),
+        // Stories
+        _Stories(
+            userDocs: _usersList, loggedInUser: _currentUserId, size: size),
+        // Messages List
+        MessageList(
+            userDocs: _usersList,
+            currentUserIndex: _currentUserIndex,
+            currnetUserId: _currentUserId),
+      ],
     );
   }
 }
@@ -58,10 +65,11 @@ class MessagesPage extends StatelessWidget {
 class CustomAppBar extends StatelessWidget {
   const CustomAppBar({
     Key? key,
-    required this.currentUser,
+    required this.currentUserIndex,
+    required this.users,
   }) : super(key: key);
-
-  final UserData currentUser;
+  final List<UserData> users;
+  final int currentUserIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -90,9 +98,13 @@ class CustomAppBar extends StatelessWidget {
       actions: [
         Padding(
           padding: const EdgeInsets.only(right: 24.0),
-          child: CircleAvatar(
-            backgroundImage: NetworkImage(currentUser.imageUrl),
-          ),
+          child: currentUserIndex != -1
+              ? CircleAvatar(
+                  radius: 16,
+                  backgroundImage:
+                      NetworkImage(users[currentUserIndex].imageUrl),
+                )
+              : const CircleAvatar(radius: 16),
         ),
       ],
     );
@@ -231,11 +243,13 @@ class MessageList extends StatelessWidget {
   const MessageList({
     Key? key,
     required this.userDocs,
-    required this.currentUser,
+    required this.currentUserIndex,
+    required this.currnetUserId,
   }) : super(key: key);
 
   final List<UserData> userDocs;
-  final UserData currentUser;
+  final int currentUserIndex;
+  final String currnetUserId;
 
   @override
   Widget build(BuildContext context) {
@@ -246,9 +260,9 @@ class MessageList extends StatelessWidget {
           s = s.isEmpty
               ? 'You are now Friends with ${userDocs[index].userName}. Say Hiii to!'
               : s;
-          if (currentUser.userId != userDocs[index].userId) {
+          if (currnetUserId != userDocs[index].userId) {
             return _MessageTitle(
-              currentUser: currentUser,
+              currentUserIndex: currentUserIndex,
               messageData: MessageData(
                 userId: userDocs[index].userId,
                 userName: userDocs[index].userName,
@@ -273,19 +287,21 @@ class MessageList extends StatelessWidget {
 class _MessageTitle extends StatelessWidget {
   const _MessageTitle({
     Key? key,
-    required this.currentUser,
+    required this.currentUserIndex,
     required this.messageData,
   }) : super(key: key);
-  final UserData currentUser;
+  final int currentUserIndex;
   final MessageData messageData;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
+        final user = Provider.of<DataStore>(context, listen: false)
+            .findUserByIndex(currentUserIndex);
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (_) => ChatScreen(
-                messageData: messageData, currentUser: currentUser)));
+            builder: (_) =>
+                ChatScreen(messageData: messageData, currentUser: user)));
       },
       child: Container(
         height: 100,
