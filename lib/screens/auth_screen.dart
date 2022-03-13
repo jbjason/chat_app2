@@ -24,7 +24,6 @@ class _AuthScreenState extends State<AuthScreen> {
 
   void _submitAuthForm(String emaill, String passwordd, String username,
       File? image, bool isLogin, BuildContext ctx) async {
-    
     UserCredential authResult;
     try {
       setState(() => _isLoading = true);
@@ -63,6 +62,7 @@ class _AuthScreenState extends State<AuthScreen> {
       );
       setState(() => _isLoading = false);
     } catch (e) {
+      print('jb \n\n $e');
       setState(() => _isLoading = false);
     }
   }

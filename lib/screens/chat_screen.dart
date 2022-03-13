@@ -423,7 +423,8 @@ class _ActionBar extends StatelessWidget {
               color: AppColors.accent,
               icon: Icons.send_rounded,
               onPressed: () {
-                if (textController.text.trim().isNotEmpty) {
+                final text = textController.text.trim();
+                if (text.isNotEmpty) {
                   // saving msg to sender msg collection
                   FirebaseFirestore.instance
                       .collection(
@@ -433,7 +434,7 @@ class _ActionBar extends StatelessWidget {
                     'userName': currentUser.userName,
                     'img': currentUser.imageUrl,
                     'messageDate': DateTime.now().toIso8601String(),
-                    'message': textController.text.trim(),
+                    'message': text,
                   });
                   // saving msg to receriver msg collection
                   FirebaseFirestore.instance
@@ -444,9 +445,25 @@ class _ActionBar extends StatelessWidget {
                     'userName': currentUser.userName,
                     'img': currentUser.imageUrl,
                     'messageDate': DateTime.now().toIso8601String(),
-                    'message': textController.text.trim(),
+                    'message': text,
                   });
-                  textController.text = '';
+                  // changin currentUsers lastMsg & lastMsgTime
+                  FirebaseFirestore.instance
+                      .collection('users')
+                      .doc(currentUser.userId)
+                      .update({
+                    'lastMsg': text,
+                    'lastMsgTime': DateTime.now().toIso8601String(),
+                  });
+                  // changin currentUsers lastMsg & lastMsgTime
+                  FirebaseFirestore.instance
+                      .collection('users')
+                      .doc(messageData.userId)
+                      .update({
+                    'lastMsg': text,
+                    'lastMsgTime': DateTime.now().toIso8601String(),
+                  });
+                  textController.clear();
                 }
               },
             ),

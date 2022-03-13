@@ -30,24 +30,22 @@ class MessagesPage extends StatelessWidget {
           if (snapShot.hasError) {
             return const Center(child: Text('Error Occured!'));
           } else {
-            final userDocs = snapShot.data!.docs;
             final currentUserId = FirebaseAuth.instance.currentUser!.uid;
-            dataStore.setUsers(userDocs);
-            final List<UserData> usersList =
-                userDocs.isEmpty ? [] : dataStore.usersList;
-            final UserData currentUser = dataStore.findUserById(currentUserId);
+            final userDocs = snapShot.data!.docs;
+            final _currentUser = dataStore.setUsers(userDocs, currentUserId);
+            final List<UserData> _usersList = dataStore.usersList;
             return CustomScrollView(
               slivers: [
                 //appBar
-                CustomAppBar(currentUser: currentUser),
+                CustomAppBar(currentUser: _currentUser),
                 // Stories
                 _Stories(
-                  userDocs: usersList,
+                  userDocs: _usersList,
                   loggedInUser: currentUserId,
                   size: size,
                 ),
                 // Messages List
-                MessageList(userDocs: usersList, currentUser: currentUser),
+                MessageList(userDocs: _usersList, currentUser: _currentUser),
               ],
             );
           }
