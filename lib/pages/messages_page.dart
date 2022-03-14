@@ -57,7 +57,7 @@ class MessagesPage extends StatelessWidget {
         MessageList(
             userDocs: _usersList,
             currentUserIndex: _currentUserIndex,
-            currnetUserId: _currentUserId),
+            currentUserId: _currentUserId),
       ],
     );
   }
@@ -250,36 +250,58 @@ class MessageList extends StatelessWidget {
     Key? key,
     required this.userDocs,
     required this.currentUserIndex,
-    required this.currnetUserId,
+    required this.currentUserId,
   }) : super(key: key);
 
   final List<UserData> userDocs;
   final int currentUserIndex;
-  final String currnetUserId;
+  final String currentUserId;
 
   @override
   Widget build(BuildContext context) {
+    String? lastMsg, difference;
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (context, index) {
-          String s = userDocs[index].lastMsg;
-          s = s.isEmpty
-              ? 'You are now Friends with ${userDocs[index].userName}. Say Hiii to!'
-              : s;
-          if (currnetUserId != userDocs[index].userId) {
-            return _MessageTitle(
-              currentUserIndex: currentUserIndex,
-              currentUserId: currnetUserId,
-              messageData: MessageData(
-                userId: userDocs[index].userId,
-                userName: userDocs[index].userName,
-                message: s,
-                messageDate:
-                    DateTime.parse(userDocs[index].lastMsgTime.toString()),
-                dateDifference:
-                    Jiffy(userDocs[index].lastMsgTime.toString()).fromNow(),
-                img: userDocs[index].imageUrl,
-              ),
+          if (currentUserId != userDocs[index].userId) {
+            return StreamBuilder(
+              stream:
+                  Helpers.getMsgHistory(currentUserId, userDocs[index].userId),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapShot) {
+                if (snapShot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else {
+                  if (snapShot.hasError) {
+                    return const Center(child: Text('Error Occured!'));
+                  } else {
+                    final lastMsgDocs = snapShot.data!.docs;
+                    // if lastMsg data available
+                    if (lastMsgDocs.isNotEmpty) {
+                      lastMsg = lastMsgDocs[0]['lastMsg'];
+                      difference = Jiffy(
+                              DateTime.parse(lastMsgDocs[0]['lastMsgTime'])
+                                  .toString())
+                          .fromNow();
+                    } else {
+                      lastMsg =
+                          'You are now Friends with ${userDocs[index].userName}. Say Hiii to!';
+                      difference = '';
+                    }
+                    return _MessageTitle(
+                      currentUserIndex: currentUserIndex,
+                      currentUserId: currentUserId,
+                      messageData: MessageData(
+                        userId: userDocs[index].userId,
+                        userName: userDocs[index].userName,
+                        message: lastMsg!,
+                        dateDifference: difference!,
+                        img: userDocs[index].imageUrl,
+                      ),
+                    );
+                  }
+                }
+              },
             );
           } else {
             return Container();
@@ -304,129 +326,105 @@ class _MessageTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: FirebaseFirestore.instance
-          .collection(
-              'msgHistory/$currentUserId/user/${messageData.userId}/msg')
-          .snapshots(),
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapShot) {
-        if (snapShot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        } else {
-          if (snapShot.hasError) {
-            return const Center(child: Text('Error Occured!'));
-          } else {
-            final userDocs = snapShot.data!.docs;
-            final String message = userDocs[0]['lastMsg'] ??
-                'You are now Friends with ${messageData.userName}. Say Hiii to!';
-            final dateTime = DateTime.parse(userDocs[0]['lastMsgTime']);
-            final difference = Jiffy(dateTime.toString()).fromNow();
-            return InkWell(
-              onTap: () {
-                final user = Provider.of<DataStore>(context, listen: false)
-                    .findUserByIndex(currentUserIndex);
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (_) => ChatScreen(
-                        messageData: messageData, currentUser: user)));
-              },
-              child: Container(
-                height: 100,
-                margin: const EdgeInsets.symmetric(horizontal: 8),
-                decoration: const BoxDecoration(
-                  border: Border(
-                      bottom: BorderSide(color: Colors.grey, width: 0.2)),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Row(
-                    children: [
-                      // profile pic
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Avatar.medium(url: messageData.img),
-                      ),
-                      // profile_name & last_msg
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            // userName
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 8.0),
-                              child: Text(
-                                messageData.userName,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                  letterSpacing: 0.2,
-                                  wordSpacing: 1.5,
-                                  fontWeight: FontWeight.w900,
-                                ),
-                              ),
-                            ),
-                            // Message
-                            SizedBox(
-                              height: 20,
-                              child: Text(
-                                message, // lastMsg
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                  fontSize: 12,
-                                  color: AppColors.textFaded,
-                                ),
-                              ),
-                            ),
-                          ],
+    return InkWell(
+      onTap: () {
+        final user = Provider.of<DataStore>(context, listen: false)
+            .findUserByIndex(currentUserIndex);
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (_) =>
+                ChatScreen(messageData: messageData, currentUser: user)));
+      },
+      child: Container(
+        height: 100,
+        margin: const EdgeInsets.symmetric(horizontal: 8),
+        decoration: const BoxDecoration(
+          border: Border(bottom: BorderSide(color: Colors.grey, width: 0.2)),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Row(
+            children: [
+              // profile pic
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Avatar.medium(url: messageData.img),
+              ),
+              // profile_name & last_msg
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // userName
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Text(
+                        messageData.userName,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          letterSpacing: 0.2,
+                          wordSpacing: 1.5,
+                          fontWeight: FontWeight.w900,
                         ),
                       ),
-                      // Message & date details
-                      Padding(
-                        padding: const EdgeInsets.only(right: 20.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            const SizedBox(height: 4),
-                            // duration of msg
-                            Text(
-                              difference,
-                              style: const TextStyle(
-                                fontSize: 11,
-                                letterSpacing: -0.2,
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.textFaded,
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            // 1 new msg notification_icon
-                            Container(
-                              width: 18,
-                              height: 18,
-                              decoration: const BoxDecoration(
-                                  color: AppColors.secondary,
-                                  shape: BoxShape.circle),
-                              child: const Center(
-                                child: Text(
-                                  '1',
-                                  style: TextStyle(
-                                    fontSize: 10,
-                                    color: AppColors.textLigth,
-                                  ),
-                                ),
-                              ),
-                            )
-                          ],
+                    ),
+                    // Message
+                    SizedBox(
+                      height: 20,
+                      child: Text(
+                        messageData.message, // lastMsg
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: AppColors.textFaded,
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-            );
-          }
-        }
-      },
+              // Message & date details
+              Padding(
+                padding: const EdgeInsets.only(right: 20.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    const SizedBox(height: 4),
+                    // duration of msg
+                    Text(
+                      messageData.dateDifference,
+                      style: const TextStyle(
+                        fontSize: 11,
+                        letterSpacing: -0.2,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.textFaded,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    // 1 new msg notification_icon
+                    Container(
+                      width: 18,
+                      height: 18,
+                      decoration: const BoxDecoration(
+                          color: AppColors.secondary, shape: BoxShape.circle),
+                      child: const Center(
+                        child: Text(
+                          '1',
+                          style: TextStyle(
+                            fontSize: 10,
+                            color: AppColors.textLigth,
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
