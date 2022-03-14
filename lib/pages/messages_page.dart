@@ -36,6 +36,7 @@ class MessagesPage extends StatelessWidget {
             final _currentUserIndex =
                 dataStore.setUsersAndGetCurrentIndex(userDocs, _currentUserId);
             final List<UserData> _usersList = dataStore.usersList;
+            // body
             return _body(_currentUserIndex, _currentUserId, _usersList, size);
           }
         }
@@ -147,12 +148,13 @@ class _Stories extends StatelessWidget {
                   ),
                 ),
               ),
-              // story list
+              // story_list
               SizedBox(
                 height: 105,
                 width: size.width,
                 child: Row(
                   children: [
+                    // add story button
                     InkWell(
                       child: Padding(
                         padding: const EdgeInsets.only(
@@ -168,6 +170,7 @@ class _Stories extends StatelessWidget {
                       ),
                       onTap: () {},
                     ),
+                    // story_list
                     Expanded(
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
@@ -266,6 +269,7 @@ class MessageList extends StatelessWidget {
           if (currnetUserId != userDocs[index].userId) {
             return _MessageTitle(
               currentUserIndex: currentUserIndex,
+              currentUserId: currnetUserId,
               messageData: MessageData(
                 userId: userDocs[index].userId,
                 userName: userDocs[index].userName,
@@ -292,8 +296,10 @@ class _MessageTitle extends StatelessWidget {
     Key? key,
     required this.currentUserIndex,
     required this.messageData,
+    required this.currentUserId,
   }) : super(key: key);
   final int currentUserIndex;
+  final String currentUserId;
   final MessageData messageData;
 
   @override
@@ -310,21 +316,18 @@ class _MessageTitle extends StatelessWidget {
         height: 100,
         margin: const EdgeInsets.symmetric(horizontal: 8),
         decoration: const BoxDecoration(
-          border: Border(
-            bottom: BorderSide(
-              color: Colors.grey,
-              width: 0.2,
-            ),
-          ),
+          border: Border(bottom: BorderSide(color: Colors.grey, width: 0.2)),
         ),
         child: Padding(
           padding: const EdgeInsets.all(4.0),
           child: Row(
             children: [
+              // profile pic
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Avatar.medium(url: messageData.img),
               ),
+              // profile_name & last_msg
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -345,7 +348,7 @@ class _MessageTitle extends StatelessWidget {
                     SizedBox(
                       height: 20,
                       child: Text(
-                        messageData.message,
+                        messageData.message, // lastMsg
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           fontSize: 12,
@@ -356,15 +359,15 @@ class _MessageTitle extends StatelessWidget {
                   ],
                 ),
               ),
+              // Message & date details
               Padding(
                 padding: const EdgeInsets.only(right: 20.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    const SizedBox(
-                      height: 4,
-                    ),
+                    const SizedBox(height: 4),
+                    // duration of msg
                     Text(
                       messageData.dateDifference.toUpperCase(),
                       style: const TextStyle(
@@ -374,16 +377,13 @@ class _MessageTitle extends StatelessWidget {
                         color: AppColors.textFaded,
                       ),
                     ),
-                    const SizedBox(
-                      height: 8,
-                    ),
+                    const SizedBox(height: 8),
+                    // 1 new msg notification_icon
                     Container(
                       width: 18,
                       height: 18,
                       decoration: const BoxDecoration(
-                        color: AppColors.secondary,
-                        shape: BoxShape.circle,
-                      ),
+                          color: AppColors.secondary, shape: BoxShape.circle),
                       child: const Center(
                         child: Text(
                           '1',

@@ -55,9 +55,8 @@ class ChatScreen extends StatelessWidget {
           },
         ),
       ),
-      title: _AppBarTitle(
-        messageData: messageData,
-      ),
+      title: _AppBarTitle(messageData: messageData),
+      // camera & video_call icon
       actions: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -359,12 +358,14 @@ class _AppBarTitle extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // userName
               Text(
                 messageData.userName,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(fontSize: 14),
               ),
               const SizedBox(height: 2),
+              // Online now status text
               const Text(
                 'Online now',
                 style: TextStyle(
