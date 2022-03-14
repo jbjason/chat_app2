@@ -352,7 +352,7 @@ class _AppBarTitle extends StatelessWidget {
     return Row(
       children: [
         CircleAvatar(
-            radius: 30, backgroundImage: NetworkImage(messageData.img)),
+            radius: 16, backgroundImage: NetworkImage(messageData.img)),
         const SizedBox(width: 16),
         Expanded(
           child: Column(

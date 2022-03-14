@@ -22,7 +22,7 @@ class MessagesPage extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     final dataStore = Provider.of<DataStore>(context, listen: false);
     final _currentUserId = FirebaseAuth.instance.currentUser!.uid;
-    
+
     return StreamBuilder(
       stream: Helpers.getUser(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapShot) {
@@ -97,14 +97,14 @@ class CustomAppBar extends StatelessWidget {
       ),
       actions: [
         Padding(
-          padding: const EdgeInsets.only(right: 24.0),
+          padding: const EdgeInsets.only(right: 24.0, top: 3),
           child: currentUserIndex != -1
               ? CircleAvatar(
-                  radius: 16,
+                  radius: 18,
                   backgroundImage:
                       NetworkImage(users[currentUserIndex].imageUrl),
                 )
-              : const CircleAvatar(radius: 16),
+              : const CircleAvatar(radius: 18),
         ),
       ],
     );
@@ -134,6 +134,7 @@ class _Stories extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // stories title
               const Padding(
                 padding: EdgeInsets.only(left: 20.0, top: 8, bottom: 12),
                 child: Text(
@@ -146,20 +147,22 @@ class _Stories extends StatelessWidget {
                   ),
                 ),
               ),
+              // story list
               SizedBox(
                 height: 105,
                 width: size.width,
                 child: Row(
                   children: [
                     InkWell(
-                      child: const Padding(
-                        padding: EdgeInsets.only(
-                            top: 4, bottom: 24, left: 8, right: 8),
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            top: 0, bottom: 28, left: 8, right: 8),
                         child: SizedBox(
                           width: 60,
                           child: CircleAvatar(
+                            backgroundColor: Colors.grey[900],
                             radius: 30,
-                            child: Icon(CupertinoIcons.add),
+                            child: const Icon(CupertinoIcons.add),
                           ),
                         ),
                       ),
