@@ -5,7 +5,6 @@ import 'package:chat_app2/models/story_data.dart';
 import 'package:chat_app2/models/user_data.dart';
 import 'package:chat_app2/screens/chat_screen.dart';
 import 'package:chat_app2/constants/theme.dart';
-import 'package:chat_app2/widgets/common_widgets/avatar.dart';
 import 'package:chat_app2/widgets/common_widgets/icon_background.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -347,7 +346,10 @@ class _MessageTitle extends StatelessWidget {
               // profile pic
               Padding(
                 padding: const EdgeInsets.all(10.0),
-                child: Avatar.medium(url: messageData.img),
+                child: CircleAvatar(
+                  radius: 22,
+                  backgroundImage: NetworkImage(messageData.img),
+                ),
               ),
               // profile_name & last_msg
               Expanded(
