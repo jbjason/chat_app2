@@ -18,6 +18,5 @@ abstract class Helpers {
           String currentUserId, String userId) =>
       FirebaseFirestore.instance
           .collection('msgHistory/$currentUserId/user/$userId/msg')
-          .orderBy('lastMsgTime', descending: true)
           .snapshots();
 }

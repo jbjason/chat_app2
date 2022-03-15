@@ -3,10 +3,10 @@ class UserData {
   final String userName;
   final String imageUrl;
   final String email;
-  final DateTime lastMsgTime;
+  DateTime lastMsgTime;
   final String lastMsg;
 
-  const UserData({
+  UserData({
     required this.userId,
     required this.imageUrl,
     required this.userName,
