@@ -7,7 +7,7 @@ abstract class Helpers {
           .orderBy('lastMsgTime', descending: true)
           .snapshots();
 
-  static Stream<QuerySnapshot<Map<String, dynamic>>> getMessages(
+  static Stream<QuerySnapshot<Map<String, dynamic>>> getChats(
           String currentUserId, String userId) =>
       FirebaseFirestore.instance
           .collection('chats/$currentUserId/chat/$userId/message')

@@ -93,7 +93,7 @@ class _MessageList extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: StreamBuilder(
-        stream: Helpers.getMessages(currentUser.userId, messageData.userId),
+        stream: Helpers.getChats(currentUser.userId, messageData.userId),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapShot) {
           if (snapShot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
