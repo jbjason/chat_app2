@@ -9,7 +9,7 @@ class DataStore with ChangeNotifier {
       String currentUserId) async {
     final List<UserData> data = [];
 
-    for (int i = 0; i < usersList.length; i++) {
+    for (int i = 0; i < userObjectList.length; i++) {
       if (userObjectList[i]['userId'] != currentUserId) {
         final userId = userObjectList[i];
         final f = await FirebaseFirestore.instance
