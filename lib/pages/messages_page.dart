@@ -70,11 +70,6 @@ class MessagesPage extends StatelessWidget {
       },
     );
   }
-
-  // Widget _body(int _currentUserIndex, String _currentUserId,
-  //     List<UserData> _usersList, Size size) {
-  //   return Container();
-  // }
 }
 
 class CustomAppBar extends StatelessWidget {
