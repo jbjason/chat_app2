@@ -14,9 +14,9 @@ abstract class Helpers {
           .orderBy('messageDate', descending: true)
           .snapshots();
 
-  static Stream<QuerySnapshot<Map<String, dynamic>>> getMsgHistory(
-          String currentUserId, String userId) =>
-      FirebaseFirestore.instance
-          .collection('msgHistory/$currentUserId/user/$userId/msg')
-          .snapshots();
+  // static Stream<QuerySnapshot<Map<String, dynamic>>> getMsgHistory(
+  //         String currentUserId, String userId) =>
+  //     FirebaseFirestore.instance
+  //         .collection('msgHistory/$currentUserId/user/$userId/msg')
+  //         .snapshots();
 }

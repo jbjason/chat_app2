@@ -1,9 +1,7 @@
 import 'package:chat_app2/constants/data_store.dart';
 import 'package:chat_app2/constants/helpers.dart';
-import 'package:chat_app2/models/message_data.dart';
 import 'package:chat_app2/models/story_data.dart';
 import 'package:chat_app2/models/user_data.dart';
-import 'package:chat_app2/screens/chat_screen.dart';
 import 'package:chat_app2/constants/theme.dart';
 import 'package:chat_app2/widgets/common_widgets/icon_background.dart';
 import 'package:chat_app2/widgets/home_widgets/message_list.dart';
@@ -11,7 +9,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:jiffy/jiffy.dart';
 import 'package:provider/provider.dart';
 
 class MessagesPage extends StatelessWidget {
@@ -33,34 +30,51 @@ class MessagesPage extends StatelessWidget {
             return const Center(child: Text('Error Occured!'));
           } else {
             final userDocs = snapShot.data!.docs;
-            final _currentUserIndex =
-                dataStore.setUsersAndGetCurrentIndex(userDocs, _currentUserId);
-            final List<UserData> _usersList = dataStore.usersList;
-            // body
-            return _body(_currentUserIndex, _currentUserId, _usersList, size);
+            return FutureBuilder(
+              future: dataStore.setUsersWithDate(userDocs, _currentUserId),
+              builder: (context, snapshot) {
+                if (ConnectionState.waiting == snapShot.connectionState) {
+                  return const Center(child: CircularProgressIndicator());
+                } else {
+                  if (snapShot.hasError) {
+                    return const Center(child: Text('Error Occurs'));
+                  } else {
+                    final _notSortedUsersList = dataStore.usersList;
+                    final _usersList = dataStore.sortedUsersList;
+                    final _currentUserIndex =
+                        dataStore.findCurrentUserIndex(_currentUserId);
+                    return CustomScrollView(
+                      slivers: [
+                        //appBar
+                        CustomAppBar(
+                            currentUserIndex: _currentUserIndex,
+                            users: _notSortedUsersList),
+                        // Stories
+                        _Stories(
+                            userDocs: _notSortedUsersList,
+                            loggedInUser: _currentUserId,
+                            size: size),
+                        // Messages List
+                        MessageList(
+                            usersList: _usersList,
+                            currentUserIndex: _currentUserIndex,
+                            currentUserId: _currentUserId),
+                      ],
+                    );
+                  }
+                }
+              },
+            );
           }
         }
       },
     );
   }
 
-  Widget _body(int _currentUserIndex, String _currentUserId,
-      List<UserData> _usersList, Size size) {
-    return CustomScrollView(
-      slivers: [
-        //appBar
-        CustomAppBar(currentUserIndex: _currentUserIndex, users: _usersList),
-        // Stories
-        _Stories(
-            userDocs: _usersList, loggedInUser: _currentUserId, size: size),
-        // Messages List
-        MessageList(
-            userDocs: _usersList,
-            currentUserIndex: _currentUserIndex,
-            currentUserId: _currentUserId),
-      ],
-    );
-  }
+  // Widget _body(int _currentUserIndex, String _currentUserId,
+  //     List<UserData> _usersList, Size size) {
+  //   return Container();
+  // }
 }
 
 class CustomAppBar extends StatelessWidget {
