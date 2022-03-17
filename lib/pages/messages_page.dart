@@ -28,7 +28,6 @@ class MessagesPage extends StatelessWidget {
             return const Center(child: Text('Error Occured!'));
           } else {
             final userDocs = snapShot.data!.docs;
-
             return FutureBuilder(
               future: dataStore.setUsersWithDate(userDocs, _currentUserId),
               builder: (context, snapshot) {
