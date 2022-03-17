@@ -13,13 +13,11 @@ import 'package:provider/provider.dart';
 
 class MessagesPage extends StatelessWidget {
   const MessagesPage({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final dataStore = Provider.of<DataStore>(context, listen: false);
     final _currentUserId = FirebaseAuth.instance.currentUser!.uid;
-
     return StreamBuilder(
       stream: Helpers.getUser(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapShot) {
@@ -30,6 +28,7 @@ class MessagesPage extends StatelessWidget {
             return const Center(child: Text('Error Occured!'));
           } else {
             final userDocs = snapShot.data!.docs;
+
             return FutureBuilder(
               future: dataStore.setUsersWithDate(userDocs, _currentUserId),
               builder: (context, snapshot) {
