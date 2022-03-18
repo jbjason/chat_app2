@@ -22,23 +22,24 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   }
 
   void _initializeMsgHistory() async {
-    final _userDocs =
-        await FirebaseFirestore.instance.collection('users').get();
-    final _users = _userDocs.docs;
-    for (int i = 0; i < _users.length; i++) {
-      if (_currentUser.userId != _users[i]['userId']) {
-        await FirebaseFirestore.instance
-            .collection('msgHistory')
-            .doc(_currentUser.userId)
-            .collection('user')
-            .doc(_users[i]['userId'])
-            .set({
-          'lastMsg': '',
-          'lastMsgTime': _currentUser.lastMsgTime.toIso8601String(),
-          'userId': _users[i]['userId'],
-        });
-      }
-    }
+    // final _userDocs =
+    //     await FirebaseFirestore.instance.collection('users').get();
+    // final _users = _userDocs.docs;
+    // for (int i = 0; i < _users.length; i++) {
+    //   if (_currentUser.userId != _users[i]['userId']) {
+    //     await FirebaseFirestore.instance
+    //         .collection('msgHistory')
+    //         .doc(_currentUser.userId)
+    //         .collection('user')
+    //         .doc(_users[i]['userId'])
+    //         .set({
+    //       'lastMsg': '',
+    //       'lastMsgTime': _currentUser.lastMsgTime.toIso8601String(),
+    //       'userId': _users[i]['userId'],
+    //     });
+    //   }
+    // }
+    await Future.delayed(const Duration(seconds: 1));
     setState(() => _isLoading = false);
   }
 

@@ -14,18 +14,21 @@ class DataStore with ChangeNotifier {
     for (int i = 0; i < userObjectList.length; i++) {
       if (userObjectList[i]['userId'] != currentUserId) {
         final userId = userObjectList[i]['userId'];
-        final lastMsgTime =
-            msgHistoryList.firstWhere((element) => element['userId'] == userId);
-        final String lastMsg = lastMsgTime['lastMsg'];
+        final int indexOfLastMsg =
+            msgHistoryList.indexWhere((element) => element['userId'] == userId);
+        final lastMsgTime = msgHistoryList.isEmpty || indexOfLastMsg == -1
+            ? userObjectList[i]['lastMsgTime']
+            : msgHistoryList[indexOfLastMsg]['lastMsgTime'];
+        final String lastMsg = msgHistoryList.isEmpty || indexOfLastMsg == -1
+            ? 'You are now Friends with ${userObjectList[i]['userName']}. Say Hiii to!'
+            : lastMsgTime['lastMsg'];
         data.add(UserData(
           userId: userId,
           imageUrl: userObjectList[i]['imageUrl'],
           userName: userObjectList[i]['userName'],
           email: userObjectList[i]['email'],
-          lastMsgTime: DateTime.parse(lastMsgTime['lastMsgTime']),
-          lastMsg: lastMsg.isEmpty
-              ? 'You are now Friends with ${userObjectList[i]['userName']}. Say Hiii to!'
-              : lastMsgTime['lastMsg'],
+          lastMsgTime: DateTime.parse(lastMsgTime),
+          lastMsg: lastMsg,
         ));
       } else {
         // adding currentUser to _usersList
