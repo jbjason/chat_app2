@@ -59,4 +59,29 @@ class DataStore with ChangeNotifier {
   UserData findUserByIndex(int index) {
     return _usersList[index];
   }
+
+  //newly added
+  String status = '';
+  void setLoginStatus(String s) => status = s;
+  String get getLoginStatus => status;
+
+  String userId = '', userName = '', userUrl = '', email = '';
+  late DateTime date;
+  void setSignUpUserInfo(
+      String id, String namee, String emaill, String url, DateTime datee) {
+    userId = userId;
+    userName = namee;
+    email = emaill;
+    userUrl = url;
+    date = datee;
+  }
+
+  UserData get getUserInfo => UserData(
+        userId: userId,
+        imageUrl: userUrl,
+        userName: userName,
+        email: email,
+        lastMsgTime: date,
+        lastMsg: '',
+      );
 }
