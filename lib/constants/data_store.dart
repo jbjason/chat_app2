@@ -5,27 +5,27 @@ import 'package:chat_app2/models/user_data.dart';
 class DataStore with ChangeNotifier {
   List<UserData> _usersList = [];
 
-  Future setUsersWithDate(List<QueryDocumentSnapshot<Object?>> userObjectList,
-      String currentUserId) async {
+  Future<void> setUsersWithDate(
+    List<QueryDocumentSnapshot<Object?>> userObjectList,
+    List<QueryDocumentSnapshot<Object?>> msgHistoryList,
+    String currentUserId,
+  ) async {
     final List<UserData> data = [];
     for (int i = 0; i < userObjectList.length; i++) {
-      // adding to _usersList if not current user
       if (userObjectList[i]['userId'] != currentUserId) {
         final userId = userObjectList[i]['userId'];
-        final f = await FirebaseFirestore.instance
-            .collection('msgHistory/$currentUserId/user/$userId/msg')
-            .get();
+        final lastMsgTime =
+            msgHistoryList.firstWhere((element) => element['userId'] == userId);
+        final String lastMsg = lastMsgTime['lastMsg'];
         data.add(UserData(
-          userId: userObjectList[i]['userId'],
+          userId: userId,
           imageUrl: userObjectList[i]['imageUrl'],
           userName: userObjectList[i]['userName'],
           email: userObjectList[i]['email'],
-          lastMsgTime: f.docs.isEmpty
-              ? DateTime.parse(userObjectList[i]['lastMsgTime'])
-              : DateTime.parse(f.docs[0]['lastMsgTime']),
-          lastMsg: f.docs.isEmpty
+          lastMsgTime: DateTime.parse(lastMsgTime['lastMsgTime']),
+          lastMsg: lastMsg.isEmpty
               ? 'You are now Friends with ${userObjectList[i]['userName']}. Say Hiii to!'
-              : f.docs[0]['lastMsg'],
+              : lastMsgTime['lastMsg'],
         ));
       } else {
         // adding currentUser to _usersList
@@ -34,7 +34,7 @@ class DataStore with ChangeNotifier {
           imageUrl: userObjectList[i]['imageUrl'],
           userName: userObjectList[i]['userName'],
           email: userObjectList[i]['email'],
-          lastMsgTime: DateTime.parse(userObjectList[i]['lastMsgTime']),
+          lastMsgTime: userObjectList[i]['lastMsgTime'],
           lastMsg: '',
         ));
       }
@@ -63,25 +63,27 @@ class DataStore with ChangeNotifier {
   //newly added
   String status = '';
   void setLoginStatus(String s) => status = s;
-  String get getLoginStatus => status;
+  String get getLoginStatus {
+    return status;
+  }
 
-  String userId = '', userName = '', userUrl = '', email = '';
-  late DateTime date;
+  String _userId = '', _userName = '', _userUrl = '', _email = '';
+  late DateTime _date;
   void setSignUpUserInfo(
       String id, String namee, String emaill, String url, DateTime datee) {
-    userId = userId;
-    userName = namee;
-    email = emaill;
-    userUrl = url;
-    date = datee;
+    _userId = id;
+    _userName = namee;
+    _email = emaill;
+    _userUrl = url;
+    _date = datee;
   }
 
   UserData get getUserInfo => UserData(
-        userId: userId,
-        imageUrl: userUrl,
-        userName: userName,
-        email: email,
-        lastMsgTime: date,
+        userId: _userId,
+        imageUrl: _userUrl,
+        userName: _userName,
+        email: _email,
+        lastMsgTime: _date,
         lastMsg: '',
       );
 }

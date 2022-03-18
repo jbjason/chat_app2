@@ -27,16 +27,20 @@ class MessagesPage extends StatelessWidget {
           if (snapShot.hasError) {
             return const Center(child: Text('Error Occured!'));
           } else {
-            final userDocs = snapShot.data!.docs;
-            return FutureBuilder(
-              future: dataStore.setUsersWithDate(userDocs, _currentUserId),
-              builder: (context, snapshot) {
-                if (ConnectionState.waiting == snapShot.connectionState) {
+            return StreamBuilder(
+              stream: Helpers.getMsgHistory(_currentUserId),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> msgSnapShot) {
+                if (snapShot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
                 } else {
                   if (snapShot.hasError) {
-                    return const Center(child: Text('Error Occurs'));
+                    return const Center(child: Text('Error Occured!'));
                   } else {
+                    final _userDocs = snapShot.data!.docs;
+                    final _msgHistoryDocs = msgSnapShot.data!.docs;
+                    dataStore.setUsersWithDate(
+                        _userDocs, _msgHistoryDocs, _currentUserId);
                     final _notSortedUsersList = dataStore.usersList;
                     final _usersList = dataStore.sortedUsersList;
                     final _currentUserIndex =
