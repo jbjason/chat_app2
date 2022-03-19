@@ -72,6 +72,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       ),
                       Text(
                         '${widget.name} on ChatApp!',
+                        overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
