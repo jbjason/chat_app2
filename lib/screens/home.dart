@@ -9,8 +9,11 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String _loginStatus =
-        Provider.of<DataStore>(context).getLoginStatus;
-    return _loginStatus == 'signUp' ? const WelcomeScreen() : HomeScreen();
+    final data = Provider.of<DataStore>(context);
+    final String _loginStatus = data.getLoginStatus;
+    final _userData = data.getUserInfo;
+    return _loginStatus == 'signUp'
+        ? WelcomeScreen(url: _userData.imageUrl, name: _userData.userName)
+        : HomeScreen();
   }
 }

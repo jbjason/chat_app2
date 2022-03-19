@@ -83,14 +83,17 @@ class DataStore with ChangeNotifier {
     emailUser = em;
     urlUser = ur.replaceAll('///', '//');
     _date = da;
+    notifyListeners();
   }
 
-  UserData get getUserInfo => UserData(
-        userId: idUser,
-        imageUrl: urlUser,
-        userName: nameUser,
-        email: emailUser,
-        lastMsgTime: _date,
-        lastMsg: '',
-      );
+  UserData get getUserInfo {
+    return UserData(
+      userId: idUser,
+      imageUrl: urlUser,
+      userName: nameUser,
+      email: emailUser,
+      lastMsgTime: _date,
+      lastMsg: '',
+    );
+  }
 }

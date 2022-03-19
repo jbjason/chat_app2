@@ -1,10 +1,12 @@
 import 'package:chat_app2/constants/data_store.dart';
-import 'package:chat_app2/models/user_data.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class WelcomeScreen extends StatefulWidget {
-  const WelcomeScreen({Key? key}) : super(key: key);
+  const WelcomeScreen({Key? key, required this.url, required this.name})
+      : super(key: key);
+
+  final String url, name;
   @override
   State<WelcomeScreen> createState() => _WelcomeScreenState();
 }
@@ -45,37 +47,28 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final data = Provider.of<DataStore>(context, listen: false);
-    UserData _currentUser = data.getUserInfo;
     return Scaffold(
       body: Column(
         children: [
           Expanded(
-            child: Center(
-              child: _isLoading
-                  ? const Center(child: CircularProgressIndicator())
-                  : Column(
-                      children: [
-                        Container(
-                          height: 150,
-                          width: 150,
-                          decoration: BoxDecoration(
-                            color: Colors.transparent,
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                              image: NetworkImage(_currentUser.imageUrl),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 5),
-                        Text(
-                          'You\'re now signed in as ${_currentUser.userName} on ChatApp!',
-                          style: const TextStyle(
-                              fontSize: 22, fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
-            ),
+            child: _isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      CircleAvatar(
+                        radius: 70,
+                        backgroundImage: NetworkImage(widget.url),
+                      ),
+                      const SizedBox(height: 5),
+                      Text(
+                        'You\'re now signed in as ${widget.name} on ChatApp!',
+                        style: const TextStyle(
+                            fontSize: 22, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
           ),
           Container(
             height: 70,

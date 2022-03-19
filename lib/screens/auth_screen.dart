@@ -47,7 +47,8 @@ class _AuthScreenState extends State<AuthScreen> {
         await ref.putFile(image!);
         final url = await ref.getDownloadURL();
         final date = DateTime.now();
-
+        dataStore.setSignUpUserInfo(
+            authResult.user!.uid, username, emaill, url, date);
         await FirebaseFirestore.instance
             .collection('users')
             .doc(authResult.user!.uid)
@@ -58,8 +59,6 @@ class _AuthScreenState extends State<AuthScreen> {
           'imageUrl': url,
           'lastMsgTime': date.toIso8601String(),
         });
-        dataStore.setSignUpUserInfo(
-            authResult.user!.uid, username, emaill, url, date);
       }
     } on PlatformException catch (err) {
       var message = 'An error occured, please check ur credentials';
