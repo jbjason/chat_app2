@@ -44,6 +44,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     UserData _currentUser =
         Provider.of<DataStore>(context, listen: false).getUserInfo;
     return Scaffold(
@@ -51,32 +52,35 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         children: [
           Expanded(
             child: Center(
-              child: Column(
-                children: [
-                  Container(
-                    height: 150,
-                    width: 150,
-                    decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        image: NetworkImage(_currentUser.imageUrl),
-                        fit: BoxFit.cover,
-                      ),
+              child: _isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : Column(
+                      children: [
+                        Container(
+                          height: 150,
+                          width: 150,
+                          decoration: BoxDecoration(
+                            color: Colors.transparent,
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                              image: NetworkImage(_currentUser.imageUrl),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 5),
+                        Text(
+                          'You\'re now signed in as ${_currentUser.userName} on ChatApp!',
+                          style: const TextStyle(
+                              fontSize: 22, fontWeight: FontWeight.bold),
+                        ),
+                      ],
                     ),
-                  ),
-                  const SizedBox(height: 5),
-                  Text(
-                    'You\'re now signed in as ${_currentUser.userName} on ChatApp!',
-                    style: const TextStyle(
-                        fontSize: 22, fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
             ),
           ),
           Container(
             height: 80,
+            width: size.width,
             padding: const EdgeInsets.all(15),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(50),

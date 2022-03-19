@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 
 class MessagesPage extends StatelessWidget {
   const MessagesPage({Key? key}) : super(key: key);
-  
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -40,7 +40,7 @@ class MessagesPage extends StatelessWidget {
                   } else {
                     final _userDocs = snapShot.data!.docs;
                     final _msgHistoryDocs = msgSnapShot.data!.docs;
-                    
+
                     dataStore.setUsersWithDate(
                         _userDocs, _msgHistoryDocs, _currentUserId);
                     final _notSortedUsersList = dataStore.usersList;
@@ -98,6 +98,8 @@ class CustomAppBar extends StatelessWidget {
         child: IconBackground(
           icon: Icons.search,
           onTap: () {
+            Provider.of<DataStore>(context, listen: false)
+                .setLoginStatus('logOut');
             FirebaseAuth.instance.signOut();
           },
         ),
