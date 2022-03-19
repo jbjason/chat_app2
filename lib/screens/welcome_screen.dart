@@ -79,12 +79,13 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             ),
           ),
           Container(
-            height: 80,
+            height: 90,
+            margin:const EdgeInsets.only(bottom: 10,left: 20,right: 20),
             width: size.width,
             padding: const EdgeInsets.all(15),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(50),
-              color: Colors.grey[900],
+              color: Colors.grey[800],
             ),
             child: _isLoading
                 ? const Center(child: CircularProgressIndicator())
@@ -92,7 +93,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     child: const Text('CONTINUE'),
                     onPressed: () {
                       data.setLoginStatus('');
-                      Navigator.pop(context);
                     },
                   ),
           ),

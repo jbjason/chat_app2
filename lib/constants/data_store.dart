@@ -65,7 +65,11 @@ class DataStore with ChangeNotifier {
 
   //newly added
   String status = '';
-  void setLoginStatus(String s) => status = s;
+  void setLoginStatus(String s) {
+    status = s;
+    notifyListeners();
+  }
+
   String get getLoginStatus {
     return status;
   }
