@@ -11,16 +11,18 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
-  late UserData _currentUser;
   bool _isLoading = true;
+  int i = 0 ;
+
   @override
-  void initState() {
-    super.initState();
-    _currentUser = Provider.of<DataStore>(context, listen: false).getUserInfo;
-    _initializeMsgHistory();
+  void didChangeDependencies() async{
+    super.didChangeDependencies();
+    if(i !=0) return;
+    await Future.delayed(const Duration(seconds: 2));
+    setState(() => _isLoading = false);
   }
 
-  void _initializeMsgHistory() async {
+  void initializeMsgHistory() async {
     // final _userDocs =
     //     await FirebaseFirestore.instance.collection('users').get();
     // final _users = _userDocs.docs;
@@ -38,12 +40,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     //     });
     //   }
     // }
-    await Future.delayed(const Duration(seconds: 1));
-    setState(() => _isLoading = false);
+  
   }
 
   @override
   Widget build(BuildContext context) {
+   UserData _currentUser= Provider.of<DataStore>(context, listen: false).getUserInfo;
     return Scaffold(
       body: Column(
         children: [

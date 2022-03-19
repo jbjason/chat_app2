@@ -70,22 +70,25 @@ class DataStore with ChangeNotifier {
     return status;
   }
 
-  String _userId = '', _userName = '', _userUrl = '', _email = '';
-  late DateTime _date;
+  String _userIdd = '', _userNamee = '', _userUrll = '', _emaill = '';
+  DateTime _date = DateTime.now();
   void setSignUpUserInfo(
       String id, String namee, String emaill, String url, DateTime datee) {
-    _userId = id;
-    _userName = namee;
-    _email = emaill;
-    _userUrl = url;
+    _userIdd = id;
+    _userNamee = namee;
+    _emaill = emaill;
+    _userUrll = url.replaceAll('///', '//');
     _date = datee;
+    print('$_userIdd  $_userNamee');
+    print('$_emaill  $_date');
+    print(_userUrll);
   }
 
   UserData get getUserInfo => UserData(
-        userId: _userId,
-        imageUrl: _userUrl,
-        userName: _userName,
-        email: _email,
+        userId: _userIdd,
+        imageUrl: _userUrll,
+        userName: _userNamee,
+        email: _emaill,
         lastMsgTime: _date,
         lastMsg: '',
       );
