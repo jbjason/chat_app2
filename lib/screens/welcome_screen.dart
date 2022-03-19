@@ -57,10 +57,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      CircleAvatar(
-                        radius: 70,
-                        backgroundImage: NetworkImage(widget.url),
-                      ),
+                      widget.url.isEmpty
+                          ? const CircleAvatar(radius: 70)
+                          : CircleAvatar(
+                              radius: 70,
+                              backgroundImage: NetworkImage(widget.url),
+                            ),
                       Container(
                         padding: const EdgeInsets.only(
                             left: 24, right: 24, top: 20, bottom: 10),

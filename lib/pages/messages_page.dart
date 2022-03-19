@@ -38,33 +38,36 @@ class MessagesPage extends StatelessWidget {
                   if (snapShot.hasError) {
                     return const Center(child: Text('Error Occured!'));
                   } else {
-                    final _userDocs = snapShot.data!.docs;
-                    final _msgHistoryDocs = msgSnapShot.data!.docs;
-
-                    dataStore.setUsersWithDate(
-                        _userDocs, _msgHistoryDocs, _currentUserId);
-                    final _notSortedUsersList = dataStore.usersList;
-                    final _usersList = dataStore.sortedUsersList;
-                    final _currentUserIndex =
-                        dataStore.findCurrentUserIndex(_currentUserId);
-                    return CustomScrollView(
-                      slivers: [
-                        //appBar
-                        CustomAppBar(
-                            currentUserIndex: _currentUserIndex,
-                            users: _notSortedUsersList),
-                        // Stories
-                        _Stories(
-                            userDocs: _notSortedUsersList,
-                            loggedInUser: _currentUserId,
-                            size: size),
-                        // Messages List
-                        MessageList(
-                            usersList: _usersList,
-                            currentUserIndex: _currentUserIndex,
-                            currentUserId: _currentUserId),
-                      ],
-                    );
+                    try {
+                      final _userDocs = snapShot.data!.docs;
+                      final _msgHistoryDocs = msgSnapShot.data!.docs;
+                      dataStore.setUsersWithDate(
+                          _userDocs, _msgHistoryDocs, _currentUserId);
+                      final _notSortedUsersList = dataStore.usersList;
+                      final _usersList = dataStore.sortedUsersList;
+                      final _currentUserIndex =
+                          dataStore.findCurrentUserIndex(_currentUserId);
+                      return CustomScrollView(
+                        slivers: [
+                          //appBar
+                          CustomAppBar(
+                              currentUserIndex: _currentUserIndex,
+                              users: _notSortedUsersList),
+                          // Stories
+                          _Stories(
+                              userDocs: _notSortedUsersList,
+                              loggedInUser: _currentUserId,
+                              size: size),
+                          // Messages List
+                          MessageList(
+                              usersList: _usersList,
+                              currentUserIndex: _currentUserIndex,
+                              currentUserId: _currentUserId),
+                        ],
+                      );
+                    } catch (e) {
+                      return Container();
+                    }
                   }
                 }
               },
