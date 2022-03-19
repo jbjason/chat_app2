@@ -463,28 +463,20 @@ class _ActionBar extends StatelessWidget {
                   });
                   // changin currentUsers lastMsg & lastMsgTime
                   FirebaseFirestore.instance
-                      // .collection(
-                      //     'msgHistory/${messageData.userId}/user/${currentUser.userId}/msg')
                       .collection('msgHistory')
                       .doc(messageData.userId)
                       .collection('user')
                       .doc(currentUser.userId)
-                      .collection('msg')
-                      .doc('doc-id')
                       .set({
                     'lastMsg': text,
                     'lastMsgTime': DateTime.now().toIso8601String(),
                   });
                   // changin currentUsers lastMsg & lastMsgTime
                   FirebaseFirestore.instance
-                      // .collection(
-                      //     'msgHistory/${currentUser.userId}/user/${messageData.userId}/msg')
                       .collection('msgHistory')
                       .doc(currentUser.userId)
                       .collection('user')
                       .doc(messageData.userId)
-                      .collection('msg')
-                      .doc('doc-id')
                       .set({
                     'lastMsg': text,
                     'lastMsgTime': DateTime.now().toIso8601String(),

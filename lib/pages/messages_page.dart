@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 
 class MessagesPage extends StatelessWidget {
   const MessagesPage({Key? key}) : super(key: key);
+  
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;

@@ -58,7 +58,6 @@ class _AuthScreenState extends State<AuthScreen> {
           'email': emaill,
           'imageUrl': url,
           'lastMsgTime': date.toIso8601String(),
-          'lastMsg': '',
         });
       }
     } on PlatformException catch (err) {
