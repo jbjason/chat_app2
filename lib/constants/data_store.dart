@@ -77,12 +77,12 @@ class DataStore with ChangeNotifier {
   String idUser = '', nameUser = '', urlUser = '', emailUser = '';
   DateTime _date = DateTime.now();
   void setSignUpUserInfo(
-      String id, String namee, String emaill, String url, DateTime datee) {
-    idUser = id;
-    nameUser = namee;
-    emailUser = emaill;
-    urlUser = url.replaceAll('///', '//');
-    _date = datee;
+      String i, String na, String em, String ur, DateTime da) {
+    idUser = i;
+    nameUser = na;
+    emailUser = em;
+    urlUser = ur.replaceAll('///', '//');
+    _date = da;
   }
 
   UserData get getUserInfo => UserData(
