@@ -12,12 +12,12 @@ class WelcomeScreen extends StatefulWidget {
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
   bool _isLoading = true;
-  int i = 0 ;
+  int i = 0;
 
   @override
-  void didChangeDependencies() async{
+  void didChangeDependencies() async {
     super.didChangeDependencies();
-    if(i !=0) return;
+    if (i != 0) return;
     await Future.delayed(const Duration(seconds: 2));
     setState(() => _isLoading = false);
   }
@@ -40,12 +40,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     //     });
     //   }
     // }
-  
   }
 
   @override
   Widget build(BuildContext context) {
-   UserData _currentUser= Provider.of<DataStore>(context, listen: false).getUserInfo;
+    UserData _currentUser =
+        Provider.of<DataStore>(context, listen: false).getUserInfo;
     return Scaffold(
       body: Column(
         children: [
@@ -78,7 +78,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           Container(
             height: 80,
             padding: const EdgeInsets.all(15),
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(50)),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(50),
+              color: Colors.grey[900],
+            ),
             child: _isLoading
                 ? const Center(child: CircularProgressIndicator())
                 : TextButton(
