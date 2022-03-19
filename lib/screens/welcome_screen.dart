@@ -61,28 +61,37 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         radius: 70,
                         backgroundImage: NetworkImage(widget.url),
                       ),
-                      const SizedBox(height: 5),
+                      Container(
+                        padding: const EdgeInsets.only(
+                            left: 24, right: 24, top: 20, bottom: 10),
+                        child: const Text(
+                          'You\'re now signed in as',
+                          style: TextStyle(
+                              fontSize: 22, fontWeight: FontWeight.bold),
+                        ),
+                      ),
                       Text(
-                        'You\'re now signed in as ${widget.name} on ChatApp!',
+                        '${widget.name} on ChatApp!',
                         style: const TextStyle(
-                            fontSize: 22, fontWeight: FontWeight.bold),
+                            fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
           ),
           Container(
-            height: 70,
-            margin: const EdgeInsets.only(bottom: 5, left: 10, right: 10),
+            height: 65,
+            margin: const EdgeInsets.only(bottom: 10, left: 15, right: 15),
             width: size.width,
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(50),
-              color: Colors.grey[800],
+              color: Colors.grey[850],
             ),
             child: _isLoading
                 ? const Center(child: CircularProgressIndicator())
                 : TextButton(
-                    child: const Text('CONTINUE'),
+                    child: const Text('CONTINUE',
+                        style: TextStyle(fontSize: 18, color: Colors.white)),
                     onPressed: () {
                       data.setLoginStatus('');
                     },
