@@ -37,7 +37,7 @@ class DataStore with ChangeNotifier {
           imageUrl: userObjectList[i]['imageUrl'],
           userName: userObjectList[i]['userName'],
           email: userObjectList[i]['email'],
-          lastMsgTime: userObjectList[i]['lastMsgTime'],
+          lastMsgTime: DateTime.parse(userObjectList[i]['lastMsgTime']),
           lastMsg: '',
         ));
       }

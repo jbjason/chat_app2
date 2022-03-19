@@ -40,6 +40,7 @@ class MessagesPage extends StatelessWidget {
                   } else {
                     final _userDocs = snapShot.data!.docs;
                     final _msgHistoryDocs = msgSnapShot.data!.docs;
+                    
                     dataStore.setUsersWithDate(
                         _userDocs, _msgHistoryDocs, _currentUserId);
                     final _notSortedUsersList = dataStore.usersList;
