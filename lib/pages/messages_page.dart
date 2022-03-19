@@ -98,8 +98,6 @@ class CustomAppBar extends StatelessWidget {
         child: IconBackground(
           icon: Icons.search,
           onTap: () {
-            Provider.of<DataStore>(context, listen: false)
-                .setLoginStatus('logOut');
             FirebaseAuth.instance.signOut();
           },
         ),

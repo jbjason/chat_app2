@@ -45,8 +45,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    UserData _currentUser =
-        Provider.of<DataStore>(context, listen: false).getUserInfo;
+    final data = Provider.of<DataStore>(context, listen: false);
+    UserData _currentUser = data.getUserInfo;
     return Scaffold(
       body: Column(
         children: [
@@ -91,8 +91,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 : TextButton(
                     child: const Text('CONTINUE'),
                     onPressed: () {
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (_) => HomeScreen()));
+                      data.setLoginStatus('');
+                      Navigator.pop(context);
                     },
                   ),
           ),
