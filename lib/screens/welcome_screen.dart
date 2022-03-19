@@ -1,7 +1,6 @@
 import 'package:chat_app2/constants/data_store.dart';
 import 'package:chat_app2/models/user_data.dart';
 import 'package:chat_app2/screens/home_screen.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
