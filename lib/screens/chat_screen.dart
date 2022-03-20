@@ -470,6 +470,7 @@ class _ActionBar extends StatelessWidget {
                       .set({
                     'lastMsg': text,
                     'lastMsgTime': DateTime.now().toIso8601String(),
+                    'userId': messageData.userId,
                   });
                   // changin currentUsers lastMsg & lastMsgTime
                   FirebaseFirestore.instance
@@ -480,6 +481,7 @@ class _ActionBar extends StatelessWidget {
                       .set({
                     'lastMsg': text,
                     'lastMsgTime': DateTime.now().toIso8601String(),
+                    'userId': messageData.userId,
                   });
                   FocusScope.of(context).unfocus();
                   textController.text = '';

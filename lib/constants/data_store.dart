@@ -21,7 +21,7 @@ class DataStore with ChangeNotifier {
             : msgHistoryList[indexOfLastMsg]['lastMsgTime'];
         final String lastMsg = msgHistoryList.isEmpty || indexOfLastMsg == -1
             ? 'You are now Friends with ${userObjectList[i]['userName']}. Say Hiii to!'
-            : lastMsgTime['lastMsg'];
+            : msgHistoryList[indexOfLastMsg]['lastMsg'];
         data.add(UserData(
           userId: userId,
           imageUrl: userObjectList[i]['imageUrl'],

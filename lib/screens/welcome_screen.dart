@@ -92,12 +92,17 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               color: AppColors.cardDark,
             ),
             child: _isLoading
-                ? const Center(child: CircularProgressIndicator())
+                ? const Center(
+                    child: CircularProgressIndicator(color: Colors.green))
                 : TextButton(
                     child: const Text(
                       'CONTINUE',
-                      style:
-                          TextStyle(fontSize: 18, color: AppColors.textFaded),
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: AppColors.secondary,
+                        letterSpacing: 1.4,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     onPressed: () {
                       data.setLoginStatus('');
