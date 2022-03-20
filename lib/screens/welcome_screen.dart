@@ -1,4 +1,5 @@
 import 'package:chat_app2/constants/data_store.dart';
+import 'package:chat_app2/constants/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -88,13 +89,16 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(50),
-              color: Colors.grey[850],
+              color: AppColors.cardDark,
             ),
             child: _isLoading
                 ? const Center(child: CircularProgressIndicator())
                 : TextButton(
-                    child: const Text('CONTINUE',
-                        style: TextStyle(fontSize: 18, color: Colors.white)),
+                    child: const Text(
+                      'CONTINUE',
+                      style:
+                          TextStyle(fontSize: 18, color: AppColors.textFaded),
+                    ),
                     onPressed: () {
                       data.setLoginStatus('');
                     },
