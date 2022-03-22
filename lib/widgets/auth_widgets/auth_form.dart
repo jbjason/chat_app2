@@ -1,4 +1,6 @@
 import 'package:chat_app2/constants/theme.dart';
+import 'package:chat_app2/widgets/auth_widgets/signin_text_style.dart';
+import 'package:chat_app2/widgets/auth_widgets/signup_text_style.dart';
 import 'package:chat_app2/widgets/common_widgets/user_image_picker.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
@@ -23,27 +25,44 @@ class _AuthFormState extends State<AuthForm> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Card(
+      child: Container(
         margin: const EdgeInsets.all(20),
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(10),
+        decoration: _decoration,
+        // child: Card(
+        //   elevation: 25,
+        //   shape: RoundedRectangleBorder(
+        //     borderRadius: BorderRadius.circular(20.0),
+        //   ),
+          child: SingleChildScrollView(
             child: Form(
               key: _formKey,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  // signIn & signUp text
+                  _isLogin ? const SignInTextStyle() : const SignUpTextStyle(),
+                  // image Picker
                   if (!_isLogin) UserImagePicker(imagePickFn: _pickedImage),
-                  _emailTextField(),
-                  if (!_isLogin) _userNameTextField(),
-                  _passwordTextField(),
-                  _buttonloginSignup(),
+                  // TextFields & buttons
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 56, right: 16, top: 10, bottom: 16),
+                    child: Column(
+                      children: [
+                        _emailTextField(),
+                        if (!_isLogin) _userNameTextField(),
+                        _passwordTextField(),
+                        _buttonloginSignup(),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
           ),
         ),
-      ),
+     // ),
     );
   }
 
@@ -109,7 +128,7 @@ class _AuthFormState extends State<AuthForm> {
   Widget _passwordTextField() {
     return TextFormField(
       key: const ValueKey('password'),
-      decoration: const InputDecoration(labelText: 'password'),
+      decoration: const InputDecoration(labelText: 'Password'),
       obscureText: true,
       onSaved: (value) {
         _userPassword = value!;
@@ -126,16 +145,18 @@ class _AuthFormState extends State<AuthForm> {
   Widget _buttonloginSignup() {
     return Column(
       children: [
+        const SizedBox(height: 8),
         widget.isLoading
             ? const CircularProgressIndicator()
             : Container(
                 width: double.infinity,
-                height: 60,
+                height: 70,
                 padding: const EdgeInsets.symmetric(
                     horizontal: 30.0, vertical: 10.0),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.pink,
+                    primary: Colors.white70,
+                    shadowColor: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
@@ -143,7 +164,11 @@ class _AuthFormState extends State<AuthForm> {
                   onPressed: _trySubmit,
                   child: Text(
                     _isLogin ? 'Login' : 'Signup',
-                    style: const TextStyle(color: Colors.white),
+                    style: const TextStyle(
+                      color: Color(0xFF1F787A),
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1.5,
+                    ),
                   ),
                 ),
               ),
@@ -160,4 +185,21 @@ class _AuthFormState extends State<AuthForm> {
       ],
     );
   }
+
+  final _decoration = BoxDecoration(
+    borderRadius: BorderRadius.circular(20),
+    gradient: const LinearGradient(
+      begin: Alignment.topRight,
+      end: Alignment.bottomLeft,
+      colors: [
+        Color(0xFF033D49),
+        Color(0xFF104F55),
+        Color(0xFF155C60),
+        Color(0xFF186568),
+        Color(0xFF1B6F72),
+        Color(0xFF1F787A),
+      ],
+      // stops: [0.0, 0.3,0.5 ,0.65, 0.8, 1.0],
+    ),
+  );
 }

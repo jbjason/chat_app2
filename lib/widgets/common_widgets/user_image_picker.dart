@@ -1,3 +1,4 @@
+import 'package:chat_app2/constants/theme.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
@@ -29,19 +30,20 @@ class _UserImagePickerState extends State<UserImagePicker> {
     return Column(
       children: [
         _pickedImage == null
-            ? const CircleAvatar(
+            ? CircleAvatar(
                 radius: 45,
-                backgroundColor: Colors.grey,
+                backgroundColor: Colors.grey[900]!,
               )
             : CircleAvatar(
                 radius: 45,
-                backgroundColor: Colors.grey,
+                backgroundColor: Colors.grey[900]!,
                 backgroundImage: FileImage(_pickedImage!),
               ),
         TextButton.icon(
           onPressed: _pickImage,
-          icon: const Icon(Icons.image),
-          label: const Text('Add image'),
+          icon: const Icon(Icons.image,color: AppColors.iconDark),
+          label:
+              const Text('Add image', style: TextStyle(color: AppColors.textFaded)),
         )
       ],
     );
