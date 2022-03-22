@@ -29,11 +29,11 @@ class _AuthFormState extends State<AuthForm> {
         margin: const EdgeInsets.all(20),
         padding: const EdgeInsets.all(10),
         decoration: _decoration,
-        // child: Card(
-        //   elevation: 25,
-        //   shape: RoundedRectangleBorder(
-        //     borderRadius: BorderRadius.circular(20.0),
-        //   ),
+        child: Card(
+          elevation: 35,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
           child: SingleChildScrollView(
             child: Form(
               key: _formKey,
@@ -62,7 +62,7 @@ class _AuthFormState extends State<AuthForm> {
             ),
           ),
         ),
-     // ),
+      ),
     );
   }
 
