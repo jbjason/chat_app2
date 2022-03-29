@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:chat_app2/constants/data_store.dart';
+import 'package:chat_app2/provider/data_store.dart';
 import 'package:chat_app2/widgets/auth_widgets/auth_form.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';

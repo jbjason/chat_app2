@@ -29,36 +29,30 @@ class _AuthFormState extends State<AuthForm> {
         margin: const EdgeInsets.all(20),
         padding: const EdgeInsets.all(10),
         decoration: _decoration,
-        child: Card(
-          elevation: 35,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15.0),
-          ),
-          child: SingleChildScrollView(
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  // signIn & signUp text
-                  _isLogin ? const SignInTextStyle() : const SignUpTextStyle(),
-                  // image Picker
-                  if (!_isLogin) UserImagePicker(imagePickFn: _pickedImage),
-                  // TextFields & buttons
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        left: 56, right: 16, top: 10, bottom: 16),
-                    child: Column(
-                      children: [
-                        _emailTextField(),
-                        if (!_isLogin) _userNameTextField(),
-                        _passwordTextField(),
-                        _buttonloginSignup(),
-                      ],
-                    ),
+        child: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // signIn & signUp text
+                _isLogin ? const SignInTextStyle() : const SignUpTextStyle(),
+                // image Picker
+                if (!_isLogin) UserImagePicker(imagePickFn: _pickedImage),
+                // TextFields & buttons
+                Padding(
+                  padding: const EdgeInsets.only(
+                      left: 56, right: 16, top: 10, bottom: 16),
+                  child: Column(
+                    children: [
+                      _emailTextField(),
+                      if (!_isLogin) _userNameTextField(),
+                      _passwordTextField(),
+                      _buttonloginSignup(),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),

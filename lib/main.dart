@@ -1,4 +1,5 @@
-import 'package:chat_app2/constants/data_store.dart';
+import 'package:chat_app2/provider/data_store.dart';
+import 'package:chat_app2/provider/search_store.dart';
 import 'package:chat_app2/screens/auth_screen.dart';
 import 'package:chat_app2/constants/theme.dart';
 import 'package:chat_app2/screens/home.dart';
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (ctx) => DataStore()),
+        ChangeNotifierProvider(create: (ctx) => SearchStore()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

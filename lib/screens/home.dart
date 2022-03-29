@@ -1,4 +1,4 @@
-import 'package:chat_app2/constants/data_store.dart';
+import 'package:chat_app2/provider/data_store.dart';
 import 'package:chat_app2/screens/home_screen.dart';
 import 'package:chat_app2/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';

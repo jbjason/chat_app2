@@ -1,4 +1,4 @@
-import 'package:chat_app2/constants/data_store.dart';
+import 'package:chat_app2/provider/data_store.dart';
 import 'package:chat_app2/constants/helpers.dart';
 import 'package:chat_app2/widgets/home_widgets/custom_appbar.dart';
 import 'package:chat_app2/widgets/home_widgets/message_page_list.dart';

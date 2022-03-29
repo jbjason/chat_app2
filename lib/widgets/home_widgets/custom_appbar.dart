@@ -24,9 +24,7 @@ class CustomAppBar extends StatelessWidget {
         alignment: Alignment.centerRight,
         child: IconBackground(
           icon: Icons.search,
-          onTap: () {
-            FirebaseAuth.instance.signOut();
-          },
+          onTap: () async {},
         ),
       ),
       title: const Text(
@@ -37,15 +35,18 @@ class CustomAppBar extends StatelessWidget {
         ),
       ),
       actions: [
-        Padding(
-          padding: const EdgeInsets.only(right: 24.0, top: 3),
-          child: currentUserIndex != -1
-              ? CircleAvatar(
-                  radius: 18,
-                  backgroundImage:
-                      NetworkImage(users[currentUserIndex].imageUrl),
-                )
-              : const CircleAvatar(radius: 18),
+        InkWell(
+          onTap: () => FirebaseAuth.instance.signOut(),
+          child: Padding(
+            padding: const EdgeInsets.only(right: 24.0, top: 3),
+            child: currentUserIndex != -1
+                ? CircleAvatar(
+                    radius: 18,
+                    backgroundImage:
+                        NetworkImage(users[currentUserIndex].imageUrl),
+                  )
+                : const CircleAvatar(radius: 18),
+          ),
         ),
       ],
     );
