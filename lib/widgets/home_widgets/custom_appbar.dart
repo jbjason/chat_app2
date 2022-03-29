@@ -1,3 +1,4 @@
+import 'package:chat_app2/models/message_data.dart';
 import 'package:chat_app2/models/user_data.dart';
 import 'package:chat_app2/provider/search_store.dart';
 import 'package:chat_app2/screens/chat_screen.dart';
@@ -5,6 +6,7 @@ import 'package:chat_app2/widgets/common_widgets/icon_background.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:provider/provider.dart';
 
 class CustomAppBar extends StatelessWidget {
@@ -32,11 +34,20 @@ class CustomAppBar extends StatelessWidget {
             final f = await showSearch(
                 context: context, delegate: _Delegate(users: users));
             if (f != null) {
+              final String difference =
+                  Jiffy(DateTime.parse(f.lastMsgTime.toString().toString()))
+                      .fromNow();
               Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (_) => ChatScreen(
-                        currentUser: users[currentUserIndex], messageData: f)),
+                        currentUser: users[currentUserIndex],
+                        messageData: MessageData(
+                            userId: f.userId,
+                            userName: f.userName,
+                            message: f.lastMsg,
+                            dateDifference: difference,
+                            img: f.imageUrl))),
               );
             }
           },
@@ -111,7 +122,6 @@ class _Delegate extends SearchDelegate {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
         child: ListTile(
           onTap: () {
-            // query = searchList[index].userName;
             data.setHintsList(searchList[index]);
             close(context, searchList[index]);
           },
