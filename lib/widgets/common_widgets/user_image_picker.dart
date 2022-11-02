@@ -4,19 +4,19 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 
 class UserImagePicker extends StatefulWidget {
-  // ignore: use_key_in_widget_constructors
-  const UserImagePicker({required this.imagePickFn});
+  const UserImagePicker({Key? key, required this.imagePickFn})
+      : super(key: key);
   final void Function(File pickedImage) imagePickFn;
-
   @override
   _UserImagePickerState createState() => _UserImagePickerState();
 }
 
 class _UserImagePickerState extends State<UserImagePicker> {
   File? _pickedImage;
-  void _pickImage() async {
+
+  void _pickImage(ImageSource source) async {
     final pickedImageFile = await ImagePicker().pickImage(
-      source: ImageSource.camera,
+      source: source,
       imageQuality: 40,
       maxHeight: 150,
       maxWidth: 150,
@@ -29,23 +29,35 @@ class _UserImagePickerState extends State<UserImagePicker> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        _pickedImage == null
-            ? CircleAvatar(
-                radius: 45,
-                backgroundColor: Colors.grey[900]!,
-              )
-            : CircleAvatar(
-                radius: 45,
-                backgroundColor: Colors.grey[900]!,
-                backgroundImage: FileImage(_pickedImage!),
-              ),
-        TextButton.icon(
-          onPressed: _pickImage,
-          icon: const Icon(Icons.image,color: AppColors.iconDark),
-          label:
-              const Text('Add image', style: TextStyle(color: AppColors.textFaded)),
-        )
+        _circleAvatar(),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _imageIcon(ImageSource.camera, Icons.camera_alt_sharp),
+            const Text(
+              'Add image',
+              style: TextStyle(color: AppColors.textFaded),
+            ),
+            _imageIcon(ImageSource.gallery, Icons.image),
+          ],
+        ),
       ],
     );
   }
+
+  Widget _circleAvatar() => _pickedImage == null
+      ? CircleAvatar(
+          radius: 45,
+          backgroundColor: Colors.grey[900]!,
+        )
+      : CircleAvatar(
+          radius: 45,
+          backgroundColor: Colors.grey[900]!,
+          backgroundImage: FileImage(_pickedImage!),
+        );
+
+  Widget _imageIcon(ImageSource source, IconData icon) => IconButton(
+        onPressed: () => _pickImage(source),
+        icon: Icon(icon, color: AppColors.iconDark),
+      );
 }

@@ -32,7 +32,7 @@ class MessageList extends StatelessWidget {
                   itemCount: userDocs.length,
                   itemBuilder: (context, index) {
                     if (userDocs[index]['userId'] == currentUser.userId) {
-                      return MessageTile(
+                      return MessageOwnTile(
                         message: userDocs[index]['message'],
                         messageDate:
                             DateTime.parse(userDocs[index]['messageDate']),
