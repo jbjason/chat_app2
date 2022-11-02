@@ -11,13 +11,13 @@ class MessageOwnTile extends StatelessWidget {
 
   final String message;
   final DateTime messageDate;
-
   static const _borderRadius = 26.0;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Container(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
+      margin: const EdgeInsets.only(left: 30),
       child: Align(
         alignment: Alignment.centerRight,
         child: Column(
@@ -60,7 +60,6 @@ class MessageOwnTile extends StatelessWidget {
   }
 }
 
-
 class MessageTile extends StatelessWidget {
   const MessageTile({
     Key? key,
@@ -70,13 +69,13 @@ class MessageTile extends StatelessWidget {
 
   final String message;
   final DateTime messageDate;
-
   static const _borderRadius = 26.0;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Container(
       padding: const EdgeInsets.symmetric(vertical: 4),
+      margin: const EdgeInsets.only(right: 30),
       child: Align(
         alignment: Alignment.centerLeft,
         child: Column(
