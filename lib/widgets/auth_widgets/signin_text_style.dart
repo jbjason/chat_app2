@@ -25,8 +25,7 @@ class SignInTextStyle extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.only(top: 15.0, left: 10.0, bottom: 10),
-          child: Container(
-            //color: Colors.green,
+          child: SizedBox(
             height: 200,
             width: 200,
             child: Column(

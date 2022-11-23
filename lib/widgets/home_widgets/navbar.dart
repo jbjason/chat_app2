@@ -3,14 +3,14 @@ import 'package:chat_app2/constants/theme.dart';
 import 'package:chat_app2/widgets/common_widgets/glowing_action_button.dart';
 import 'package:flutter/cupertino.dart';
 
-class HomeNavBar extends StatefulWidget {
-  const HomeNavBar({Key? key, required this.onItemSelected}) : super(key: key);
+class NavBar extends StatefulWidget {
+  const NavBar({Key? key, required this.onItemSelected}) : super(key: key);
   final ValueChanged<int> onItemSelected;
   @override
-  _HomeNavBarState createState() => _HomeNavBarState();
+  _NavBarState createState() => _NavBarState();
 }
 
-class _HomeNavBarState extends State<HomeNavBar> {
+class _NavBarState extends State<NavBar> {
   var selectedIndex = 0;
 
   void handleItemSelected(int index) {
@@ -64,7 +64,7 @@ class _HomeNavBarState extends State<HomeNavBar> {
               ),
               HomeNavItem(
                 index: 3,
-                lable: 'Contacts',
+                lable: 'People',
                 icon: CupertinoIcons.person_2_fill,
                 isSelected: (selectedIndex == 3),
                 onTap: handleItemSelected,

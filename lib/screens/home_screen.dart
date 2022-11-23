@@ -2,7 +2,7 @@ import 'package:chat_app2/pages/calls_page.dart';
 import 'package:chat_app2/pages/contacts_page.dart';
 import 'package:chat_app2/pages/messages_page.dart';
 import 'package:chat_app2/pages/notifications_page.dart';
-import 'package:chat_app2/widgets/home_widgets/home_navbar.dart';
+import 'package:chat_app2/widgets/home_widgets/navbar.dart';
 
 import 'package:flutter/material.dart';
 
@@ -25,7 +25,7 @@ class HomeScreen extends StatelessWidget {
           return pages[value];
         },
       ),
-      bottomNavigationBar: HomeNavBar(
+      bottomNavigationBar: NavBar(
         onItemSelected: (index) => pageIndex.value = index,
       ),
     );
