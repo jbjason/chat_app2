@@ -40,14 +40,15 @@ class CustomAppBar extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (_) => ChatScreen(
-                        currentUser: users[currentUserIndex],
-                        messageData: MessageData(
-                            userId: f.userId,
-                            userName: f.userName,
-                            message: f.lastMsg,
-                            dateDifference: difference,
-                            img: f.imageUrl))),
+                  builder: (_) => ChatScreen(
+                      currentUser: users[currentUserIndex],
+                      messageData: MessageData(
+                          userId: f.userId,
+                          userName: f.userName,
+                          message: f.lastMsg,
+                          dateDifference: difference,
+                          img: f.imageUrl)),
+                ),
               );
             }
           },

@@ -1,5 +1,5 @@
 import 'package:chat_app2/constants/helpers.dart';
-import 'package:chat_app2/widgets/home_widgets/message_widgets/message_page_body.dart';
+import 'package:chat_app2/widgets/home_widgets/message_page_body.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

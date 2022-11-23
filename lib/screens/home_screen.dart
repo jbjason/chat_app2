@@ -2,8 +2,7 @@ import 'package:chat_app2/pages/calls_page.dart';
 import 'package:chat_app2/pages/contacts_page.dart';
 import 'package:chat_app2/pages/messages_page.dart';
 import 'package:chat_app2/pages/notifications_page.dart';
-import 'package:chat_app2/widgets/home_widgets/navbar.dart';
-
+import 'package:chat_app2/widgets/common_widgets/navbar.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
