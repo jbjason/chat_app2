@@ -45,9 +45,12 @@ class DataStore with ChangeNotifier {
     _usersList = data;
   }
 
-  List<UserData> get usersList {
-    return [..._usersList];
-  }
+  List<UserData> get usersList => [..._usersList];
+
+  int findCurrentUserIndex(String currentUserId) =>
+      _usersList.indexWhere((element) => element.userId == currentUserId);
+
+  UserData findUserByIndex(int index) => _usersList[index];
 
   List<UserData> get sortedUsersList {
     final _sortedList = [..._usersList];
@@ -55,34 +58,25 @@ class DataStore with ChangeNotifier {
     return [..._sortedList];
   }
 
-  int findCurrentUserIndex(String currentUserId) {
-    return _usersList.indexWhere((element) => element.userId == currentUserId);
-  }
-
-  UserData findUserByIndex(int index) {
-    return _usersList[index];
-  }
-
   //newly added
   String status = '';
+  String get getLoginStatus => status;
+
   void setLoginStatus(String s) {
     status = s;
     notifyListeners();
   }
 
-  String get getLoginStatus {
-    return status;
-  }
-
+  // this is for Showing Welcome to Chat app purpose
   String idUser = '', nameUser = '', urlUser = '', emailUser = '';
   DateTime _date = DateTime.now();
   void setSignUpUserInfo(
-      String i, String na, String em, String ur, DateTime da) {
-    idUser = i;
-    nameUser = na;
-    emailUser = em;
-    urlUser = ur.replaceAll('///', '//');
-    _date = da;
+      String id, String name, String email, String url, DateTime date) {
+    idUser = id;
+    nameUser = name;
+    emailUser = email;
+    urlUser = url.replaceAll('///', '//');
+    _date = date;
     notifyListeners();
   }
 

@@ -31,10 +31,12 @@ class _AuthScreenState extends State<AuthScreen> {
     try {
       setState(() => _isLoading = true);
       if (isLogin) {
+        // this is for showing 'Welcome to chat app purpose'
         dataStore.setLoginStatus('signIn');
         authResult = await _auth.signInWithEmailAndPassword(
             email: emaill, password: passwordd);
       } else {
+        // this is for showing 'Welcome to chat app purpose'
         dataStore.setLoginStatus('signUp');
         authResult = await _auth.createUserWithEmailAndPassword(
             email: emaill, password: passwordd);

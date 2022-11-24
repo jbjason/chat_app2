@@ -2,7 +2,7 @@ import 'package:chat_app2/provider/data_store.dart';
 import 'package:chat_app2/provider/search_store.dart';
 import 'package:chat_app2/screens/auth_screen.dart';
 import 'package:chat_app2/constants/theme.dart';
-import 'package:chat_app2/screens/home.dart';
+import 'package:chat_app2/screens/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (ctx, userSnapShot) {
             if (userSnapShot.hasData) {
-              return const Home();
+              return HomeScreen();
             } else {
               return const AuthScreen();
             }

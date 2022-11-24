@@ -7,11 +7,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ActionBar extends StatelessWidget {
-  ActionBar({
-    Key? key,
-    required this.messageData,
-    required this.currentUser,
-  }) : super(key: key);
+  ActionBar({Key? key, required this.messageData, required this.currentUser})
+      : super(key: key);
   final MessageData messageData;
   final UserData currentUser;
   final textController = TextEditingController();
