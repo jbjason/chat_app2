@@ -93,7 +93,7 @@ class ActionBar extends StatelessWidget {
                     'lastMsgTime': DateTime.now().toIso8601String(),
                     'userId': messageData.userId,
                   });
-                  // changin currentUsers lastMsg & lastMsgTime
+                  // changin RECEIVER lastMsg & lastMsgTime
                   FirebaseFirestore.instance
                       .collection('msgHistory')
                       .doc(currentUser.userId)

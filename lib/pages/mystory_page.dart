@@ -35,13 +35,13 @@ class MyStoryItem extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(14),
         color: Colors.teal[100 * (i % 9)],
-        image: i == 0
-            ? const DecorationImage(
-                image: AssetImage('assets/travel/cover2.jpg'),
-                fit: BoxFit.cover)
-            : DecorationImage(
-                image: AssetImage('assets/travel/${3 + i}.jpg'),
-                fit: BoxFit.cover),
+        // image: i == 0
+        //     ? const DecorationImage(
+        //         image: AssetImage('assets/travel/cover2.jpg'),
+        //         fit: BoxFit.cover)
+        //     : DecorationImage(
+        //         image: AssetImage('assets/travel/${3 + i}.jpg'),
+        //         fit: BoxFit.cover),
       ),
       child: i == 0
           ? Column(
@@ -65,10 +65,10 @@ class MyStoryItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: const [
-                CircleAvatar(
-                  radius: 22,
-                  backgroundImage: AssetImage('assets/travel/offer1.jpg'),
-                ),
+                // CircleAvatar(
+                //   radius: 22,
+                //   backgroundImage: AssetImage('assets/travel/offer1.jpg'),
+                // ),
                 Text(
                   'Jb Jason',
                   style: TextStyle(
