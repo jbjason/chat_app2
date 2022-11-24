@@ -53,13 +53,13 @@ class MyStoryItem extends StatelessWidget {
         padding: const EdgeInsets.all(15),
         decoration: index == 0
             ? BoxDecoration(
-                color: Colors.teal[100 * (index % 9)],
-                borderRadius: BorderRadius.circular(14),
                 image: DecorationImage(
-                    image: NetworkImage(currentUser.imageUrl),
-                    fit: BoxFit.cover))
+                  image: NetworkImage(currentUser.imageUrl),
+                  fit: BoxFit.cover,
+                ),
+              )
             : BoxDecoration(
-                color: Colors.teal[100 * (index % 9)],
+                color: Colors.teal[100 * ((index + 1) % 9)],
                 borderRadius: BorderRadius.circular(14),
               ),
         child: index == 0 ? _currentUserInfo() : _friendUserInfo());
