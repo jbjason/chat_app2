@@ -4,8 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class MyStoryPage extends StatelessWidget {
-  const MyStoryPage({Key? key}) : super(key: key);
+class MyStoryScreen extends StatelessWidget {
+  const MyStoryScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +15,13 @@ class MyStoryPage extends StatelessWidget {
     final currentUser = data.usersList[userId];
     return CustomScrollView(
       slivers: [
-        const SliverAppBar(pinned: true, title: Text('People')),
+        const SliverAppBar(
+          backgroundColor: Colors.transparent,
+          expandedHeight: kToolbarHeight + 5,
+          pinned: true,
+          centerTitle: true,
+          title: Text('People'),
+        ),
         const SliverPadding(padding: EdgeInsets.only(top: 10)),
         SliverGrid(
           delegate: SliverChildBuilderDelegate(
@@ -85,7 +91,7 @@ class MyStoryItem extends StatelessWidget {
           Text(
             'Add to Story',
             style: TextStyle(
-              color: Colors.white,
+              // color: Colors.white,
               fontWeight: FontWeight.w900,
             ),
           ),

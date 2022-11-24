@@ -1,8 +1,8 @@
 import 'package:chat_app2/provider/data_store.dart';
 import 'package:chat_app2/screens/welcome_screen.dart';
 import 'package:chat_app2/pages/calls_page.dart';
-import 'package:chat_app2/pages/mystory_page.dart';
-import 'package:chat_app2/pages/messages_page.dart';
+import 'package:chat_app2/screens/mystory_screen.dart';
+import 'package:chat_app2/screens/messages_screen.dart';
 import 'package:chat_app2/pages/notifications_page.dart';
 import 'package:chat_app2/widgets/common_widgets/navbar.dart';
 import 'package:flutter/material.dart';
@@ -12,10 +12,10 @@ class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
   final ValueNotifier<int> pageIndex = ValueNotifier(0);
   final pages = const [
-    MessagesPage(),
+    MessagesScreen(),
     NotificationsPage(),
     CallsPage(),
-    MyStoryPage(),
+    MyStoryScreen(),
   ];
 
   @override

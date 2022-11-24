@@ -4,8 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class MessagesPage extends StatelessWidget {
-  const MessagesPage({Key? key}) : super(key: key);
+class MessagesScreen extends StatelessWidget {
+  const MessagesScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
