@@ -51,14 +51,17 @@ class MyStoryItem extends StatelessWidget {
     return Container(
         margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         padding: const EdgeInsets.all(15),
-        decoration: BoxDecoration(
-          color: Colors.teal[100 * (index % 9)],
-          borderRadius: BorderRadius.circular(14),
-          // image: index == 0
-          //     ? DecorationImage(
-          //         image: NetworkImage(currentUser.imageUrl), fit: BoxFit.cover)
-          //     : DecorationImage(image: NetworkImage(), fit: BoxFit.cover),
-        ),
+        decoration: index == 0
+            ? BoxDecoration(
+                color: Colors.teal[100 * (index % 9)],
+                borderRadius: BorderRadius.circular(14),
+                image: DecorationImage(
+                    image: NetworkImage(currentUser.imageUrl),
+                    fit: BoxFit.cover))
+            : BoxDecoration(
+                color: Colors.teal[100 * (index % 9)],
+                borderRadius: BorderRadius.circular(14),
+              ),
         child: index == 0 ? _currentUserInfo() : _friendUserInfo());
   }
 
