@@ -53,7 +53,7 @@ class MyStoryItem extends StatelessWidget {
         padding: const EdgeInsets.all(15),
         decoration: index == 0
             ? BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
+                borderRadius: BorderRadius.circular(40),
                 image: DecorationImage(
                   image: NetworkImage(currentUser.imageUrl),
                   fit: BoxFit.cover,
