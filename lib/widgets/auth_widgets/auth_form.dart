@@ -21,7 +21,7 @@ class AuthForm extends StatefulWidget {
 
 class _AuthFormState extends State<AuthForm> {
   final _formKey = GlobalKey<FormState>();
-  var _isLogin = true;
+  bool _isLogin = true;
   final _emailController = TextEditingController();
   final _userNameController = TextEditingController();
   final _passController = TextEditingController();
