@@ -39,25 +39,28 @@ class MessageBody extends StatelessWidget {
               dataStore.setUsersWithDate(
                   _userDocs, _msgHistoryDocs, _currentUserId);
               final _notSortedUsersList = dataStore.usersList;
-              final _usersList = dataStore.sortedUsersList;
+              final _sortedUsersList = dataStore.sortedUsersList;
               final _currentUserIndex =
                   dataStore.findCurrentUserIndex(_currentUserId);
               return CustomScrollView(
                 slivers: [
                   //appBar
                   CustomAppBar(
-                      currentUserIndex: _currentUserIndex,
-                      users: _notSortedUsersList),
+                    currentUserIndex: _currentUserIndex,
+                    users: _notSortedUsersList,
+                  ),
                   // Stories
                   Stories(
-                      userDocs: _notSortedUsersList,
-                      loggedInUser: _currentUserId,
-                      size: size),
+                    userDocs: _notSortedUsersList,
+                    loggedInUser: _currentUserId,
+                    size: size,
+                  ),
                   // Messages List
                   MessageList(
-                      usersList: _usersList,
-                      currentUserIndex: _currentUserIndex,
-                      currentUserId: _currentUserId),
+                    usersList: _sortedUsersList,
+                    currentUserIndex: _currentUserIndex,
+                    currentUserId: _currentUserId,
+                  ),
                 ],
               );
             } catch (e) {
