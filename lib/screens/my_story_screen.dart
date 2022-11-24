@@ -53,6 +53,7 @@ class MyStoryItem extends StatelessWidget {
         padding: const EdgeInsets.all(15),
         decoration: index == 0
             ? BoxDecoration(
+                borderRadius: BorderRadius.circular(30),
                 image: DecorationImage(
                   image: NetworkImage(currentUser.imageUrl),
                   fit: BoxFit.cover,
@@ -60,7 +61,7 @@ class MyStoryItem extends StatelessWidget {
               )
             : BoxDecoration(
                 color: Colors.teal[100 * ((index + 1) % 9)],
-                borderRadius: BorderRadius.circular(14),
+                borderRadius: BorderRadius.circular(12),
               ),
         child: index == 0 ? _currentUserInfo() : _friendUserInfo());
   }
@@ -68,12 +69,12 @@ class MyStoryItem extends StatelessWidget {
   Widget _friendUserInfo() => Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [
-          // CircleAvatar(
-          //   radius: 22,
-          //   backgroundImage: AssetImage('assets/travel/offer1.jpg'),
-          // ),
-          Text(
+        children: [
+          CircleAvatar(
+            radius: 22,
+            backgroundImage: NetworkImage(currentUser.imageUrl),
+          ),
+          const Text(
             'Jb Jason',
             style: TextStyle(
               color: Colors.white,
