@@ -76,21 +76,24 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
     _snapController
         .capture(delay: const Duration(milliseconds: 1))
         .then((Uint8List? capturedImage) async {
-      _snapImage = File.fromRawPath(capturedImage!);
       // saving to Cloud
-      final ref = FirebaseStorage.instance
-          .ref()
-          .child('chat_user_image')
-          .child(widget.currentUser.userId + '.jpg');
-      await ref.putFile(_snapImage!);
-      final url = await ref.getDownloadURL();
-      await FirebaseFirestore.instance.collection('mystory').add({
-        'userId': widget.currentUser.userId,
-        'userName': widget.currentUser.userName,
-        'userImg': widget.currentUser.imageUrl,
-        'storyImg': url,
-      });
-      Navigator.pop(context);
+      try {
+        final ref = FirebaseStorage.instance
+            .ref()
+            .child('my_story')
+            .child(widget.currentUser.userId + '.jpg');
+        await ref.putFile(_snapImage!);
+        final url = await ref.getDownloadURL();
+        await FirebaseFirestore.instance.collection('mystory').add({
+          'userId': widget.currentUser.userId,
+          'userName': widget.currentUser.userName,
+          'userImg': widget.currentUser.imageUrl,
+          'storyImg': url,
+        });
+        Navigator.pop(context);
+      } catch (error) {
+        getSnackBar(error.toString(), const Color(0xFF424242));
+      }
     }).catchError((onError) async {
       getSnackBar(onError.toString(), Colors.redAccent);
     });
