@@ -10,40 +10,33 @@ class MyStoryItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-        padding: const EdgeInsets.all(15),
-        decoration: index == 0
-            ? BoxDecoration(
-                borderRadius: BorderRadius.circular(40),
-                image: DecorationImage(
-                  image: NetworkImage(currentUser.imageUrl),
-                  fit: BoxFit.cover,
-                ),
-              )
-            : BoxDecoration(
-                color: Colors.teal[100 * ((index + 1) % 9)],
-                borderRadius: BorderRadius.circular(12),
-              ),
-        child: index == 0 ? _currentUserInfo(context) : _friendUserInfo());
+    return index == 0 ? _currentUserInfo(context) : _friendUserInfo();
   }
 
-  Widget _friendUserInfo() => Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          CircleAvatar(
-            radius: 22,
-            backgroundImage: NetworkImage(currentUser.imageUrl),
-          ),
-          const Text(
-            'Jb Jason',
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
+  Widget _friendUserInfo() => Container(
+        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        padding: const EdgeInsets.all(15),
+        decoration: BoxDecoration(
+          color: Colors.teal[100 * ((index + 1) % 9)],
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CircleAvatar(
+              radius: 22,
+              backgroundImage: NetworkImage(currentUser.imageUrl),
             ),
-          ),
-        ],
+            const Text(
+              'Jb Jason',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
       );
 
   Widget _currentUserInfo(BuildContext context) => GestureDetector(
@@ -51,22 +44,33 @@ class MyStoryItem extends StatelessWidget {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (_) => AddStoryScreen(currentUser: currentUser)));
         },
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
-            CircleAvatar(
-              radius: 18,
-              child: Icon(Icons.add),
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          padding: const EdgeInsets.all(15),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(40),
+            image: DecorationImage(
+              image: NetworkImage(currentUser.imageUrl),
+              fit: BoxFit.cover,
             ),
-            Text(
-              'Add to Story',
-              style: TextStyle(
-                // color: Colors.white,
-                fontWeight: FontWeight.w900,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: const [
+              CircleAvatar(
+                radius: 18,
+                child: Icon(Icons.add),
               ),
-            ),
-          ],
+              Text(
+                'Add to Story',
+                style: TextStyle(
+                  // color: Colors.white,
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+            ],
+          ),
         ),
       );
 }
