@@ -1,7 +1,7 @@
 import 'package:chat_app2/provider/data_store.dart';
 import 'package:chat_app2/screens/welcome_screen.dart';
 import 'package:chat_app2/pages/calls_page.dart';
-import 'package:chat_app2/screens/my_story_screen.dart';
+import 'package:chat_app2/screens/my_story_screen/my_story_screen.dart';
 import 'package:chat_app2/screens/messages_screen.dart';
 import 'package:chat_app2/pages/notifications_page.dart';
 import 'package:chat_app2/widgets/common_widgets/navbar.dart';
