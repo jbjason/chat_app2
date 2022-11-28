@@ -20,7 +20,7 @@ class AdsShareButton extends StatelessWidget {
           valueListenable: isLoading,
           builder: (context, bool isLoading, _) => isLoading
               ? const CircularProgressIndicator(
-                  backgroundColor: AppColors.secondary,
+                  backgroundColor: AppColors.accent,
                 )
               : Container(
                   height: 48,

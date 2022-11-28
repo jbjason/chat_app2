@@ -13,6 +13,7 @@ class AdsIconsButtons extends StatelessWidget {
     required this.changeTextStyle,
     required this.changeColor,
     required this.backColor,
+    required this.textColor,
     required this.fontStyle,
   }) : super(key: key);
 
@@ -20,6 +21,7 @@ class AdsIconsButtons extends StatelessWidget {
   final void Function() changeTextStyle;
   final Function(String isColor, int index) changeColor;
   final Color backColor;
+  final Color textColor;
   final FontStyle fontStyle;
   @override
   Widget build(BuildContext context) {
@@ -38,7 +40,6 @@ class AdsIconsButtons extends StatelessWidget {
                   icon: Icons.camera,
                   pickedImage: pickedImage,
                   textColor: AppColors.textLigth,
-                  backColor: backColor,
                 ),
                 const SizedBox(height: 10),
                 // Gallery Icon
@@ -47,23 +48,20 @@ class AdsIconsButtons extends StatelessWidget {
                   icon: Icons.image_outlined,
                   pickedImage: pickedImage,
                   textColor: AppColors.textLigth,
-                  backColor: backColor,
                 ),
                 const SizedBox(height: 10),
                 // text color
                 AdsChngColor(
                   changeColor: changeColor,
                   isColor: 'text',
-                  backColor: backColor,
-                  child: const Text('A',
-                      style:
-                          TextStyle(color: AppColors.textLigth, fontSize: 24)),
+                  child: Text('A',
+                      style: TextStyle(color: textColor, fontSize: 24)),
                 ),
                 const SizedBox(height: 10),
                 // textStyle
                 AdsTextStyle(
                   fontStyle: fontStyle,
-                  textColor: AppColors.textLigth,
+                  textColor: textColor,
                   changeTextStyle: changeTextStyle,
                 ),
                 const SizedBox(height: 15),
@@ -78,7 +76,6 @@ class AdsIconsButtons extends StatelessWidget {
           child: AdsChngColor(
             changeColor: changeColor,
             isColor: 'back',
-            backColor: backColor,
             child: CircleAvatar(
               radius: 23,
               backgroundColor: backColor.withOpacity(.9),

@@ -1,4 +1,5 @@
 import 'package:chat_app2/constants/constants.dart';
+import 'package:chat_app2/constants/theme.dart';
 import 'package:flutter/material.dart';
 
 class AdsChngColor extends StatelessWidget {
@@ -6,11 +7,9 @@ class AdsChngColor extends StatelessWidget {
       {Key? key,
       required this.changeColor,
       required this.child,
-      required this.backColor,
       required this.isColor})
       : super(key: key);
   final String isColor;
-  final Color backColor;
   final Widget child;
   final Function(String isColor, int index) changeColor;
 
@@ -22,9 +21,10 @@ class AdsChngColor extends StatelessWidget {
       backgroundColor: Colors.grey[200],
       child: CircleAvatar(
         radius: 23,
-        backgroundColor: backColor,
+        backgroundColor: AppColors.secondary,
         child: InkWell(
           onTap: () {
+            // showing diaLog of Colors
             showDialog(
               context: context,
               builder: (BuildContext context) => AlertDialog(
@@ -49,10 +49,10 @@ class AdsChngColor extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 15),
                           child: CircleAvatar(
-                            radius: 20,
+                            radius: 22,
                             backgroundColor: const Color(0xFF1B1E1F),
                             child: CircleAvatar(
-                              radius: 18,
+                              radius: 20,
                               backgroundColor: colorsList[i],
                             ),
                           ),

@@ -23,7 +23,7 @@ class AddStoryScreen extends StatefulWidget {
 class _AddStoryScreenState extends State<AddStoryScreen> {
   final _textController = TextEditingController();
   final _snapController = ScreenshotController();
-  final _isLoading = ValueNotifier<bool>(true);
+  final _isLoading = ValueNotifier<bool>(false);
   Color textColor = Colors.white, backColor = const Color(0xFF1B1E1F);
   FontStyle fontStyle = FontStyle.normal;
   File? _pickedImage, _snapImage;
@@ -43,6 +43,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
               changeTextStyle: changeTextStyle,
               changeColor: changeColor,
               backColor: backColor,
+              textColor: textColor,
               fontStyle: fontStyle,
             ),
             // add to story button
@@ -107,18 +108,14 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
   void pickedImage(File image) => setState(() => _pickedImage = image);
 
   void changeTextStyle() {
-    setState(() {
-      fontStyle =
-          fontStyle == FontStyle.normal ? FontStyle.italic : FontStyle.normal;
-    });
+    final f = fontStyle == FontStyle.normal;
+    setState(() => fontStyle = f ? FontStyle.italic : FontStyle.normal);
   }
 
   void changeColor(String isColor, int index) {
-    setState(() {
-      isColor == 'back'
-          ? backColor = colorsList[index]
-          : textColor = colorsList[index];
-    });
+    final f = isColor == 'back';
+    f ? backColor = colorsList[index] : textColor = colorsList[index];
+    setState(() {});
   }
 
   @override

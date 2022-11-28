@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:chat_app2/constants/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -8,11 +9,9 @@ class AdsImageIcon extends StatelessWidget {
       required this.source,
       required this.icon,
       required this.pickedImage,
-      required this.backColor,
       required this.textColor})
       : super(key: key);
   final Color textColor;
-  final Color backColor;
   final ImageSource source;
   final IconData icon;
   final Function(File image) pickedImage;
@@ -21,10 +20,10 @@ class AdsImageIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return CircleAvatar(
       radius: 25,
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey[200],
       child: CircleAvatar(
-        radius: 22,
-        backgroundColor: backColor,
+        radius: 23,
+        backgroundColor: AppColors.secondary,
         child: IconButton(
           onPressed: () async {
             final pickedImageFile = await ImagePicker().pickImage(
@@ -35,7 +34,7 @@ class AdsImageIcon extends StatelessWidget {
             );
             pickedImage(File(pickedImageFile!.path));
           },
-          icon: Icon(icon, color: textColor),
+          icon: Icon(icon, color: AppColors.iconLight),
         ),
       ),
     );
