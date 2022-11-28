@@ -5,11 +5,11 @@ import 'package:chat_app2/models/user_data.dart';
 class DataStore with ChangeNotifier {
   List<UserData> _usersList = [];
 
-  Future<void> setUsersWithDate(
+  void setUsersWithDate(
     List<QueryDocumentSnapshot<Object?>> userObjectList,
     List<QueryDocumentSnapshot<Object?>> msgHistoryList,
     String currentUserId,
-  ) async {
+  ) {
     final List<UserData> data = [];
     for (int i = 0; i < userObjectList.length; i++) {
       if (userObjectList[i]['userId'] != currentUserId) {

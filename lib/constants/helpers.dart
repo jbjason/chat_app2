@@ -19,4 +19,7 @@ abstract class Helpers {
       FirebaseFirestore.instance
           .collection('msgHistory/$currentUserId/user')
           .snapshots();
+
+  static Stream<QuerySnapshot<Map<String, dynamic>>> getMyStories() =>
+      FirebaseFirestore.instance.collection('mystory').snapshots();
 }
