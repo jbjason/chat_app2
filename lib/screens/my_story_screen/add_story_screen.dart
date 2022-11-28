@@ -24,8 +24,9 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
   final _textController = TextEditingController();
   final _snapController = ScreenshotController();
   final _isLoading = ValueNotifier<bool>(false);
-  Color textColor = Colors.white, backColor = const Color(0xFF1B1E1F);
   FontStyle fontStyle = FontStyle.normal;
+  Color backColor = const Color(0xFF1B1E1F);
+  Color textColor = Colors.white;
   File? _pickedImage, _snapImage;
 
   @override

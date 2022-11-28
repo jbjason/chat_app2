@@ -34,7 +34,7 @@ class AdsImageIcon extends StatelessWidget {
             );
             pickedImage(File(pickedImageFile!.path));
           },
-          icon: Icon(icon, color: AppColors.iconLight),
+          icon: Icon(icon, color: Colors.white),
         ),
       ),
     );
