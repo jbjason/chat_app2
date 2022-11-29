@@ -6,8 +6,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class ActionBar extends StatelessWidget {
-  ActionBar({Key? key, required this.messageData, required this.currentUser})
+class ChatActionBar extends StatelessWidget {
+  ChatActionBar(
+      {Key? key, required this.messageData, required this.currentUser})
       : super(key: key);
   final MessageData messageData;
   final UserData currentUser;

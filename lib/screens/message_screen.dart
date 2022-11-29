@@ -1,11 +1,11 @@
 import 'package:chat_app2/constants/helpers.dart';
-import 'package:chat_app2/widgets/home_widgets/message_page_body.dart';
+import 'package:chat_app2/widgets/message_widgets/message_body.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class MessagesScreen extends StatelessWidget {
-  const MessagesScreen({Key? key}) : super(key: key);
+class MessageScreen extends StatelessWidget {
+  const MessageScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

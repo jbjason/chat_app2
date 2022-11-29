@@ -1,8 +1,8 @@
 import 'package:chat_app2/constants/theme.dart';
 import 'package:flutter/material.dart';
 
-class DateLable extends StatelessWidget {
-  const DateLable({
+class ChatDateLable extends StatelessWidget {
+  const ChatDateLable({
     Key? key,
     required this.lable,
   }) : super(key: key);

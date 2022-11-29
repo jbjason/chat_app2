@@ -9,8 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:provider/provider.dart';
 
-class CustomAppBar extends StatelessWidget {
-  const CustomAppBar({
+class MessageAppBar extends StatelessWidget {
+  const MessageAppBar({
     Key? key,
     required this.currentUserIndex,
     required this.users,

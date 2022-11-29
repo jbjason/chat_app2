@@ -1,8 +1,8 @@
 import 'package:chat_app2/models/message_data.dart';
 import 'package:flutter/material.dart';
 
-class AppBarTitle extends StatelessWidget {
-  const AppBarTitle({
+class ChatAppBar extends StatelessWidget {
+  const ChatAppBar({
     Key? key,
     required this.messageData,
   }) : super(key: key);

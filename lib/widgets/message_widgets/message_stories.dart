@@ -4,8 +4,8 @@ import 'package:chat_app2/models/user_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class Stories extends StatelessWidget {
-  const Stories({
+class MessageStories extends StatelessWidget {
+  const MessageStories({
     Key? key,
     required this.size,
     required this.loggedInUser,

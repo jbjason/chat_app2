@@ -2,8 +2,8 @@ import 'package:chat_app2/constants/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class MessageOwnTile extends StatelessWidget {
-  const MessageOwnTile({
+class ChatMessageOwnTile extends StatelessWidget {
+  const ChatMessageOwnTile({
     Key? key,
     required this.message,
     required this.messageDate,
@@ -60,8 +60,8 @@ class MessageOwnTile extends StatelessWidget {
   }
 }
 
-class MessageTile extends StatelessWidget {
-  const MessageTile({
+class ChatMessageTile extends StatelessWidget {
+  const ChatMessageTile({
     Key? key,
     required this.message,
     required this.messageDate,

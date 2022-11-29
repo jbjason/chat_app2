@@ -1,8 +1,8 @@
 import 'package:chat_app2/provider/data_store.dart';
 import 'package:chat_app2/constants/helpers.dart';
-import 'package:chat_app2/widgets/home_widgets/custom_appbar.dart';
-import 'package:chat_app2/widgets/home_widgets/message_page_list.dart';
-import 'package:chat_app2/widgets/home_widgets/stories.dart';
+import 'package:chat_app2/widgets/message_widgets/message_appbar.dart';
+import 'package:chat_app2/widgets/message_widgets/message_list.dart';
+import 'package:chat_app2/widgets/message_widgets/message_stories.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -45,12 +45,12 @@ class MessageBody extends StatelessWidget {
               return CustomScrollView(
                 slivers: [
                   //appBar
-                  CustomAppBar(
+                  MessageAppBar(
                     currentUserIndex: _currentUserIndex,
                     users: _notSortedUsersList,
                   ),
                   // Stories
-                  Stories(
+                  MessageStories(
                     userDocs: _notSortedUsersList,
                     loggedInUser: _currentUserId,
                     size: size,
