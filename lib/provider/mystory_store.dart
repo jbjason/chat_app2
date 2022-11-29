@@ -7,7 +7,8 @@ class MyStoryStore with ChangeNotifier {
 
   List<MyStory> get myStories => [..._myStories];
 
-  void setMyStories(List<QueryDocumentSnapshot<Object?>> data) {
+  void setMyStories(List<QueryDocumentSnapshot<Object?>> data) async {
+    print(data);
     final List<MyStory> _stories = [];
     try {
       for (int i = 0; i < data.length; i++) {
@@ -22,6 +23,8 @@ class MyStoryStore with ChangeNotifier {
         );
       }
       _myStories = _stories;
+      // cz sometime it causes error to fetch a long list to avoid dat this delay
+      await Future.delayed(Duration.zero);
       notifyListeners();
     } catch (error) {
       print(error);

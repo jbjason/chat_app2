@@ -1,5 +1,6 @@
 import 'package:chat_app2/constants/helpers.dart';
 import 'package:chat_app2/constants/theme.dart';
+import 'package:chat_app2/models/my_story.dart';
 import 'package:chat_app2/models/user_data.dart';
 import 'package:chat_app2/provider/data_store.dart';
 import 'package:chat_app2/provider/mystory_store.dart';
@@ -18,22 +19,6 @@ class MyStoryScreen extends StatelessWidget {
     final currentUserId = FirebaseAuth.instance.currentUser!.uid;
     final userId = data.findCurrentUserIndex(currentUserId);
     final currentUser = data.usersList[userId];
-    return CustomScrollView(
-      slivers: [
-        const SliverAppBar(
-          backgroundColor: Colors.transparent,
-          expandedHeight: kToolbarHeight + 5,
-          pinned: true,
-          centerTitle: true,
-          title: Text('People'),
-        ),
-        const SliverPadding(padding: EdgeInsets.only(top: 10)),
-        _myStoriesGridView(currentUser),
-      ],
-    );
-  }
-
-  Widget _myStoriesGridView(UserData currentUser) {
     return StreamBuilder(
       stream: Helpers.getMyStories(),
       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -46,15 +31,29 @@ class MyStoryScreen extends StatelessWidget {
             return const Center(child: Text('Error Occured!'));
           } else {
             final _userDocs = snapshot.data!.docs;
-            final _item = Provider.of<MyStoryStore>(context);
+            final _item = Provider.of<MyStoryStore>(context, listen: false);
             _item.setMyStories(_userDocs);
-            return MysBody(
-              currentUser: currentUser,
-              myStories: _item.myStories,
-            );
+            return __body(currentUser, _item.myStories);
           }
         }
       },
+    );
+  }
+
+  Widget __body(UserData currentUser, List<MyStory> _myStories) {
+    return CustomScrollView(
+      slivers: [
+        const SliverAppBar(
+          backgroundColor: Colors.transparent,
+          expandedHeight: kToolbarHeight + 5,
+          pinned: true,
+          centerTitle: true,
+          title: Text('People'),
+        ),
+        const SliverPadding(padding: EdgeInsets.only(top: 10)),
+        // Stories GridView
+        MysBody(currentUser: currentUser, myStories: _myStories),
+      ],
     );
   }
 }

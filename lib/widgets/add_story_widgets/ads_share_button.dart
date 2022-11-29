@@ -36,7 +36,6 @@ class AdsShareButton extends StatelessWidget {
                       Text(
                         'Share Now',
                         style: GoogleFonts.nerkoOne(
-                          fontSize: 18,
                           color: AppColors.textLigth,
                           fontStyle: FontStyle.italic,
                         ),
