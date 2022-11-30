@@ -89,7 +89,8 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
 
       // saving to Cloud
       try {
-        // saving to Firebase Storage
+        // saving to Firebase Storage, adding dateTime to imageFile name cz
+        // we can make array objects & as we storing date too. easy to delte
         final currentDate = DateTime.now();
         final dateTime = currentDate.toIso8601String();
         final fileName = '${widget.currentUser.userId}$dateTime.jpg';
@@ -101,17 +102,17 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
         // checking this users story existed or not
         final _currentItem = MyStoryItem(img: url, dateTime: currentDate);
         final _data = Provider.of<MyStoryStore>(context, listen: false);
-        final _story = _data.getStoryItems(_userId, _currentItem);
-        final _storyItem =
-            _story.map((e) => {"img": e.img, "dateTime": e.dateTime}).toList();
+        final _story = _data.getStory(widget.currentUser, _currentItem);
 
         // saving to Firebase Database with url
-        await FirebaseFirestore.instance.collection('mystory').add({
-          'userId': widget.currentUser.userId,
-          'userName': widget.currentUser.userName,
-          'userImg': widget.currentUser.imageUrl,
-          'storyItem': _storyItem,
-        });
+        final _firebase = FirebaseFirestore.instance.collection('mystory');
+        if (_story.storyId.isEmpty) {
+          // if this user has no available story then *add
+          await _firebase.add(_story.mapItem);
+        } else {
+          // if this user has story then *set
+          await _firebase.doc(_story.storyId).set(_story.mapItem);
+        }
         Navigator.pop(context);
       } catch (error) {
         getSnackBar(error.toString(), const Color(0xFF424242));

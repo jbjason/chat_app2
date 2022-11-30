@@ -1,4 +1,5 @@
 import 'package:chat_app2/models/my_story.dart';
+import 'package:chat_app2/models/user_data.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -7,18 +8,30 @@ class MyStoryStore with ChangeNotifier {
 
   List<MyStory> get myStories => [..._myStories];
 
-  List<MyStoryItem> getStoryItems(String id, MyStoryItem item) {
-    final f = _myStories.indexWhere((element) => element.id == id);
-
+  MyStoryId getStory(UserData user, MyStoryItem item) {
+    final f = _myStories.indexWhere((element) => element.id == user.userId);
+    List<MyStoryItem> _storyItem = [];
+    String _storyId = '';
+    // if users story already not existed then setting
     if (f == -1) {
-      // if users story already not existed then setting
-      return [item];
+      _storyItem = [item];
     } else {
       // if users story already existed then adding the new
-      final _items = (_myStories[f].storyItem);
-      _items.insert(0, item);
-      return _items;
+      (_myStories[f].storyItem).insert(0, item);
+      _storyItem = (_myStories[f].storyItem);
+      _storyId = _myStories[f].id;
     }
+    final _items =
+        _storyItem.map((e) => {"img": e.img, "dateTime": e.dateTime}).toList();
+    return MyStoryId(
+      mapItem: {
+        'userId': user.userId,
+        'userName': user.userName,
+        'userImg': user.imageUrl,
+        'storyItem': _items,
+      },
+      storyId: _storyId,
+    );
   }
 
   void setMyStories(List<QueryDocumentSnapshot<Object?>> data) async {

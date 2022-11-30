@@ -19,3 +19,9 @@ class MyStoryItem {
   final DateTime dateTime;
   const MyStoryItem({required this.img, required this.dateTime});
 }
+
+class MyStoryId {
+  final Map<String, dynamic> mapItem;
+  final String storyId;
+  const MyStoryId({required this.mapItem, required this.storyId});
+}
