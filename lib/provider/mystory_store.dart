@@ -21,8 +21,14 @@ class MyStoryStore with ChangeNotifier {
       _storyItem = (_myStories[f].storyItem);
       _storyId = _myStories[f].id;
     }
-    final _items =
-        _storyItem.map((e) => {"img": e.img, "dateTime": e.dateTime}).toList();
+    // converting StoryItem
+    final _items = _storyItem
+        .map((e) => {
+              "img": e.img,
+              "dateTime": e.dateTime.toIso8601String(),
+              'urlPath': e.urlPath
+            })
+        .toList();
     return MyStoryId(
       mapItem: {
         'userId': user.userId,
@@ -49,6 +55,7 @@ class MyStoryStore with ChangeNotifier {
                   (item) => MyStoryItem(
                     img: item['img'],
                     dateTime: DateTime.parse(item['dateTime']),
+                    urlPath: item['urlPath'],
                   ),
                 )
                 .toList(),

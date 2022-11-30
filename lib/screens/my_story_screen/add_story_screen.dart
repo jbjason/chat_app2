@@ -78,7 +78,6 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
     if (_textController.text.trim().isEmpty && _pickedImage == null) return;
     final _userId = widget.currentUser.userId;
     _isLoading.value = true;
-
     // taking Screenshot
     _snapController.capture().then((Uint8List? imageFile) async {
       // saving to local temp-directory
@@ -86,28 +85,25 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
       File _file = await File('${tempDir.path}/$_userId.png').create();
       _file.writeAsBytesSync(imageFile!);
       _snapImage = _file;
-
       // saving to Cloud
       try {
         // saving to Firebase Storage, adding dateTime to imageFile name cz
         // we can make array objects & as we storing date too. easy to delte
-        final currentDate = DateTime.now();
-        final dateTime = currentDate.toIso8601String();
-        final fileName = '${widget.currentUser.userId}$dateTime.jpg';
+        final _date = DateTime.now();
+        final _dateTime = _date.toIso8601String();
+        final fileName = '${widget.currentUser.userId}$_dateTime.jpg';
         final ref =
             FirebaseStorage.instance.ref().child('my_story').child(fileName);
         await ref.putFile(_snapImage!);
         final url = await ref.getDownloadURL();
-
         // checking this users story existed or not
-        final _currentItem = MyStoryItem(img: url, dateTime: currentDate);
+        final _item = MyStoryItem(img: url, dateTime: _date, urlPath: fileName);
         final _data = Provider.of<MyStoryStore>(context, listen: false);
-        final _story = _data.getStory(widget.currentUser, _currentItem);
-
+        final _story = _data.getStory(widget.currentUser, _item);
         // saving to Firebase Database with url
         final _firebase = FirebaseFirestore.instance.collection('mystory');
+        // if this user has no available story then *add
         if (_story.storyId.isEmpty) {
-          // if this user has no available story then *add
           await _firebase.add(_story.mapItem);
         } else {
           // if this user has story then *set

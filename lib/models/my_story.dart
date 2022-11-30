@@ -16,8 +16,10 @@ class MyStory {
 
 class MyStoryItem {
   final String img;
+  final String urlPath;
   final DateTime dateTime;
-  const MyStoryItem({required this.img, required this.dateTime});
+  const MyStoryItem(
+      {required this.img, required this.urlPath, required this.dateTime});
 }
 
 class MyStoryId {

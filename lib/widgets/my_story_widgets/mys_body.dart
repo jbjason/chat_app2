@@ -19,7 +19,7 @@ class MysBody extends StatelessWidget {
             : MysItemFriend(
                 index: index,
                 currentUser: currentUser,
-                storyItem: myStories[index - 1],
+                myStory: myStories[index - 1],
               ),
         childCount: myStories.length + 1, // +1 cz 1-addStory Item
       ),
