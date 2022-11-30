@@ -2,7 +2,9 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:chat_app2/constants/constants.dart';
 import 'package:chat_app2/constants/theme.dart';
+import 'package:chat_app2/models/my_story.dart';
 import 'package:chat_app2/models/user_data.dart';
+import 'package:chat_app2/provider/mystory_store.dart';
 import 'package:chat_app2/widgets/add_story_widgets/ads_back_image.dart';
 import 'package:chat_app2/widgets/add_story_widgets/ads_icons_buttons.dart';
 import 'package:chat_app2/widgets/add_story_widgets/ads_share_button.dart';
@@ -11,6 +13,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:screenshot/screenshot.dart';
 
 class AddStoryScreen extends StatefulWidget {
@@ -87,21 +90,27 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
       // saving to Cloud
       try {
         // saving to Firebase Storage
-        final dateTime = DateTime.now().toIso8601String();
+        final currentDate = DateTime.now();
+        final dateTime = currentDate.toIso8601String();
         final fileName = '${widget.currentUser.userId}$dateTime.jpg';
         final ref =
             FirebaseStorage.instance.ref().child('my_story').child(fileName);
         await ref.putFile(_snapImage!);
         final url = await ref.getDownloadURL();
 
+        // checking this users story existed or not
+        final _currentItem = MyStoryItem(img: url, dateTime: currentDate);
+        final _data = Provider.of<MyStoryStore>(context, listen: false);
+        final _story = _data.getStoryItems(_userId, _currentItem);
+        final _storyItem =
+            _story.map((e) => {"img": e.img, "dateTime": e.dateTime}).toList();
+
         // saving to Firebase Database with url
         await FirebaseFirestore.instance.collection('mystory').add({
           'userId': widget.currentUser.userId,
           'userName': widget.currentUser.userName,
           'userImg': widget.currentUser.imageUrl,
-          'storyImg': [
-            {"img": url, "dateTime": dateTime}
-          ]
+          'storyItem': _storyItem,
         });
         Navigator.pop(context);
       } catch (error) {

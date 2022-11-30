@@ -31,7 +31,6 @@ abstract class AppTheme {
   /// Light theme and its settings.
   static ThemeData light() => ThemeData(
         brightness: Brightness.light,
-        accentColor: accentColor,
         visualDensity: visualDensity,
         textTheme:
             GoogleFonts.mulishTextTheme().apply(bodyColor: AppColors.textDark),
@@ -42,12 +41,12 @@ abstract class AppTheme {
           headline6: TextStyle(color: AppColors.textDark),
         ),
         iconTheme: const IconThemeData(color: AppColors.iconDark),
+        colorScheme: ColorScheme.fromSwatch().copyWith(secondary: accentColor),
       );
 
   /// Dark theme and its settings.
   static ThemeData dark() => ThemeData(
         brightness: Brightness.dark,
-        accentColor: accentColor,
         visualDensity: visualDensity,
         textTheme:
             GoogleFonts.interTextTheme().apply(bodyColor: AppColors.textLigth),
@@ -58,5 +57,6 @@ abstract class AppTheme {
           headline6: TextStyle(color: AppColors.textLigth),
         ),
         iconTheme: const IconThemeData(color: AppColors.iconLight),
+        colorScheme: ColorScheme.fromSwatch().copyWith(secondary: accentColor),
       );
 }

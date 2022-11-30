@@ -7,8 +7,21 @@ class MyStoryStore with ChangeNotifier {
 
   List<MyStory> get myStories => [..._myStories];
 
+  List<MyStoryItem> getStoryItems(String id, MyStoryItem item) {
+    final f = _myStories.indexWhere((element) => element.id == id);
+
+    if (f == -1) {
+      // if users story already not existed then setting
+      return [item];
+    } else {
+      // if users story already existed then adding the new
+      final _items = (_myStories[f].storyItem);
+      _items.insert(0, item);
+      return _items;
+    }
+  }
+
   void setMyStories(List<QueryDocumentSnapshot<Object?>> data) async {
-    print(data);
     final List<MyStory> _stories = [];
     try {
       for (int i = 0; i < data.length; i++) {
