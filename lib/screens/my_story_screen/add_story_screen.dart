@@ -75,6 +75,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
     if (_textController.text.trim().isEmpty && _pickedImage == null) return;
     final _userId = widget.currentUser.userId;
     _isLoading.value = true;
+
     // taking Screenshot
     _snapController.capture().then((Uint8List? imageFile) async {
       // saving to local temp-directory
@@ -82,19 +83,25 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
       File _file = await File('${tempDir.path}/$_userId.png').create();
       _file.writeAsBytesSync(imageFile!);
       _snapImage = _file;
+
       // saving to Cloud
       try {
-        final ref = FirebaseStorage.instance
-            .ref()
-            .child('my_story')
-            .child(widget.currentUser.userId + '.jpg');
+        // saving to Firebase Storage
+        final dateTime = DateTime.now().toIso8601String();
+        final fileName = '${widget.currentUser.userId}$dateTime.jpg';
+        final ref =
+            FirebaseStorage.instance.ref().child('my_story').child(fileName);
         await ref.putFile(_snapImage!);
         final url = await ref.getDownloadURL();
+
+        // saving to Firebase Database with url
         await FirebaseFirestore.instance.collection('mystory').add({
           'userId': widget.currentUser.userId,
           'userName': widget.currentUser.userName,
           'userImg': widget.currentUser.imageUrl,
-          'storyImg': url,
+          'storyImg': [
+            {"img": url, "dateTime": dateTime}
+          ]
         });
         Navigator.pop(context);
       } catch (error) {
@@ -115,7 +122,9 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
 
   void changeColor(String isColor, int index) {
     final f = isColor == 'back';
-    f ? backColor = colorsList[index] : textColor = colorsList[index];
+    final fColor = colorsList[index];
+    final fTextColor = colorsList[index];
+    f ? backColor = fColor : textColor = fTextColor;
     setState(() {});
   }
 

@@ -18,7 +18,14 @@ class MyStoryStore with ChangeNotifier {
             userId: data[i]['userId'],
             userName: data[i]['userName'],
             userImg: data[i]['userImg'],
-            stroyImg: data[i]['storyImg'],
+            storyItem: (data[i]['storyItem'] as List<dynamic>)
+                .map(
+                  (item) => MyStoryItem(
+                    img: item['img'],
+                    dateTime: DateTime.parse(item['dateTime']),
+                  ),
+                )
+                .toList(),
           ),
         );
       }

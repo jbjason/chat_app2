@@ -22,7 +22,7 @@ class MysItemFriend extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         image: DecorationImage(
-            image: NetworkImage(storyItem.stroyImg), fit: BoxFit.cover),
+            image: NetworkImage(storyItem.storyItem[0].img), fit: BoxFit.cover),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
