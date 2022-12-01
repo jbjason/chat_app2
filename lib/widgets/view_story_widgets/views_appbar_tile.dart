@@ -1,6 +1,8 @@
 import 'package:chat_app2/models/my_story.dart';
+import 'package:chat_app2/provider/mystory_store.dart';
 import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:provider/provider.dart';
 
 class ViewsAppBarTile extends StatelessWidget {
   const ViewsAppBarTile(
@@ -56,15 +58,20 @@ class ViewsAppBarTile extends StatelessWidget {
           ),
         ),
         PopupMenuButton(
-          onSelected: (_) {},
+          onSelected: (_) async {
+            Provider.of<MyStoryStore>(context, listen: false)
+                .deleteStory(story, selectValue.value, context);
+          },
           icon: const Icon(Icons.more_horiz_sharp, color: Colors.white),
           itemBuilder: (_) => [
             PopupMenuItem(
               child: Row(
                 children: const [
-                  Icon(Icons.delete_sharp),
                   SizedBox(width: 5),
+                  Icon(Icons.delete_sharp),
+                  SizedBox(width: 8),
                   Text('delete'),
+                  SizedBox(width: 5),
                 ],
               ),
               value: 0,
