@@ -1,3 +1,4 @@
+import 'package:chat_app2/constants/theme.dart';
 import 'package:chat_app2/models/my_story.dart';
 import 'package:chat_app2/provider/mystory_store.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ class ViewsAppBarTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _isLoading = ValueNotifier<bool>(false);
     return Row(
       children: [
         const SizedBox(width: 5),
@@ -57,29 +59,41 @@ class ViewsAppBarTile extends StatelessWidget {
             ],
           ),
         ),
-        PopupMenuButton(
-          onSelected: (_) async {
-            Provider.of<MyStoryStore>(context, listen: false)
-                .deleteStory(story, selectValue.value, context);
+        ValueListenableBuilder(
+          valueListenable: _isLoading,
+          builder: (context, bool isLoading, _) {
+            return isLoading
+                ? const CircularProgressIndicator(color: AppColors.accent)
+                : _logOutButton(context, _isLoading);
           },
-          icon: const Icon(Icons.more_horiz_sharp, color: Colors.white),
-          itemBuilder: (_) => [
-            PopupMenuItem(
-              child: Row(
-                children: const [
-                  SizedBox(width: 5),
-                  Icon(Icons.delete_sharp),
-                  SizedBox(width: 8),
-                  Text('delete'),
-                  SizedBox(width: 5),
-                ],
-              ),
-              value: 0,
-            ),
-          ],
         ),
         const SizedBox(width: 5),
       ],
     );
   }
+
+  Widget _logOutButton(BuildContext context, ValueNotifier<bool> _isLoading) =>
+      PopupMenuButton(
+        onSelected: (_) async {
+          _isLoading.value = true;
+          await Provider.of<MyStoryStore>(context, listen: false)
+              .deleteStory(story, selectValue.value);
+          Navigator.pop(context);
+        },
+        icon: const Icon(Icons.more_horiz_sharp, color: Colors.white),
+        itemBuilder: (_) => [
+          PopupMenuItem(
+            child: Row(
+              children: const [
+                SizedBox(width: 5),
+                Icon(Icons.delete_sharp),
+                SizedBox(width: 8),
+                Text('delete'),
+                SizedBox(width: 5),
+              ],
+            ),
+            value: 0,
+          ),
+        ],
+      );
 }

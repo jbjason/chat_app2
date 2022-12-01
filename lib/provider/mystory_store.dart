@@ -71,32 +71,27 @@ class MyStoryStore with ChangeNotifier {
     }
   }
 
-  Future<void> deleteStory(
-      MyStory story, int selectedIndex, BuildContext context) async {
+  Future<void> deleteStory(MyStory story, int selectedIndex) async {
     try {
       final _firebase = FirebaseFirestore.instance.collection('mystory');
       final _ref = FirebaseStorage.instance.ref();
       if (story.storyItem.length == 1) {
         await _firebase.doc(story.id).delete();
         await _ref.child(story.storyItem[0].urlPath).delete();
-        Navigator.pop(context);
       } else {
         final _selectedItem = story.storyItem[selectedIndex];
         final _items = story.storyItem;
-        for (MyStoryItem element in _items) {
-          if (element.urlPath != _selectedItem.urlPath) return;
-          _items.remove(element);
-        }
+        _items.remove(_selectedItem);
         await _firebase.doc(story.id).update({
           "storyItem": _items
               .map((e) => {
                     "img": e.img,
                     "dateTime": e.dateTime.toIso8601String(),
-                    'urlPath': e.urlPath,
+                    "urlPath": e.urlPath,
                   })
               .toList(),
         });
-        await _ref.child(_selectedItem.urlPath).delete();
+        await _ref.child('my_story/${_selectedItem.urlPath}').delete();
       }
     } catch (e) {
       getSnackBar(e.toString(), const Color(0xFFFF5252));
