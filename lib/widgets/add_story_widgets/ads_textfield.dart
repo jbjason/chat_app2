@@ -32,6 +32,7 @@ class AdsTextField extends StatelessWidget {
               TextStyle(fontSize: 24, color: textColor, fontStyle: fontStyle),
           textInputAction: TextInputAction.done,
           minLines: 1,
+          maxLength: 5,
         ),
       ),
     );
