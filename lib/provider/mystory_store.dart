@@ -9,7 +9,7 @@ class MyStoryStore with ChangeNotifier {
   List<MyStory> get myStories => [..._myStories];
 
   MyStoryId getStory(UserData user, MyStoryItem item) {
-    final f = _myStories.indexWhere((element) => element.id == user.userId);
+    final f = _myStories.indexWhere((element) => element.userId == user.userId);
     List<MyStoryItem> _storyItem = [];
     String _storyId = '';
     // if users story already not existed then setting
@@ -22,21 +22,20 @@ class MyStoryStore with ChangeNotifier {
       _storyId = _myStories[f].id;
     }
     // converting StoryItem
-    final _items = _storyItem
-        .map((e) => {
-              "img": e.img,
-              "dateTime": e.dateTime.toIso8601String(),
-              'urlPath': e.urlPath
-            })
-        .toList();
     return MyStoryId(
+      storyId: _storyId,
       mapItem: {
         'userId': user.userId,
         'userName': user.userName,
         'userImg': user.imageUrl,
-        'storyItem': _items,
+        'storyItem': _storyItem
+            .map((e) => {
+                  "img": e.img,
+                  "dateTime": e.dateTime.toIso8601String(),
+                  'urlPath': e.urlPath,
+                })
+            .toList(),
       },
-      storyId: _storyId,
     );
   }
 

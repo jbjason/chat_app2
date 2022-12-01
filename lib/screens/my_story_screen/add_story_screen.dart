@@ -102,12 +102,12 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
         final _story = _data.getStory(widget.currentUser, _item);
         // saving to Firebase Database with url
         final _firebase = FirebaseFirestore.instance.collection('mystory');
-        // if this user has no available story then *add
+        // if this user has no available story then *add new story
         if (_story.storyId.isEmpty) {
           await _firebase.add(_story.mapItem);
         } else {
-          // if this user has story then *set
-          await _firebase.doc(_story.storyId).set(_story.mapItem);
+          // if this user has story then *update the existing story
+          await _firebase.doc(_story.storyId).update(_story.mapItem);
         }
         Navigator.pop(context);
       } catch (error) {
