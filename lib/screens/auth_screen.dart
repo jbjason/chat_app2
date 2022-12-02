@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:chat_app2/constants/constants.dart';
 import 'package:chat_app2/provider/data_store.dart';
 import 'package:chat_app2/widgets/auth_widgets/auth_form.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,38 +9,34 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-class AuthScreen extends StatefulWidget {
+class AuthScreen extends StatelessWidget {
   const AuthScreen({Key? key}) : super(key: key);
   @override
-  State<AuthScreen> createState() => _AuthScreenState();
-}
-
-class _AuthScreenState extends State<AuthScreen> {
-  bool _isLoading = false;
-  final _auth = FirebaseAuth.instance;
-  @override
   Widget build(BuildContext context) {
+    final _isLoading = ValueNotifier<bool>(false);
     return Scaffold(
       body: AuthForm(submitFn: _submitAuthForm, isLoading: _isLoading),
     );
   }
 
-  void _submitAuthForm(String emaill, String passwordd, String username,
-      File? image, bool isLogin, BuildContext ctx) async {
+  void _submitAuthForm(String email, String pass, String username, File? image,
+      bool isLogin, BuildContext ctx, ValueNotifier<bool> isLoad) async {
     UserCredential authResult;
-    final dataStore = Provider.of<DataStore>(context, listen: false);
+    String message = 'An error occured, please check ur credentials';
+    final dataStore = Provider.of<DataStore>(ctx, listen: false);
+    final _auth = FirebaseAuth.instance;
     try {
-      setState(() => _isLoading = true);
+      isLoad.value = true;
       if (isLogin) {
         // this is for showing 'Welcome to chat app purpose'
         dataStore.setLoginStatus('signIn');
         authResult = await _auth.signInWithEmailAndPassword(
-            email: emaill, password: passwordd);
+            email: email, password: pass);
       } else {
         // this is for showing 'Welcome to chat app purpose'
         dataStore.setLoginStatus('signUp');
         authResult = await _auth.createUserWithEmailAndPassword(
-            email: emaill, password: passwordd);
+            email: email, password: pass);
         final ref = FirebaseStorage.instance
             .ref()
             .child('chat_user_image')
@@ -50,30 +47,27 @@ class _AuthScreenState extends State<AuthScreen> {
         final url = await ref.getDownloadURL();
         final date = DateTime.now();
         dataStore.setSignUpUserInfo(
-            authResult.user!.uid, username, emaill, url, date);
+            authResult.user!.uid, username, email, url, date);
         await FirebaseFirestore.instance
             .collection('users')
             .doc(authResult.user!.uid)
             .set({
           'userId': authResult.user!.uid,
           'userName': username,
-          'email': emaill,
+          'email': email,
           'imageUrl': url,
           'lastMsgTime': date.toIso8601String(),
         });
       }
     } on PlatformException catch (err) {
-      var message = 'An error occured, please check ur credentials';
       if (err.message != null) {
         message = err.message!;
       }
-      ScaffoldMessenger.of(ctx).showSnackBar(
-        SnackBar(
-            content: Text(message), backgroundColor: Theme.of(ctx).errorColor),
-      );
-      setState(() => _isLoading = false);
+      isLoad.value = false;
+      getSnackBar(message, Colors.redAccent);
     } catch (e) {
-      setState(() => _isLoading = false);
+      isLoad.value = false;
+      getSnackBar(message, Colors.redAccent);
     }
   }
 }

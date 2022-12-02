@@ -1,3 +1,4 @@
+import 'package:chat_app2/constants/constants.dart';
 import 'package:chat_app2/widgets/auth_widgets/button_login_signup.dart';
 import 'package:chat_app2/widgets/auth_widgets/email_textfield.dart';
 import 'package:chat_app2/widgets/auth_widgets/pass_textfield.dart';
@@ -9,12 +10,12 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 
 class AuthForm extends StatefulWidget {
-  // ignore: use_key_in_widget_constructors
-  const AuthForm({required this.submitFn, required this.isLoading});
+  const AuthForm({required this.submitFn, required this.isLoading, Key? key})
+      : super(key: key);
 
+  final ValueNotifier<bool> isLoading;
   final Function(String email, String password, String userName, File image,
-      bool isLogin, BuildContext ctx) submitFn;
-  final bool isLoading;
+      bool isLogin, BuildContext ctx, ValueNotifier<bool> isLoad) submitFn;
   @override
   _AuthFormState createState() => _AuthFormState();
 }
@@ -48,6 +49,7 @@ class _AuthFormState extends State<AuthForm> {
         _userImageFile != null ? _userImageFile! : File(''),
         _isLogin,
         context,
+        widget.isLoading,
       );
     }
   }
@@ -58,7 +60,7 @@ class _AuthFormState extends State<AuthForm> {
       child: Container(
         margin: const EdgeInsets.all(20),
         padding: const EdgeInsets.all(10),
-        decoration: _decoration,
+        decoration: authDecoration,
         child: SingleChildScrollView(
           child: Form(
             key: _formKey,
@@ -96,20 +98,4 @@ class _AuthFormState extends State<AuthForm> {
       ),
     );
   }
-
-  final _decoration = BoxDecoration(
-    borderRadius: BorderRadius.circular(20),
-    gradient: const LinearGradient(
-      begin: Alignment.topRight,
-      end: Alignment.bottomLeft,
-      colors: [
-        Color(0xFF033D49),
-        Color(0xFF104F55),
-        Color(0xFF155C60),
-        Color(0xFF186568),
-        Color(0xFF1B6F72),
-        Color(0xFF1F787A),
-      ],
-    ),
-  );
 }

@@ -1,6 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+final authDecoration = BoxDecoration(
+  borderRadius: BorderRadius.circular(20),
+  gradient: const LinearGradient(
+    begin: Alignment.topRight,
+    end: Alignment.bottomLeft,
+    colors: [
+      Color(0xFF033D49),
+      Color(0xFF104F55),
+      Color(0xFF155C60),
+      Color(0xFF186568),
+      Color(0xFF1B6F72),
+      Color(0xFF1F787A),
+    ],
+  ),
+);
+
 List<Color> colorsList = [
   const Color(0xffe91e63),
   const Color(0xFF8F90F3),

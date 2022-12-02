@@ -12,49 +12,52 @@ class ButtonloginSignup extends StatelessWidget {
 
   final void Function() trySubmit;
   final void Function() changeLoginStatus;
-  final bool isLoading;
+  final ValueNotifier<bool> isLoading;
   final bool isLogin;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const SizedBox(height: 8),
-        isLoading
-            ? const CircularProgressIndicator()
-            : Container(
-                width: double.infinity,
-                height: 70,
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 30.0, vertical: 10.0),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.white70,
-                    shadowColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
+    return ValueListenableBuilder(
+      valueListenable: isLoading,
+      builder: (context, bool _isLoad, _) => Column(
+        children: [
+          const SizedBox(height: 8),
+          _isLoad
+              ? const CircularProgressIndicator()
+              : Container(
+                  width: double.infinity,
+                  height: 70,
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 30.0, vertical: 10.0),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.white70,
+                      shadowColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
                     ),
-                  ),
-                  onPressed: trySubmit,
-                  child: Text(
-                    isLogin ? 'Login' : 'Signup',
-                    style: const TextStyle(
-                      color: Color(0xFF1F787A),
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 1.5,
+                    onPressed: trySubmit,
+                    child: Text(
+                      isLogin ? 'Login' : 'Signup',
+                      style: const TextStyle(
+                        color: Color(0xFF1F787A),
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1.5,
+                      ),
                     ),
                   ),
                 ),
+          if (!_isLoad)
+            TextButton(
+              onPressed: () => changeLoginStatus(),
+              child: Text(
+                isLogin ? 'Create new account' : 'I already have an account',
+                style: const TextStyle(color: AppColors.textLigth),
               ),
-        if (!isLoading)
-          TextButton(
-            onPressed: () => changeLoginStatus(),
-            child: Text(
-              isLogin ? 'Create new account' : 'I already have an account',
-              style: const TextStyle(color: AppColors.textLigth),
-            ),
-          )
-      ],
+            )
+        ],
+      ),
     );
   }
 }
