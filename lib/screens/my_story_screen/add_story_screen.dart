@@ -27,7 +27,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
   final _textController = TextEditingController();
   final _snapController = ScreenshotController();
   final _isLoading = ValueNotifier<bool>(false);
-  FontStyle fontStyle = FontStyle.normal;
+  final _textStyle = ValueNotifier<int>(0);
   Color backColor = const Color(0xFF1B1E1F);
   Color textColor = Colors.white;
   File? _pickedImage, _snapImage;
@@ -48,7 +48,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
               changeColor: changeColor,
               backColor: backColor,
               textColor: textColor,
-              fontStyle: fontStyle,
+              textStyle: _textStyle,
             ),
             // add to story button
             AdsShareButton(trySubmit: trySubmit, isLoading: _isLoading),
@@ -68,7 +68,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
             AdsTextField(
               textController: _textController,
               textColor: textColor,
-              fontStyle: fontStyle,
+              textStyle: _textStyle,
             ),
           ],
         ),
@@ -121,10 +121,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
 
   void pickedImage(File image) => setState(() => _pickedImage = image);
 
-  void changeTextStyle() {
-    final f = fontStyle == FontStyle.normal;
-    setState(() => fontStyle = f ? FontStyle.italic : FontStyle.normal);
-  }
+  void changeTextStyle() => _textStyle.value = (_textStyle.value + 1) % 8;
 
   void changeColor(String isColor, int index) {
     final f = isColor == 'back';

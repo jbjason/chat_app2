@@ -1,3 +1,4 @@
+import 'package:chat_app2/constants/constants.dart';
 import 'package:flutter/material.dart';
 
 class AdsTextStyle extends StatelessWidget {
@@ -5,22 +6,20 @@ class AdsTextStyle extends StatelessWidget {
       {Key? key,
       required this.textColor,
       required this.changeTextStyle,
-      required this.fontStyle})
+      required this.textStyle})
       : super(key: key);
   final Color textColor;
-  final FontStyle fontStyle;
+  final ValueNotifier<int> textStyle;
   final void Function() changeTextStyle;
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: changeTextStyle,
-      child: Text(
-        'AB+',
-        style: TextStyle(
-          color: textColor,
-          fontSize: 24,
-          fontStyle: fontStyle,
-          decoration: TextDecoration.underline,
+      child: ValueListenableBuilder(
+        valueListenable: textStyle,
+        builder: (context, int _textStyle, _) => Text(
+          'AB+',
+          style: getTextStyle(_textStyle, textColor, TextDecoration.underline),
         ),
       ),
     );

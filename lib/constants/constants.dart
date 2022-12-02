@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 List<Color> colorsList = [
   const Color(0xffe91e63),
@@ -15,6 +16,20 @@ List<Color> colorsList = [
   const Color(0xFFFFFFFF),
   const Color(0xFF9E9E9E),
 ];
+
+TextStyle getTextStyle(int i, Color textColor, TextDecoration dec) {
+  List<TextStyle> _style = [
+    GoogleFonts.zenDots(color: textColor, fontSize: 24, decoration: dec),
+    GoogleFonts.dancingScript(color: textColor, fontSize: 24, decoration: dec),
+    GoogleFonts.nerkoOne(color: textColor, fontSize: 24, decoration: dec),
+    GoogleFonts.kenia(color: textColor, fontSize: 24, decoration: dec),
+    GoogleFonts.satisfy(color: textColor, fontSize: 24, decoration: dec),
+    GoogleFonts.lobster(color: textColor, fontSize: 24, decoration: dec),
+    GoogleFonts.kenia(color: textColor, fontSize: 24, decoration: dec),
+    GoogleFonts.caveat(color: textColor, fontSize: 24, decoration: dec),
+  ];
+  return _style[i];
+}
 
 SnackBar getSnackBar(String title, Color color) {
   return SnackBar(

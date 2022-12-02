@@ -1,3 +1,4 @@
+import 'package:chat_app2/constants/constants.dart';
 import 'package:flutter/material.dart';
 
 class AdsTextField extends StatelessWidget {
@@ -5,34 +6,37 @@ class AdsTextField extends StatelessWidget {
     Key? key,
     required this.textController,
     required this.textColor,
-    required this.fontStyle,
+    required this.textStyle,
   }) : super(key: key);
 
   final TextEditingController textController;
   final Color textColor;
-  final FontStyle fontStyle;
+  final ValueNotifier<int> textStyle;
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30),
-        child: TextFormField(
-          textAlign: TextAlign.center,
-          controller: textController,
-          decoration: const InputDecoration(
-            hintText: "Write Something.....",
-            floatingLabelAlignment: FloatingLabelAlignment.center,
-            border: InputBorder.none,
-            hintStyle: TextStyle(color: Colors.grey),
-            contentPadding: EdgeInsets.only(left: 15, right: 15),
+    return ValueListenableBuilder(
+      valueListenable: textStyle,
+      builder: (context, int _textStyle, _) => Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30),
+          child: TextFormField(
+            textAlign: TextAlign.center,
+            controller: textController,
+            decoration: const InputDecoration(
+              hintText: "Write Something.....",
+              floatingLabelAlignment: FloatingLabelAlignment.center,
+              border: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              hintStyle: TextStyle(color: Colors.grey),
+              contentPadding: EdgeInsets.only(left: 15, right: 15),
+            ),
+            cursorColor: textColor,
+            style: getTextStyle(_textStyle, textColor, TextDecoration.none),
+            textInputAction: TextInputAction.done,
+            minLines: 1,
+            maxLines: 5,
           ),
-          cursorColor: textColor,
-          style:
-              TextStyle(fontSize: 24, color: textColor, fontStyle: fontStyle),
-          textInputAction: TextInputAction.done,
-          minLines: 1,
-          maxLines: 5,
         ),
       ),
     );

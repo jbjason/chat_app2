@@ -14,7 +14,7 @@ class AdsIconsButtons extends StatelessWidget {
     required this.changeColor,
     required this.backColor,
     required this.textColor,
-    required this.fontStyle,
+    required this.textStyle,
   }) : super(key: key);
 
   final Function(File image) pickedImage;
@@ -22,7 +22,7 @@ class AdsIconsButtons extends StatelessWidget {
   final Function(String isColor, int index) changeColor;
   final Color backColor;
   final Color textColor;
-  final FontStyle fontStyle;
+  final ValueNotifier<int> textStyle;
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -60,7 +60,7 @@ class AdsIconsButtons extends StatelessWidget {
                 const SizedBox(height: 10),
                 // textStyle
                 AdsTextStyle(
-                  fontStyle: fontStyle,
+                  textStyle: textStyle,
                   textColor: textColor,
                   changeTextStyle: changeTextStyle,
                 ),
