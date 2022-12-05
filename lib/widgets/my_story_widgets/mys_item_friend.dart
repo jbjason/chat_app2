@@ -27,6 +27,7 @@ class MysItemFriend extends StatelessWidget {
         padding: const EdgeInsets.all(15),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Colors.grey, width: .7),
           image: DecorationImage(
               image: NetworkImage(myStory.storyItem[0].img), fit: BoxFit.cover),
         ),

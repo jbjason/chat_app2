@@ -9,18 +9,18 @@ import 'package:provider/provider.dart';
 
 class Home extends StatelessWidget {
   Home({Key? key}) : super(key: key);
-  final ValueNotifier<int> pageIndex = ValueNotifier(0);
+  final _pageIndex = ValueNotifier<int>(0);
   final pages = const [
     MessageScreen(),
-    OthersPage(),
-    OthersPage(),
     MyStoryScreen(),
+    OthersPage(),
   ];
 
   @override
   Widget build(BuildContext context) {
     final data = Provider.of<DataStore>(context);
     final String _loginStatus = data.getLoginStatus;
+
     final _userData = data.getUserInfo;
     return _loginStatus == 'signUp'
         ? WelcomeScreen(url: _userData.imageUrl, name: _userData.userName)
@@ -29,13 +29,12 @@ class Home extends StatelessWidget {
 
   Widget _chatHomeScreen() => Scaffold(
         body: ValueListenableBuilder(
-          valueListenable: pageIndex,
-          builder: (BuildContext context, int value, _) {
-            return pages[value];
-          },
+          valueListenable: _pageIndex,
+          builder: (BuildContext context, int value, _) => pages[value],
         ),
-        bottomNavigationBar: NavBar(
-          onItemSelected: (index) => pageIndex.value = index,
-        ),
+        bottomNavigationBar:
+            NavBar(selectedIndex: _pageIndex.value, onSelect: _changeNavIndex),
       );
+
+  void _changeNavIndex(int i) => _pageIndex.value = i;
 }

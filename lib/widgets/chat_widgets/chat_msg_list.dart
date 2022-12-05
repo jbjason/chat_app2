@@ -2,11 +2,12 @@ import 'package:chat_app2/constants/helpers.dart';
 import 'package:chat_app2/models/message_data.dart';
 import 'package:chat_app2/models/user_data.dart';
 import 'package:chat_app2/widgets/chat_widgets/chat_message_tile.dart';
+import 'package:chat_app2/widgets/chat_widgets/chat_msg_own_list.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class ChatMessageList extends StatelessWidget {
-  const ChatMessageList(
+class ChatMsgList extends StatelessWidget {
+  const ChatMsgList(
       {Key? key, required this.currentUser, required this.messageData})
       : super(key: key);
   final UserData currentUser;
@@ -32,13 +33,13 @@ class ChatMessageList extends StatelessWidget {
                   itemCount: userDocs.length,
                   itemBuilder: (context, index) {
                     if (userDocs[index]['userId'] == currentUser.userId) {
-                      return ChatMessageOwnTile(
+                      return ChatMsgOwnTile(
                         message: userDocs[index]['message'],
                         messageDate:
                             DateTime.parse(userDocs[index]['messageDate']),
                       );
                     } else {
-                      return ChatMessageTile(
+                      return ChatMsgTile(
                         message: userDocs[index]['message'],
                         messageDate:
                             DateTime.parse(userDocs[index]['messageDate']),

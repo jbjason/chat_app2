@@ -2,8 +2,8 @@ import 'package:chat_app2/constants/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class ChatMsgTile extends StatelessWidget {
-  const ChatMsgTile({
+class ChatMsgOwnTile extends StatelessWidget {
+  const ChatMsgOwnTile({
     Key? key,
     required this.message,
     required this.messageDate,
@@ -16,27 +16,30 @@ class ChatMsgTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      margin: const EdgeInsets.only(right: 30),
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      margin: const EdgeInsets.only(left: 30),
       child: Align(
-        alignment: Alignment.centerLeft,
+        alignment: Alignment.centerRight,
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).cardColor,
-                borderRadius: const BorderRadius.only(
+              decoration: const BoxDecoration(
+                color: AppColors.secondary,
+                borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(_borderRadius),
-                  topRight: Radius.circular(_borderRadius),
                   bottomRight: Radius.circular(_borderRadius),
+                  bottomLeft: Radius.circular(_borderRadius),
                 ),
               ),
               child: Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 12.0, vertical: 20),
-                child: Text(message),
+                child: Text(message,
+                    style: const TextStyle(
+                      color: AppColors.textLigth,
+                    )),
               ),
             ),
             Padding(

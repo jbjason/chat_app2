@@ -2,7 +2,7 @@ import 'package:chat_app2/models/message_data.dart';
 import 'package:chat_app2/models/user_data.dart';
 import 'package:chat_app2/widgets/chat_widgets/chat_action_bar.dart';
 import 'package:chat_app2/widgets/chat_widgets/chat_appbar.dart';
-import 'package:chat_app2/widgets/chat_widgets/chat_message_list.dart';
+import 'package:chat_app2/widgets/chat_widgets/chat_msg_list.dart';
 import 'package:chat_app2/widgets/common_widgets/icon_background.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -24,10 +24,9 @@ class ChatScreen extends StatelessWidget {
       body: Column(
         children: [
           Expanded(
-              child: ChatMessageList(
-            messageData: messageData,
-            currentUser: currentUser,
-          )),
+            child:
+                ChatMsgList(messageData: messageData, currentUser: currentUser),
+          ),
           ChatActionBar(
             messageData: messageData,
             currentUser: currentUser,
