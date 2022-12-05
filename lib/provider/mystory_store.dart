@@ -67,7 +67,7 @@ class MyStoryStore with ChangeNotifier {
       await Future.delayed(Duration.zero);
       notifyListeners();
     } catch (error) {
-      print(error);
+      rethrow;
     }
   }
 
