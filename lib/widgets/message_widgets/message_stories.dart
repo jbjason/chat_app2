@@ -114,9 +114,12 @@ class _StoryCard extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         CircleAvatar(
-          radius: 30.0,
-          backgroundImage: NetworkImage(storyData.url),
-          backgroundColor: Colors.transparent,
+          radius: 30,
+          backgroundColor: const Color(0xFF212121),
+          child: CircleAvatar(
+            radius: 28,
+            backgroundImage: NetworkImage(storyData.url),
+          ),
         ),
         Expanded(
           child: Padding(

@@ -18,10 +18,11 @@ class MysItemUser extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
         padding: const EdgeInsets.all(15),
         decoration: BoxDecoration(
+          border: Border.all(color: Colors.black, width: 2),
           borderRadius: BorderRadius.circular(40),
           image: DecorationImage(
             image: NetworkImage(currentUser.imageUrl),
-            fit: BoxFit.cover,
+            fit: BoxFit.fitWidth,
           ),
         ),
         child: Column(
@@ -29,8 +30,12 @@ class MysItemUser extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: const [
             CircleAvatar(
-              radius: 20,
-              child: Icon(Icons.add, color: AppColors.secondary),
+              radius: 21,
+              backgroundColor: Colors.black,
+              child: CircleAvatar(
+                radius: 19.5,
+                child: Icon(Icons.add, color: AppColors.secondary),
+              ),
             ),
             Text(
               'Add to Story',

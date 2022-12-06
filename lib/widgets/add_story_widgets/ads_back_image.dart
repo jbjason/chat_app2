@@ -26,7 +26,7 @@ class AdsBackImage extends StatelessWidget {
         ),
       ),
       child: pickedImage != null
-          ? Image.file(pickedImage!, fit: BoxFit.cover)
+          ? Image.file(pickedImage!, fit: BoxFit.contain)
           : const SizedBox(),
     );
   }
