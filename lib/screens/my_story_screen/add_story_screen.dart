@@ -111,10 +111,10 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
         }
         Navigator.pop(context);
       } catch (error) {
-        getSnackBar(error.toString(), const Color(0xFF424242));
+        getSnackBar(context, error.toString(), const Color(0xFF424242));
       }
     }).catchError((onError) async {
-      getSnackBar(onError.toString(), AppColors.accent);
+      getSnackBar(context, onError.toString(), AppColors.accent);
     });
     _isLoading.value = true;
   }

@@ -64,10 +64,10 @@ class AuthScreen extends StatelessWidget {
         message = err.message!;
       }
       isLoad.value = false;
-      getSnackBar(message, Colors.redAccent);
+      getSnackBar(ctx, message, Colors.redAccent);
     } catch (e) {
       isLoad.value = false;
-      getSnackBar(message, Colors.redAccent);
+      getSnackBar(ctx, message, Colors.redAccent);
     }
   }
 }

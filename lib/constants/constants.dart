@@ -47,34 +47,36 @@ TextStyle getTextStyle(int i, Color textColor, TextDecoration dec) {
   return _style[i];
 }
 
-SnackBar getSnackBar(String title, Color color) {
-  return SnackBar(
-    backgroundColor: Colors.transparent,
-    duration: const Duration(seconds: 2),
-    behavior: SnackBarBehavior.floating,
-    shape: const StadiumBorder(),
-    content: Container(
-        padding: const EdgeInsets.all(15),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(25),
-          gradient: LinearGradient(colors: [
-            color,
-            color.withOpacity(.6),
-            color.withOpacity(.4),
-            //Colors.grey[800]!,
-            // Colors.grey,
-            // Colors.grey[300]!,
-          ], begin: Alignment.topLeft, end: Alignment.bottomRight),
-        ),
-        child: Text(
-          title,
-          textAlign: TextAlign.center,
-          style: const TextStyle(
-            color: Colors.black,
-            fontSize: 18,
-            letterSpacing: 1.5,
-            fontWeight: FontWeight.w600,
+void getSnackBar(BuildContext ctx, String title, Color color) {
+  ScaffoldMessenger.of(ctx).showSnackBar(
+    SnackBar(
+      backgroundColor: Colors.transparent,
+      duration: const Duration(seconds: 2),
+      behavior: SnackBarBehavior.floating,
+      shape: const StadiumBorder(),
+      content: Container(
+          padding: const EdgeInsets.all(15),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(25),
+            gradient: LinearGradient(colors: [
+              color,
+              color.withOpacity(.6),
+              color.withOpacity(.4),
+              //Colors.grey[800]!,
+              // Colors.grey,
+              // Colors.grey[300]!,
+            ], begin: Alignment.topLeft, end: Alignment.bottomRight),
           ),
-        )),
+          child: Text(
+            title,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              color: Colors.black,
+              fontSize: 18,
+              letterSpacing: 1.5,
+              fontWeight: FontWeight.w600,
+            ),
+          )),
+    ),
   );
 }

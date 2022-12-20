@@ -94,7 +94,7 @@ class MyStoryStore with ChangeNotifier {
         await _ref.child('my_story/${_selectedItem.urlPath}').delete();
       }
     } catch (e) {
-      getSnackBar(e.toString(), const Color(0xFFFF5252));
+      rethrow;
     }
   }
 }
