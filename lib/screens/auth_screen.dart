@@ -22,7 +22,7 @@ class AuthScreen extends StatelessWidget {
   void _submitAuthForm(String email, String pass, String username, File? image,
       bool isLogin, BuildContext ctx, ValueNotifier<bool> isLoad) async {
     UserCredential authResult;
-    String message = 'An error occured, please check ur credentials';
+    String message = 'An error occured, please check ur credentials!';
     final dataStore = Provider.of<DataStore>(ctx, listen: false);
     final _auth = FirebaseAuth.instance;
     try {

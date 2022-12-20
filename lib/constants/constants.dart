@@ -51,32 +51,27 @@ void getSnackBar(BuildContext ctx, String title, Color color) {
   ScaffoldMessenger.of(ctx).showSnackBar(
     SnackBar(
       backgroundColor: Colors.transparent,
-      duration: const Duration(seconds: 2),
+      duration: const Duration(milliseconds: 1500),
       behavior: SnackBarBehavior.floating,
       shape: const StadiumBorder(),
       content: Container(
-          padding: const EdgeInsets.all(15),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(25),
-            gradient: LinearGradient(colors: [
-              color,
-              color.withOpacity(.6),
-              color.withOpacity(.4),
-              //Colors.grey[800]!,
-              // Colors.grey,
-              // Colors.grey[300]!,
-            ], begin: Alignment.topLeft, end: Alignment.bottomRight),
-          ),
-          child: Text(
-            title,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              color: Colors.black,
-              fontSize: 18,
-              letterSpacing: 1.5,
-              fontWeight: FontWeight.w600,
-            ),
-          )),
+        padding: const EdgeInsets.all(15),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(25),
+          gradient: LinearGradient(colors: [
+            color.withOpacity(.5),
+            color.withOpacity(.3),
+            color.withOpacity(.4),
+          ], begin: Alignment.topLeft, end: Alignment.bottomRight),
+        ),
+        child: Text(
+          title,
+          textAlign: TextAlign.center,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+          style: const TextStyle(color: Colors.white, letterSpacing: 1.3),
+        ),
+      ),
     ),
   );
 }
