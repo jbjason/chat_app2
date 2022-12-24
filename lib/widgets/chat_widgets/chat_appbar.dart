@@ -25,7 +25,8 @@ class ChatAppBar extends StatelessWidget {
               Text(
                 messageData.userName,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(fontSize: 14),
+                // header2
+                style: Theme.of(context).textTheme.headline1,
               ),
               const SizedBox(height: 2),
               // Online now status text

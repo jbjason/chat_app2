@@ -44,7 +44,7 @@ class MessageListItem extends StatelessWidget {
                   backgroundImage: NetworkImage(messageData.img),
                 ),
               ),
-              // profile_name & last_msg
+              // user name & last_msg
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -56,11 +56,10 @@ class MessageListItem extends StatelessWidget {
                       child: Text(
                         messageData.userName,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          letterSpacing: 0.2,
-                          wordSpacing: 1.5,
-                          fontWeight: FontWeight.w900,
-                        ),
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline1!
+                            .copyWith(fontSize: 15),
                       ),
                     ),
                     // Message
@@ -69,10 +68,8 @@ class MessageListItem extends StatelessWidget {
                       child: Text(
                         messageData.message, // lastMsg
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          fontSize: 12,
-                          color: AppColors.textFaded,
-                        ),
+                        // bodyText2
+                        style: Theme.of(context).textTheme.bodyText2,
                       ),
                     ),
                   ],
@@ -89,12 +86,7 @@ class MessageListItem extends StatelessWidget {
                     // duration of msg
                     Text(
                       messageData.dateDifference,
-                      style: const TextStyle(
-                        fontSize: 11,
-                        letterSpacing: -0.2,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.textFaded,
-                      ),
+                      style: Theme.of(context).textTheme.bodyText2,
                     ),
                     const SizedBox(height: 8),
                     // 1 new msg notification_icon

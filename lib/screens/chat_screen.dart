@@ -45,7 +45,7 @@ class ChatScreen extends StatelessWidget {
       leadingWidth: 54,
       leading: Align(
         alignment: Alignment.centerRight,
-        child: IconBackground(
+        child: IconBorder(
           icon: CupertinoIcons.back,
           onTap: () {
             Navigator.of(context).pop();

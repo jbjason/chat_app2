@@ -1,4 +1,3 @@
-import 'package:chat_app2/constants/theme.dart';
 import 'package:chat_app2/models/story_data.dart';
 import 'package:chat_app2/models/user_data.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,6 +16,7 @@ class MessageStories extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return SliverToBoxAdapter(
       child: Card(
         elevation: 0,
@@ -28,16 +28,12 @@ class MessageStories extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // stories title
-              const Padding(
-                padding: EdgeInsets.only(left: 20.0, top: 8, bottom: 12),
+              Padding(
+                padding: const EdgeInsets.only(left: 20.0, top: 8, bottom: 12),
                 child: Text(
                   'Stories',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w900,
-                    fontSize: 15,
-                    color: AppColors.textFaded,
-                  ),
+                  style: theme.textTheme.headline1!.copyWith(fontSize: 15),
                 ),
               ),
               // story_list
@@ -54,7 +50,7 @@ class MessageStories extends StatelessWidget {
                         child: SizedBox(
                           width: 60,
                           child: CircleAvatar(
-                            backgroundColor: Colors.grey[900],
+                            backgroundColor: theme.scaffoldBackgroundColor,
                             radius: 30,
                             child: const Icon(CupertinoIcons.add),
                           ),
@@ -100,22 +96,19 @@ class MessageStories extends StatelessWidget {
 }
 
 class _StoryCard extends StatelessWidget {
-  const _StoryCard({
-    Key? key,
-    required this.storyData,
-  }) : super(key: key);
-
+  const _StoryCard({Key? key, required this.storyData}) : super(key: key);
   final StoryData storyData;
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         CircleAvatar(
           radius: 30,
-          backgroundColor: const Color(0xFF212121),
+          backgroundColor: theme.cardColor,
           child: CircleAvatar(
             radius: 28,
             backgroundImage: NetworkImage(storyData.url),
@@ -126,12 +119,10 @@ class _StoryCard extends StatelessWidget {
             padding: const EdgeInsets.only(top: 16.0),
             child: Text(
               storyData.name,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                fontSize: 11,
-                letterSpacing: 0.3,
-                fontWeight: FontWeight.bold,
-              ),
+              overflow: TextOverflow.fade,
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              style: theme.textTheme.bodyText1,
             ),
           ),
         ),

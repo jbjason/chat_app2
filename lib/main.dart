@@ -22,25 +22,26 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (ctx) => ThemeProvider()),
         ChangeNotifierProvider(create: (ctx) => DataStore()),
         ChangeNotifierProvider(create: (ctx) => SearchStore()),
         ChangeNotifierProvider(create: (ctx) => MyStoryStore()),
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Chat App2',
-        theme: AppTheme.light(),
-        darkTheme: AppTheme.dark(),
-        themeMode: ThemeMode.dark,
-        home: StreamBuilder(
-          stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (ctx, userSnapShot) {
-            if (userSnapShot.hasData) {
-              return Home();
-            } else {
-              return const AuthScreen();
-            }
-          },
+      child: Consumer<ThemeProvider>(
+        builder: (context, theme, _) => MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Chat App2',
+          theme: theme.getTheme,
+          home: StreamBuilder(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (ctx, userSnapShot) {
+              if (userSnapShot.hasData) {
+                return Home();
+              } else {
+                return const AuthScreen();
+              }
+            },
+          ),
         ),
       ),
     );
