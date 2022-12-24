@@ -28,10 +28,7 @@ class _NavBarState extends State<NavBar> {
 
   @override
   Widget build(BuildContext context) {
-    final brightness = Theme.of(context).brightness;
     return Card(
-      color: (brightness == Brightness.light) ? Colors.transparent : null,
-      elevation: 0,
       margin: const EdgeInsets.all(0),
       child: SafeArea(
         top: false,

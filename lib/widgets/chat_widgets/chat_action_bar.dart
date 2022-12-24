@@ -43,7 +43,10 @@ class ChatActionBar extends StatelessWidget {
               padding: const EdgeInsets.only(left: 16.0),
               child: TextField(
                 controller: textController,
-                style: const TextStyle(fontSize: 14),
+                style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                      fontWeight: FontWeight.normal,
+                      fontSize: 14,
+                    ),
                 decoration: const InputDecoration(
                   hintText: 'Type something...',
                   border: InputBorder.none,

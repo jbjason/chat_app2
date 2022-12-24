@@ -2,11 +2,8 @@ import 'package:chat_app2/constants/theme.dart';
 import 'package:flutter/material.dart';
 
 class IconBorder extends StatelessWidget {
-  const IconBorder({
-    Key? key,
-    required this.icon,
-    required this.onTap,
-  }) : super(key: key);
+  const IconBorder({Key? key, required this.icon, required this.onTap})
+      : super(key: key);
 
   final IconData icon;
   final VoidCallback onTap;
@@ -25,7 +22,7 @@ class IconBorder extends StatelessWidget {
         ),
         child: Padding(
           padding: const EdgeInsets.all(4),
-          child: Icon(icon, size: 16, color: theme.iconTheme.color),
+          child: Icon(icon, size: 25, color: theme.iconTheme.color),
         ),
       ),
     );

@@ -31,7 +31,6 @@ abstract class AppTheme {
 
   /// Light theme and its settings.
   static ThemeData light() => ThemeData(
-        brightness: Brightness.light,
         visualDensity: visualDensity,
         // ignore: deprecated_member_use
         accentColor: AppColors.accent,
@@ -63,7 +62,6 @@ abstract class AppTheme {
 
   /// Dark theme and its settings.
   static ThemeData dark() => ThemeData(
-        brightness: Brightness.dark,
         visualDensity: visualDensity,
         // ignore: deprecated_member_use
         accentColor: AppColors.accent,
@@ -73,12 +71,6 @@ abstract class AppTheme {
               color: AppColors.textLigth,
               fontWeight: FontWeight.bold,
               fontSize: 17,
-            ),
-            headline2: TextStyle(
-              color: AppColors.textLigth,
-              letterSpacing: 0.2,
-              wordSpacing: 1.5,
-              fontWeight: FontWeight.w900,
             ),
             bodyText1: TextStyle(
               color: AppColors.textLigth,

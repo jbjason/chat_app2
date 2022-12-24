@@ -19,7 +19,6 @@ class MessageStories extends StatelessWidget {
     final theme = Theme.of(context);
     return SliverToBoxAdapter(
       child: Card(
-        elevation: 0,
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
         child: SizedBox(
