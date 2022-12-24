@@ -1,4 +1,4 @@
-# Messenger_app2
+# Messenger_App
 
 <img width=30% height=14% src="https://user-images.githubusercontent.com/62088928/199455519-27213896-19c8-4ee6-87a8-b32157a7aca4.jpg">     <img width=30% height=14% src="https://user-images.githubusercontent.com/62088928/199455572-58ada97c-1c3d-4e5e-afc6-e2469d9b6f83.jpg">
  
