@@ -16,6 +16,10 @@ class PassTextField extends StatelessWidget {
       decoration: const InputDecoration(labelText: 'Password'),
       obscureText: true,
       controller: _passController,
+      style: Theme.of(context).textTheme.bodyText1!.copyWith(
+            fontWeight: FontWeight.normal,
+            fontSize: 14,
+          ),
       validator: (value) {
         if (value!.isEmpty || value.length <= 5) {
           return 'Please enter atleast 4 characters';

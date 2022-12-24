@@ -16,6 +16,10 @@ class EmailTextField extends StatelessWidget {
       decoration: const InputDecoration(labelText: 'Email Address'),
       keyboardType: TextInputType.emailAddress,
       controller: _emailController,
+      style: Theme.of(context).textTheme.bodyText1!.copyWith(
+            fontWeight: FontWeight.normal,
+            fontSize: 14,
+          ),
       validator: (value) {
         if (value!.isEmpty || !value.contains('@')) {
           return 'Please enter a valid email address';

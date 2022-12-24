@@ -80,7 +80,8 @@ class _AuthFormState extends State<AuthForm> {
                       EmailTextField(emailController: _emailController),
                       if (!_isLogin)
                         UserNameTextField(
-                            userNameController: _userNameController),
+                          userNameController: _userNameController,
+                        ),
                       PassTextField(passController: _passController),
                       ButtonloginSignup(
                         trySubmit: trySubmit,

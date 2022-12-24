@@ -44,7 +44,6 @@ class ChatActionBar extends StatelessWidget {
               child: TextField(
                 controller: textController,
                 style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                      fontWeight: FontWeight.normal,
                       fontSize: 14,
                     ),
                 decoration: const InputDecoration(

@@ -36,7 +36,12 @@ class ChatMsgTile extends StatelessWidget {
               child: Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 12.0, vertical: 20),
-                child: Text(message),
+                child: Text(
+                  message,
+                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                        fontWeight: FontWeight.normal,
+                      ),
+                ),
               ),
             ),
             Padding(

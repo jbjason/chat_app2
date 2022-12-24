@@ -15,6 +15,10 @@ class UserNameTextField extends StatelessWidget {
       key: const ValueKey('username'),
       decoration: const InputDecoration(labelText: 'Username'),
       controller: _userNameController,
+      style: Theme.of(context).textTheme.bodyText1!.copyWith(
+            fontWeight: FontWeight.normal,
+            fontSize: 14,
+          ),
       validator: (value) {
         if (value!.isEmpty) {
           return 'Please enter atleast 4 characters';
